@@ -95,6 +95,16 @@ export default function Home() {
                 💬 가족 소통 게시판
               </Button>
             </Link>
+            <Link href="/manager-input">
+              <Button variant="ghost" size="sm">
+                📝 매니저 DDC 입력
+              </Button>
+            </Link>
+            <Link href="/auditor-admin">
+              <Button variant="ghost" size="sm">
+                🔐 감사 관리
+              </Button>
+            </Link>
             <Button variant="ghost" size="sm" onClick={() => scrollToSection('glossary')}>
               📖 용어집
             </Button>

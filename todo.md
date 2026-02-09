@@ -34,3 +34,11 @@
 - [ ] Update Profile pages to use real database data
 - [ ] Create reusable skill for this process
 - [ ] Test all features end-to-end
+
+## New Requirements (Current Phase)
+- [x] Add manager input page link to homepage
+- [x] Add auditor admin page link to homepage
+- [x] Improve mobile responsive design for all pages
+- [x] Add ranking badges to profiles (1st, 2nd place)
+- [x] Add star badge system for 1st place winners
+- [x] Implement bronze/silver star progression (6 wins = 1 bronze + 1 silver)

@@ -7,6 +7,7 @@ import { ArrowLeft, Trophy, Calendar, Target, Award } from "lucide-react";
 import { FAMILY_MEMBERS } from "@/types/family";
 import { sampleDDCData, sampleManagerActivities, calculateDDCRankings } from "@/lib/sampleData";
 import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 export default function Profile() {
   const [, params] = useRoute("/profile/:id");
@@ -31,11 +32,26 @@ export default function Profile() {
     );
   }
 
+  // 데이터베이스에서 DDC 기록 불러오기
+  const { data: ddcRecords = [] } = trpc.ddc.getAll.useQuery();
+  
   // 현재 월 DDC 순위 계산
   const currentMonth = '2026-02';
-  const rankings = calculateDDCRankings(sampleDDCData, currentMonth);
-  const memberRanking = rankings.findIndex(r => r.memberId === memberId) + 1;
-  const memberScreenTime = rankings.find(r => r.memberId === memberId)?.total || 0;
+  const memberTimes = FAMILY_MEMBERS.map(m => {
+    const totalTime = ddcRecords
+      .filter(d => d.memberId === m.id && d.date.startsWith(currentMonth))
+      .reduce((sum, d) => sum + d.screenTime, 0);
+    return { memberId: m.id, total: totalTime };
+  });
+  memberTimes.sort((a, b) => a.total - b.total);
+  const memberRanking = memberTimes.findIndex(r => r.memberId === memberId) + 1;
+  const memberScreenTime = memberTimes.find(r => r.memberId === memberId)?.total || 0;
+  
+  // 1등 횟수 계산 (예시: 샘플 데이터)
+  const firstPlaceCount = 3; // TODO: 실제 DB에서 계산
+  const bronzeStars = Math.floor(firstPlaceCount / 6);
+  const silverStars = Math.floor(firstPlaceCount / 6);
+  const remainingWins = firstPlaceCount % 6;
 
   // 매니저 활동 기록
   const managerActivities = sampleManagerActivities.filter(a => a.managerId === memberId);
@@ -55,16 +71,46 @@ export default function Profile() {
         {/* Profile Header */}
         <div className="flex items-center gap-6 mb-8">
           <div 
-            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
+            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl relative"
             style={{ backgroundColor: `${member.color}20`, border: `3px solid ${member.color}` }}
           >
             {member.avatar}
+            {memberRanking === 1 && (
+              <div className="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-2 shadow-lg">
+                <Trophy className="w-6 h-6 text-yellow-900" />
+              </div>
+            )}
+            {memberRanking === 2 && (
+              <div className="absolute -top-2 -right-2 bg-gray-300 rounded-full p-2 shadow-lg">
+                <Award className="w-6 h-6 text-gray-700" />
+              </div>
+            )}
           </div>
           <div>
-            <h1 className="text-4xl font-bold mb-2">{member.name}</h1>
-            <Badge variant={member.role === 'parent' ? 'default' : 'secondary'} className="text-base">
-              {member.role === 'parent' ? '감사' : '팀원'}
-            </Badge>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold">{member.name}</h1>
+              {memberRanking === 1 && <span className="text-3xl">🥇</span>}
+              {memberRanking === 2 && <span className="text-3xl">🥈</span>}
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge variant={member.role === 'parent' ? 'default' : 'secondary'} className="text-base">
+                {member.role === 'parent' ? '감사' : '팀원'}
+              </Badge>
+              {memberRanking === 1 && firstPlaceCount > 0 && (
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: bronzeStars }).map((_, i) => (
+                    <span key={`bronze-${i}`} className="text-xl" title="브론즈별">🥉</span>
+                  ))}
+                  {Array.from({ length: silverStars }).map((_, i) => (
+                    <span key={`silver-${i}`} className="text-xl" title="실버별">🥈</span>
+                  ))}
+                  {Array.from({ length: remainingWins }).map((_, i) => (
+                    <span key={`star-${i}`} className="text-xl" title="1등 횟수">⭐</span>
+                  ))}
+                  <span className="text-sm text-muted-foreground ml-1">({firstPlaceCount}회 1등)</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

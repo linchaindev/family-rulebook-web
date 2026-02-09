@@ -147,23 +147,24 @@ export default function ManagerInput() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
-      <div className="container py-8 max-w-7xl">
+      <div className="container py-4 md:py-8 px-2 md:px-4 max-w-7xl">
         <Link href="/">
-          <Button variant="ghost" className="mb-4">
+          <Button variant="ghost" className="mb-4" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            룰북으로 돌아가기
+            <span className="hidden sm:inline">룰북으로 돌아가기</span>
+            <span className="sm:hidden">돌아가기</span>
           </Button>
         </Link>
 
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-4 md:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold mb-2">매니저 DDC 입력</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl md:text-4xl font-bold mb-2">매니저 DDC 입력</h1>
+            <p className="text-sm md:text-base text-muted-foreground">
               <Calendar className="w-4 h-4 inline mr-1" />
               {selectedMonth} ({daysInMonth}일)
             </p>
           </div>
-          <Button onClick={handleSave} size="lg" disabled={createBatchMutation.isPending}>
+          <Button onClick={handleSave} size="default" className="w-full sm:w-auto" disabled={createBatchMutation.isPending}>
             <Save className="w-4 h-4 mr-2" />
             {createBatchMutation.isPending ? '저장 중...' : '저장하기'}
           </Button>
@@ -177,13 +178,13 @@ export default function ManagerInput() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
+            <div className="overflow-x-auto -mx-2 md:mx-0">
+              <table className="w-full border-collapse text-sm md:text-base">
                 <thead>
                   <tr className="border-b-2">
-                    <th className="p-3 text-left font-bold sticky left-0 bg-background">날짜</th>
+                    <th className="p-2 md:p-3 text-left font-bold sticky left-0 bg-background z-10">날짜</th>
                     {FAMILY_MEMBERS.map((member) => (
-                      <th key={member.id} className="p-3 text-center font-bold min-w-[120px]">
+                      <th key={member.id} className="p-2 md:p-3 text-center font-bold min-w-[100px] md:min-w-[120px]">
                         <div className="flex flex-col items-center gap-1">
                           <span className="text-2xl">{member.avatar}</span>
                           <span className="text-sm">{member.name}</span>
@@ -200,7 +201,7 @@ export default function ManagerInput() {
                     
                     return (
                       <tr key={date} className={`border-b ${isWeekend ? 'bg-muted/30' : ''}`}>
-                        <td className="p-3 font-medium sticky left-0 bg-background">
+                        <td className="p-2 md:p-3 font-medium sticky left-0 bg-background z-10">
                           <div className="flex items-center gap-2">
                             <Badge variant={isWeekend ? "secondary" : "outline"}>
                               {day}일
@@ -211,7 +212,7 @@ export default function ManagerInput() {
                           </div>
                         </td>
                         {FAMILY_MEMBERS.map((member) => (
-                          <td key={member.id} className="p-2">
+                          <td key={member.id} className="p-1 md:p-2">
                             <Input
                               type="number"
                               inputMode="numeric"

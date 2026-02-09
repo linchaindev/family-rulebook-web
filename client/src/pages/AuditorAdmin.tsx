@@ -124,7 +124,7 @@ export default function AuditorAdmin() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
-      <div className="container py-8 max-w-7xl">
+      <div className="container py-4 md:py-8 px-2 md:px-4 max-w-7xl">
         <Link href="/">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -135,8 +135,7 @@ export default function AuditorAdmin() {
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <Shield className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold">감사 관리 페이지</h1>
-          </div>
+           <h1 className="text-2xl md:text-4xl font-bold mb-2">감사 관리 페이지</h1>       </div>
           <p className="text-muted-foreground">모든 데이터베이스 기록을 조회, 수정, 삭제할 수 있습니다.</p>
         </div>
 

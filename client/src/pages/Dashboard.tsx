@@ -225,32 +225,32 @@ export default function Dashboard() {
                   const hours = Math.floor(member.totalTime / 60);
                   const minutes = member.totalTime % 60;
                 
-                return (
-                  <Link key={member.id} href={`/profile/${member.id}`}>
-                    <div className="flex items-center justify-between p-4 bg-muted rounded-lg hover:bg-muted/80 transition-colors cursor-pointer">
-                      <div className="flex items-center gap-4">
-                        <div className="text-2xl font-bold text-muted-foreground w-8">
-                          {index + 1}
+                  return (
+                    <Link key={member.id} href={`/profile/${member.id}`}>
+                      <div className="flex items-center justify-between p-4 bg-muted rounded-lg hover:bg-muted/80 transition-colors cursor-pointer">
+                        <div className="flex items-center gap-4">
+                          <div className="text-2xl font-bold text-muted-foreground w-8">
+                            {index + 1}
+                          </div>
+                          <div 
+                            className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                            style={{ backgroundColor: `${member.color}20`, border: `2px solid ${member.color}` }}
+                          >
+                            {member.avatar}
+                          </div>
+                          <div>
+                            <p className="font-semibold">{member.name}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {hours}시간 {minutes}분
+                            </p>
+                          </div>
                         </div>
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                          style={{ backgroundColor: `${member.color}20`, border: `2px solid ${member.color}` }}
-                        >
-                          {member.avatar}
-                        </div>
-                        <div>
-                          <p className="font-semibold">{member.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {hours}시간 {minutes}분
-                          </p>
-                        </div>
+                        <Badge variant={index === 0 ? 'default' : index === FAMILY_MEMBERS.length - 1 ? 'destructive' : 'secondary'}>
+                          {index === 0 ? '1등 🥇' : index === 1 ? '2등 🥈' : index === 2 ? '3등 🥉' : `${index + 1}등`}
+                        </Badge>
                       </div>
-                      <Badge variant={index === 0 ? 'default' : index === FAMILY_MEMBERS.length - 1 ? 'destructive' : 'secondary'}>
-                        {index === 0 ? '1등 🥇' : index === 1 ? '2등 🥈' : index === 2 ? '3등 🥉' : `${index + 1}등`}
-                      </Badge>
-                    </div>
-                  </Link>
-                );
+                    </Link>
+                  );
                 });
               })()}
             </div>
