@@ -630,7 +630,7 @@ export default function Home() {
                   <CardTitle>KH패밀리 = KH팀</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>강씨, 하씨 가족들 (아빠, 엄마, 션, 진, 럄 = KH팀)</p>
+                  <p>강씨, 하씨 가족들 (강혁, 하정현, 강시현, 강지인, 강리암 = 강하션진럄)</p>
                 </CardContent>
               </Card>
               <Card>

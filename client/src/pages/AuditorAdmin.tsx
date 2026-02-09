@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Lock, Shield, Trash2, Edit, Plus } from "lucide-react";
+import { ArrowLeft, Shield, Trash2, Edit, Plus } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { FAMILY_MEMBERS } from "@/types/family";
+import { formatMinutesToHoursAndMinutes } from "@/lib/timeUtils";
 
 // 월별 매니저 지정 컴포넌트
 function MonthlyManagerTab() {
@@ -50,46 +51,40 @@ function MonthlyManagerTab() {
         <CardDescription>각 월의 패밀리 매니저를 지정합니다.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* 새 매니저 지정 */}
-        <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
-          <h3 className="font-semibold">새 매니저 지정</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label>대상 월</Label>
-              <Input
-                type="month"
-                value={newMonth}
-                onChange={(e) => setNewMonth(e.target.value)}
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Label>매니저 선택</Label>
-              <Select value={newManagerId} onValueChange={setNewManagerId}>
-                <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="매니저 선택" />
-                </SelectTrigger>
-                <SelectContent>
-                  {FAMILY_MEMBERS.filter(m => m.role === 'student').map(member => (
-                    <SelectItem key={member.id} value={member.id}>
-                      {member.avatar} {member.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-end">
-              <Button onClick={handleSetManager} className="w-full" disabled={setManagerMutation.isPending}>
-                <Plus className="w-4 h-4 mr-2" />
-                {setManagerMutation.isPending ? '지정 중...' : '매니저 지정'}
-              </Button>
-            </div>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <Label>대상 월</Label>
+            <Input
+              type="month"
+              value={newMonth}
+              onChange={(e) => setNewMonth(e.target.value)}
+              className="mt-2"
+            />
+          </div>
+          <div className="flex-1">
+            <Label>매니저 선택</Label>
+            <Select value={newManagerId} onValueChange={setNewManagerId}>
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder="매니저 선택" />
+              </SelectTrigger>
+              <SelectContent>
+                {FAMILY_MEMBERS.filter(m => m.role === 'student').map((member) => (
+                  <SelectItem key={member.id} value={member.id}>
+                    {member.avatar} {member.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-end">
+            <Button onClick={handleSetManager} disabled={setManagerMutation.isPending}>
+              지정하기
+            </Button>
           </div>
         </div>
-        
-        {/* 기존 매니저 목록 */}
+
         <div className="space-y-2">
-          <h3 className="font-semibold">지정된 매니저 목록 ({monthlyManagers.length}개)</h3>
+          <h3 className="font-semibold">월별 매니저 목록</h3>
           {monthlyManagers.length === 0 ? (
             <p className="text-sm text-muted-foreground">아직 지정된 매니저가 없습니다.</p>
           ) : (
@@ -97,11 +92,10 @@ function MonthlyManagerTab() {
               {monthlyManagers.map((manager) => {
                 const member = FAMILY_MEMBERS.find(m => m.id === manager.managerId);
                 return (
-                  <div key={manager.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div key={manager.month} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <Badge variant="outline">{manager.month}</Badge>
-                      <span className="text-2xl">{member?.avatar}</span>
-                      <span className="font-medium">{member?.name}</span>
+                      <Badge>{manager.month}</Badge>
+                      <span className="font-medium">{member?.avatar} {member?.name}</span>
                     </div>
                   </div>
                 );
@@ -116,10 +110,25 @@ function MonthlyManagerTab() {
 
 export default function AuditorAdmin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
+
+  // DDC 수정 상태
+  const [editingDDC, setEditingDDC] = useState<number | null>(null);
+  const [editDDCData, setEditDDCData] = useState({ date: '', memberId: '', screenTime: 0 });
+
+  // RCR 추가/수정 상태
+  const [isAddingRCR, setIsAddingRCR] = useState(false);
+  const [editingRCR, setEditingRCR] = useState<number | null>(null);
+  const [rcrFormData, setRcrFormData] = useState({
+    date: new Date().toISOString().split('T')[0],
+    memberId: '',
+    level: 'minor' as 'minor' | 'moderate' | 'major' | 'maximum',
+    reason: '',
+    appliedBy: '',
   });
 
   const verifyPasswordMutation = trpc.password.verifyAuditor.useQuery(
@@ -127,15 +136,57 @@ export default function AuditorAdmin() {
     { enabled: false }
   );
 
-  const { data: ddcRecords = [], refetch: refetchDDC } = trpc.ddc.getAll.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: rcrRecords = [], refetch: refetchRCR } = trpc.rcr.getAll.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: managerActivities = [], refetch: refetchManager } = trpc.managerActivity.getAll.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: comments = [], refetch: refetchComments } = trpc.comments.getAll.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: ddcRecords = [], refetch: refetchDDC } = trpc.ddc.getAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const { data: rcrRecords = [], refetch: refetchRCR } = trpc.rcr.getAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const { data: comments = [], refetch: refetchComments } = trpc.comments.getAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const updateDDCMutation = trpc.ddc.update.useMutation({
+    onSuccess: () => {
+      toast.success('DDC 기록이 수정되었습니다.');
+      refetchDDC();
+      setEditingDDC(null);
+    },
+    onError: () => {
+      toast.error('DDC 기록 수정에 실패했습니다.');
+    },
+  });
 
   const deleteDDCMutation = trpc.ddc.delete.useMutation({
     onSuccess: () => {
       toast.success('DDC 기록이 삭제되었습니다.');
       refetchDDC();
+    },
+  });
+
+  const createRCRMutation = trpc.rcr.create.useMutation({
+    onSuccess: () => {
+      toast.success('RCR 기록이 추가되었습니다.');
+      refetchRCR();
+      setIsAddingRCR(false);
+      resetRCRForm();
+    },
+    onError: () => {
+      toast.error('RCR 기록 추가에 실패했습니다.');
+    },
+  });
+
+  const updateRCRMutation = trpc.rcr.update.useMutation({
+    onSuccess: () => {
+      toast.success('RCR 기록이 수정되었습니다.');
+      refetchRCR();
+      setEditingRCR(null);
+      resetRCRForm();
+    },
+    onError: () => {
+      toast.error('RCR 기록 수정에 실패했습니다.');
     },
   });
 
@@ -166,6 +217,60 @@ export default function AuditorAdmin() {
     } else {
       toast.error('비밀번호가 올바르지 않습니다.');
     }
+  };
+
+  const handleEditDDC = (record: any) => {
+    setEditingDDC(record.id);
+    setEditDDCData({
+      date: record.date,
+      memberId: record.memberId,
+      screenTime: record.screenTime,
+    });
+  };
+
+  const handleSaveDDC = () => {
+    if (!editingDDC) return;
+    updateDDCMutation.mutate({
+      id: editingDDC,
+      updates: editDDCData,
+    });
+  };
+
+  const resetRCRForm = () => {
+    setRcrFormData({
+      date: new Date().toISOString().split('T')[0],
+      memberId: '',
+      level: 'minor',
+      reason: '',
+      appliedBy: '',
+    });
+  };
+
+  const handleAddRCR = () => {
+    if (!rcrFormData.memberId || !rcrFormData.reason || !rcrFormData.appliedBy) {
+      toast.error('모든 필드를 입력해주세요.');
+      return;
+    }
+    createRCRMutation.mutate(rcrFormData);
+  };
+
+  const handleEditRCR = (record: any) => {
+    setEditingRCR(record.id);
+    setRcrFormData({
+      date: record.date,
+      memberId: record.memberId,
+      level: record.level,
+      reason: record.reason,
+      appliedBy: record.appliedBy,
+    });
+  };
+
+  const handleSaveRCR = () => {
+    if (!editingRCR) return;
+    updateRCRMutation.mutate({
+      id: editingRCR,
+      updates: rcrFormData,
+    });
   };
 
   if (!isAuthenticated) {
@@ -200,20 +305,24 @@ export default function AuditorAdmin() {
                 />
               </div>
               <div>
-                <Label>감사 비밀번호 (6자리)</Label>
+                <Label>비밀번호 (6자리)</Label>
                 <Input
                   type="password"
                   inputMode="numeric"
                   maxLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value.replace(/\D/g, ''))}
-                  placeholder="000000"
-                  className="mt-2 text-center text-2xl tracking-widest"
+                  onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit()}
+                  placeholder="••••••"
+                  className="mt-2 text-2xl tracking-widest text-center"
                 />
               </div>
-              <Button onClick={handlePasswordSubmit} className="w-full" size="lg">
-                <Lock className="w-4 h-4 mr-2" />
-                인증하기
+              <Button
+                className="w-full"
+                onClick={handlePasswordSubmit}
+                disabled={password.length !== 6 || verifyPasswordMutation.isFetching}
+              >
+                {verifyPasswordMutation.isFetching ? '확인 중...' : '확인'}
               </Button>
             </CardContent>
           </Card>
@@ -235,15 +344,15 @@ export default function AuditorAdmin() {
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <Shield className="w-10 h-10 text-primary" />
-           <h1 className="text-2xl md:text-4xl font-bold mb-2">감사 관리 페이지</h1>       </div>
+            <h1 className="text-2xl md:text-4xl font-bold mb-2">감사 관리 페이지</h1>
+          </div>
           <p className="text-muted-foreground">모든 데이터베이스 기록을 조회, 수정, 삭제할 수 있습니다.</p>
         </div>
 
         <Tabs defaultValue="ddc" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 text-xs md:text-sm">
+          <TabsList className="grid w-full grid-cols-4 text-xs md:text-sm">
             <TabsTrigger value="ddc">DDC</TabsTrigger>
             <TabsTrigger value="rcr">RCR</TabsTrigger>
-            <TabsTrigger value="manager">매니저 활동</TabsTrigger>
             <TabsTrigger value="monthlyManager">월별 매니저</TabsTrigger>
             <TabsTrigger value="comments">댓글</TabsTrigger>
           </TabsList>
@@ -252,32 +361,80 @@ export default function AuditorAdmin() {
             <Card>
               <CardHeader>
                 <CardTitle>DDC 기록 관리 ({ddcRecords.length}개)</CardTitle>
-                <CardDescription>스크린타임 기록을 조회하고 삭제할 수 있습니다.</CardDescription>
+                <CardDescription>스크린타임 기록을 조회, 수정, 삭제할 수 있습니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {ddcRecords.map((record) => (
-                    <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <Badge>{record.date}</Badge>
-                          <span className="font-medium">{record.memberId}</span>
-                          <span className="text-muted-foreground">{record.screenTime}분</span>
-                        </div>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          if (confirm('정말 삭제하시겠습니까?')) {
-                            deleteDDCMutation.mutate({ id: record.id });
-                          }
-                        }}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                    <div key={record.id} className="flex flex-col md:flex-row md:items-center justify-between p-3 border rounded-lg gap-2">
+                      {editingDDC === record.id ? (
+                        <>
+                          <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <Input
+                              type="date"
+                              value={editDDCData.date}
+                              onChange={(e) => setEditDDCData({ ...editDDCData, date: e.target.value })}
+                            />
+                            <Select value={editDDCData.memberId} onValueChange={(val) => setEditDDCData({ ...editDDCData, memberId: val })}>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {FAMILY_MEMBERS.map((member) => (
+                                  <SelectItem key={member.id} value={member.id}>
+                                    {member.avatar} {member.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Input
+                              type="number"
+                              value={editDDCData.screenTime}
+                              onChange={(e) => setEditDDCData({ ...editDDCData, screenTime: parseInt(e.target.value) || 0 })}
+                              placeholder="분"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <Button size="sm" onClick={handleSaveDDC}>저장</Button>
+                            <Button size="sm" variant="outline" onClick={() => setEditingDDC(null)}>취소</Button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <Badge>{record.date}</Badge>
+                              <span className="font-medium">{FAMILY_MEMBERS.find(m => m.id === record.memberId)?.name}</span>
+                              <span className="text-muted-foreground">{formatMinutesToHoursAndMinutes(record.screenTime)}</span>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEditDDC(record)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm('정말 삭제하시겠습니까?')) {
+                                  deleteDDCMutation.mutate({ id: record.id });
+                                }
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   ))}
+                  {ddcRecords.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">아직 DDC 기록이 없습니다.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -286,67 +443,190 @@ export default function AuditorAdmin() {
           <TabsContent value="rcr" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>RCR 기록 관리 ({rcrRecords.length}개)</CardTitle>
-                <CardDescription>레드카드 기록을 조회하고 삭제할 수 있습니다.</CardDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>RCR 기록 관리 ({rcrRecords.length}개)</CardTitle>
+                    <CardDescription>레드카드 기록을 추가, 수정, 삭제할 수 있습니다.</CardDescription>
+                  </div>
+                  <Button onClick={() => { setIsAddingRCR(true); resetRCRForm(); }}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    추가
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
+                {isAddingRCR && (
+                  <Card className="mb-4 border-2 border-primary">
+                    <CardHeader>
+                      <CardTitle className="text-lg">새 RCR 기록 추가</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label>날짜</Label>
+                          <Input
+                            type="date"
+                            value={rcrFormData.date}
+                            onChange={(e) => setRcrFormData({ ...rcrFormData, date: e.target.value })}
+                          />
+                        </div>
+                        <div>
+                          <Label>대상자</Label>
+                          <Select value={rcrFormData.memberId} onValueChange={(val) => setRcrFormData({ ...rcrFormData, memberId: val })}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="선택" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {FAMILY_MEMBERS.map((member) => (
+                                <SelectItem key={member.id} value={member.id}>
+                                  {member.avatar} {member.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label>레벨</Label>
+                          <Select value={rcrFormData.level} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, level: val })}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="minor">경미</SelectItem>
+                              <SelectItem value="moderate">보통</SelectItem>
+                              <SelectItem value="major">중대</SelectItem>
+                              <SelectItem value="maximum">최대</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label>적용자</Label>
+                          <Input
+                            value={rcrFormData.appliedBy}
+                            onChange={(e) => setRcrFormData({ ...rcrFormData, appliedBy: e.target.value })}
+                            placeholder="예: 아빠"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label>사유</Label>
+                        <Textarea
+                          value={rcrFormData.reason}
+                          onChange={(e) => setRcrFormData({ ...rcrFormData, reason: e.target.value })}
+                          placeholder="RCR 적용 사유를 입력하세요"
+                          rows={3}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={handleAddRCR}>추가</Button>
+                        <Button variant="outline" onClick={() => { setIsAddingRCR(false); resetRCRForm(); }}>취소</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
                 <div className="space-y-2">
                   {rcrRecords.map((record) => (
-                    <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge>{record.date}</Badge>
-                          <span className="font-medium">{record.memberId}</span>
-                          <Badge variant="destructive">{record.level}</Badge>
+                    <div key={record.id} className="border rounded-lg p-3">
+                      {editingRCR === record.id ? (
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label>날짜</Label>
+                              <Input
+                                type="date"
+                                value={rcrFormData.date}
+                                onChange={(e) => setRcrFormData({ ...rcrFormData, date: e.target.value })}
+                              />
+                            </div>
+                            <div>
+                              <Label>대상자</Label>
+                              <Select value={rcrFormData.memberId} onValueChange={(val) => setRcrFormData({ ...rcrFormData, memberId: val })}>
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {FAMILY_MEMBERS.map((member) => (
+                                    <SelectItem key={member.id} value={member.id}>
+                                      {member.avatar} {member.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label>레벨</Label>
+                              <Select value={rcrFormData.level} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, level: val })}>
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="minor">경미</SelectItem>
+                                  <SelectItem value="moderate">보통</SelectItem>
+                                  <SelectItem value="major">중대</SelectItem>
+                                  <SelectItem value="maximum">최대</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label>적용자</Label>
+                              <Input
+                                value={rcrFormData.appliedBy}
+                                onChange={(e) => setRcrFormData({ ...rcrFormData, appliedBy: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label>사유</Label>
+                            <Textarea
+                              value={rcrFormData.reason}
+                              onChange={(e) => setRcrFormData({ ...rcrFormData, reason: e.target.value })}
+                              rows={3}
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <Button size="sm" onClick={handleSaveRCR}>저장</Button>
+                            <Button size="sm" variant="outline" onClick={() => { setEditingRCR(null); resetRCRForm(); }}>취소</Button>
+                          </div>
                         </div>
-                        <p className="text-sm text-muted-foreground">{record.reason}</p>
-                        <p className="text-xs text-muted-foreground mt-1">적용자: {record.appliedBy}</p>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          if (confirm('정말 삭제하시겠습니까?')) {
-                            deleteRCRMutation.mutate({ id: record.id });
-                          }
-                        }}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      ) : (
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                          <div className="flex-1">
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                              <Badge>{record.date}</Badge>
+                              <span className="font-medium">{FAMILY_MEMBERS.find(m => m.id === record.memberId)?.name}</span>
+                              <Badge variant="destructive">{record.level}</Badge>
+                              <span className="text-sm text-muted-foreground">적용: {record.appliedBy}</span>
+                            </div>
+                            <p className="text-sm">{record.reason}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEditRCR(record)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm('정말 삭제하시겠습니까?')) {
+                                  deleteRCRMutation.mutate({ id: record.id });
+                                }
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="manager" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>매니저 활동 기록 ({managerActivities.length}개)</CardTitle>
-                <CardDescription>매니저 활동 통계를 조회할 수 있습니다.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {managerActivities.map((activity) => (
-                    <div key={activity.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{activity.month}</Badge>
-                          <span className="font-bold">{activity.managerId}</span>
-                        </div>
-                        <Badge className="text-lg">{activity.reward}만원</Badge>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-sm">
-                        <div>기상: {activity.wakeupCount}회</div>
-                        <div>학원: {activity.academyCount}회</div>
-                        <div>숙제: {activity.homeworkCount}회</div>
-                        <div>수면: {activity.sleepCount}회</div>
-                        <div>결산: {activity.settlementCount}회</div>
-                        <div>O표: {activity.oVotes}개</div>
-                      </div>
-                    </div>
-                  ))}
+                  {rcrRecords.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">아직 RCR 기록이 없습니다.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -360,21 +640,23 @@ export default function AuditorAdmin() {
             <Card>
               <CardHeader>
                 <CardTitle>댓글 관리 ({comments.length}개)</CardTitle>
-                <CardDescription>가족 댓글을 조회하고 삭제할 수 있습니다.</CardDescription>
+                <CardDescription>가족 소통 게시판의 댓글을 조회하고 삭제할 수 있습니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {comments.map((comment) => (
-                    <div key={comment.id} className="flex items-start justify-between p-3 border rounded-lg">
+                    <div key={comment.id} className="flex flex-col md:flex-row md:items-start justify-between p-3 border rounded-lg gap-2">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
                           <Badge variant={comment.type === 'praise' ? 'default' : 'secondary'}>
                             {comment.type === 'praise' ? '칭찬' : '건의'}
                           </Badge>
                           <span className="text-sm font-medium">{comment.fromMember} → {comment.toMember}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(comment.createdAt).toLocaleString('ko-KR')}
+                          </span>
                         </div>
                         <p className="text-sm">{comment.content}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{comment.date}</p>
                       </div>
                       <Button
                         variant="destructive"
@@ -389,6 +671,9 @@ export default function AuditorAdmin() {
                       </Button>
                     </div>
                   ))}
+                  {comments.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">아직 댓글이 없습니다.</p>
+                  )}
                 </div>
               </CardContent>
             </Card>

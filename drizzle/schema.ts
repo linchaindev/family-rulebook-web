@@ -112,3 +112,15 @@ export const monthlyManagers = mysqlTable("monthly_managers", {
 
 export type MonthlyManager = typeof monthlyManagers.$inferSelect;
 export type InsertMonthlyManager = typeof monthlyManagers.$inferInsert;
+// Monthly Manager Evaluation Votes Table
+export const managerEvaluations = mysqlTable("manager_evaluations", {
+  id: int("id").autoincrement().primaryKey(),
+  month: varchar("month", { length: 7 }).notNull(), // YYYY-MM
+  managerId: varchar("manager_id", { length: 20 }).notNull(),
+  voterId: varchar("voter_id", { length: 20 }).notNull(), // 투표자 ID
+  vote: mysqlEnum("vote", ["good", "bad"]).notNull(), // 잘했음/못했음
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ManagerEvaluation = typeof managerEvaluations.$inferSelect;
+export type InsertManagerEvaluation = typeof managerEvaluations.$inferInsert;

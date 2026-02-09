@@ -52,3 +52,17 @@
 - [ ] Add 1st/2nd place badges to family members on homepage (will be dynamic based on real data)
 - [x] Change real names to nicknames (아빠, 엄마, 진, 션, 럄) for privacy
 - [x] Set 강지인 as February 2026 manager
+
+## New Requirements (Current Phase)
+- [x] Remove all real names from all pages (double check everywhere)
+- [x] Remove real names from glossary section
+- [x] Add DDC record edit functionality in auditor admin page
+- [x] Add RCR record create/edit/delete functionality in auditor admin page
+- [x] Remove manager activity tab from auditor admin page
+- [ ] Add monthly evaluation voting tab in auditor admin page
+- [ ] Implement secret voting UI (4 family members vote one by one)
+- [ ] Show monthly manager and evaluation results in table
+- [ ] Show cumulative voting history
+- [ ] Create Family Games page
+- [ ] Implement ladder game with customizable penalties
+- [ ] Implement roulette game with customizable penalties/rewards
