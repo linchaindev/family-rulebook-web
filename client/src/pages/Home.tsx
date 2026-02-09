@@ -28,6 +28,7 @@ import {
   ChevronUp
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -72,10 +73,59 @@ export default function Home() {
             <Button size="lg" onClick={() => scrollToSection('core-principles')} className="text-lg">
               룰북 보기
             </Button>
-            <Button size="lg" variant="outline" onClick={() => scrollToSection('glossary')} className="text-lg">
-              용어집
+            <Link href="/dashboard">
+              <Button size="lg" variant="outline" className="text-lg">
+                대시보드
+              </Button>
+            </Link>
+            <Link href="/newbie-guide">
+              <Button size="lg" variant="secondary" className="text-lg">
+                뉴비 가이드 🎓
+              </Button>
+            </Link>
+          </div>
+          <div className="flex gap-3 justify-center flex-wrap mt-4">
+            <Link href="/comments">
+              <Button variant="ghost" size="sm">
+                💬 가족 소통 게시판
+              </Button>
+            </Link>
+            <Button variant="ghost" size="sm" onClick={() => scrollToSection('glossary')}>
+              📖 용어집
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Family Members */}
+      <section className="container py-16 bg-muted/30">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">가족 구성원</h2>
+          <p className="text-muted-foreground">프로필을 클릭하면 개인별 DDC 순위와 매니저 활동을 확인할 수 있어요</p>
+        </div>
+        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
+          {[
+            { id: 'dad', name: '강혁 (아빠)', avatar: '👨', color: '#3498DB', role: '감사' },
+            { id: 'mom', name: '하정현 (엄마)', avatar: '👩', color: '#E74C3C', role: '감사' },
+            { id: 'jin', name: '강지인 (진)', avatar: '👧', color: '#9B59B6', role: '팀원' },
+            { id: 'sean', name: '강시현 (션)', avatar: '🧒', color: '#F39C12', role: '팀원' },
+            { id: 'liam', name: '강리암 (럄)', avatar: '👦', color: '#1ABC9C', role: '팀원' },
+          ].map((member) => (
+            <Link key={member.id} href={`/profile/${member.id}`}>
+              <Card className="border-2 hover:shadow-lg transition-all cursor-pointer hover:scale-105">
+                <CardContent className="pt-6 text-center">
+                  <div 
+                    className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl"
+                    style={{ backgroundColor: `${member.color}20`, border: `3px solid ${member.color}` }}
+                  >
+                    {member.avatar}
+                  </div>
+                  <h3 className="font-bold text-lg mb-1">{member.name}</h3>
+                  <Badge variant="outline">{member.role}</Badge>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </section>
 
