@@ -120,17 +120,22 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {[
-            { id: 'dad', name: '강혁 (아빠)', avatar: '👨', color: '#3498DB', role: '감사' },
-            { id: 'mom', name: '하정현 (엄마)', avatar: '👩', color: '#E74C3C', role: '감사' },
-            { id: 'jin', name: '강지인 (진)', avatar: '👧', color: '#9B59B6', role: '팀원' },
-            { id: 'sean', name: '강시현 (션)', avatar: '🧒', color: '#F39C12', role: '팀원' },
-            { id: 'liam', name: '강리암 (럄)', avatar: '👦', color: '#1ABC9C', role: '팀원' },
+            { id: 'dad', name: '아빠', avatar: '👨', color: '#3498DB', role: '감사', isManager: false },
+            { id: 'mom', name: '엄마', avatar: '👩', color: '#E74C3C', role: '감사', isManager: false },
+            { id: 'jin', name: '진', avatar: '👧', color: '#9B59B6', role: '팀원', isManager: true },
+            { id: 'sean', name: '션', avatar: '🧒', color: '#F39C12', role: '팀원', isManager: false },
+            { id: 'liam', name: '럄', avatar: '👦', color: '#1ABC9C', role: '팀원', isManager: false },
           ].map((member) => (
             <Link key={member.id} href={`/profile/${member.id}`}>
-              <Card className="border-2 hover:shadow-lg transition-all cursor-pointer hover:scale-105">
+              <Card className="border-2 hover:shadow-lg transition-all cursor-pointer hover:scale-105 relative">
                 <CardContent className="pt-6 text-center">
+                  {member.isManager && (
+                    <div className="absolute -top-3 -left-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 animate-pulse z-10">
+                      💼 매니저
+                    </div>
+                  )}
                   <div 
-                    className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl"
+                    className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl relative"
                     style={{ backgroundColor: `${member.color}20`, border: `3px solid ${member.color}` }}
                   >
                     {member.avatar}

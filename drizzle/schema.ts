@@ -100,3 +100,15 @@ export const passwords = mysqlTable("passwords", {
 
 export type Password = typeof passwords.$inferSelect;
 export type InsertPassword = typeof passwords.$inferInsert;
+
+// Monthly Manager Assignment Table
+export const monthlyManagers = mysqlTable("monthly_managers", {
+  id: int("id").autoincrement().primaryKey(),
+  month: varchar("month", { length: 7 }).notNull().unique(), // YYYY-MM
+  managerId: varchar("manager_id", { length: 20 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MonthlyManager = typeof monthlyManagers.$inferSelect;
+export type InsertMonthlyManager = typeof monthlyManagers.$inferInsert;

@@ -134,7 +134,7 @@ export const appRouter = router({
   }),
 
   // Manager Activities Router
-  manager: router({
+  managerActivity: router({
     create: publicProcedure
       .input(z.object({
         month: z.string(),
@@ -224,6 +224,31 @@ export const appRouter = router({
         const result = await generateAndSendPasswords(month);
         return result;
       }),
+  }),
+
+  // Monthly Manager Assignment Router
+  monthlyManager: router({
+    set: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerId: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.setMonthlyManager(input.month, input.managerId);
+        return { success: true };
+      }),
+    
+    get: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        const manager = await db.getMonthlyManager(input.month);
+        return manager;
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const managers = await db.getAllMonthlyManagers();
+      return managers;
+    }),
   }),
 
   // Comments Router

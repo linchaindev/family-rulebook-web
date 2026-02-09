@@ -14,6 +14,106 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { FAMILY_MEMBERS } from "@/types/family";
 
+// 월별 매니저 지정 컴포넌트
+function MonthlyManagerTab() {
+  const [newMonth, setNewMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
+  const [newManagerId, setNewManagerId] = useState('');
+  
+  const { data: monthlyManagers = [], refetch } = trpc.monthlyManager.getAll.useQuery();
+  const setManagerMutation = trpc.monthlyManager.set.useMutation({
+    onSuccess: () => {
+      toast.success('매니저가 지정되었습니다!');
+      refetch();
+      setNewMonth('');
+      setNewManagerId('');
+    },
+    onError: () => {
+      toast.error('매니저 지정에 실패했습니다.');
+    },
+  });
+  
+  const handleSetManager = () => {
+    if (!newMonth || !newManagerId) {
+      toast.error('월과 매니저를 모두 선택해주세요.');
+      return;
+    }
+    setManagerMutation.mutate({ month: newMonth, managerId: newManagerId });
+  };
+  
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>월별 매니저 지정</CardTitle>
+        <CardDescription>각 월의 패밀리 매니저를 지정합니다.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* 새 매니저 지정 */}
+        <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+          <h3 className="font-semibold">새 매니저 지정</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label>대상 월</Label>
+              <Input
+                type="month"
+                value={newMonth}
+                onChange={(e) => setNewMonth(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+            <div>
+              <Label>매니저 선택</Label>
+              <Select value={newManagerId} onValueChange={setNewManagerId}>
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="매니저 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  {FAMILY_MEMBERS.filter(m => m.role === 'student').map(member => (
+                    <SelectItem key={member.id} value={member.id}>
+                      {member.avatar} {member.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-end">
+              <Button onClick={handleSetManager} className="w-full" disabled={setManagerMutation.isPending}>
+                <Plus className="w-4 h-4 mr-2" />
+                {setManagerMutation.isPending ? '지정 중...' : '매니저 지정'}
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* 기존 매니저 목록 */}
+        <div className="space-y-2">
+          <h3 className="font-semibold">지정된 매니저 목록 ({monthlyManagers.length}개)</h3>
+          {monthlyManagers.length === 0 ? (
+            <p className="text-sm text-muted-foreground">아직 지정된 매니저가 없습니다.</p>
+          ) : (
+            <div className="space-y-2">
+              {monthlyManagers.map((manager) => {
+                const member = FAMILY_MEMBERS.find(m => m.id === manager.managerId);
+                return (
+                  <div key={manager.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Badge variant="outline">{manager.month}</Badge>
+                      <span className="text-2xl">{member?.avatar}</span>
+                      <span className="font-medium">{member?.name}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function AuditorAdmin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -29,7 +129,7 @@ export default function AuditorAdmin() {
 
   const { data: ddcRecords = [], refetch: refetchDDC } = trpc.ddc.getAll.useQuery(undefined, { enabled: isAuthenticated });
   const { data: rcrRecords = [], refetch: refetchRCR } = trpc.rcr.getAll.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: managerActivities = [], refetch: refetchManager } = trpc.manager.getAll.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: managerActivities = [], refetch: refetchManager } = trpc.managerActivity.getAll.useQuery(undefined, { enabled: isAuthenticated });
   const { data: comments = [], refetch: refetchComments } = trpc.comments.getAll.useQuery(undefined, { enabled: isAuthenticated });
 
   const deleteDDCMutation = trpc.ddc.delete.useMutation({
@@ -140,10 +240,11 @@ export default function AuditorAdmin() {
         </div>
 
         <Tabs defaultValue="ddc" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="ddc">DDC 기록</TabsTrigger>
-            <TabsTrigger value="rcr">RCR 기록</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 text-xs md:text-sm">
+            <TabsTrigger value="ddc">DDC</TabsTrigger>
+            <TabsTrigger value="rcr">RCR</TabsTrigger>
             <TabsTrigger value="manager">매니저 활동</TabsTrigger>
+            <TabsTrigger value="monthlyManager">월별 매니저</TabsTrigger>
             <TabsTrigger value="comments">댓글</TabsTrigger>
           </TabsList>
 
@@ -249,6 +350,10 @@ export default function AuditorAdmin() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="monthlyManager" className="space-y-4">
+            <MonthlyManagerTab />
           </TabsContent>
 
           <TabsContent value="comments" className="space-y-4">

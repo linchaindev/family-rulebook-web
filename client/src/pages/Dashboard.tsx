@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import { FAMILY_MEMBERS } from "@/types/family";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { trpc } from "@/lib/trpc";
+import { formatMinutesToHoursAndMinutes } from "@/lib/timeUtils";
 
 export default function Dashboard() {
   const { data: ddcRecords = [] } = trpc.ddc.getAll.useQuery();
@@ -20,13 +21,13 @@ export default function Dashboard() {
     monthlyStats[month][record.memberId] += record.screenTime;
   });
   
-  // 차트 데이터 변환
+  // 차트 데이터 변환 (분 -> 시간 단위)
   const chartData = Object.entries(monthlyStats).map(([month, members]) => ({
     month: month.substring(5, 7) + '월',
     ...Object.fromEntries(
       Object.entries(members).map(([memberId, time]) => {
         const member = FAMILY_MEMBERS.find(m => m.id === memberId);
-        return [member?.name.split(' ')[0] || memberId, Math.round(time / 60)]; // 시간 단위로 변환
+        return [member?.name || memberId, Math.round(time / 60 * 10) / 10]; // 시간 단위 (소수점 1자리)
       })
     ),
   }));

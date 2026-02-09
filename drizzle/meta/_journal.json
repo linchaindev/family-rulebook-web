@@ -22,6 +22,13 @@
       "when": 1770601566903,
       "tag": "0002_mean_sphinx",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1770619084199,
+      "tag": "0003_fixed_enchantress",
+      "breakpoints": true
     }
   ]
 }

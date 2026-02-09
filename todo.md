@@ -42,3 +42,13 @@
 - [x] Add ranking badges to profiles (1st, 2nd place)
 - [x] Add star badge system for 1st place winners
 - [x] Implement bronze/silver star progression (6 wins = 1 bronze + 1 silver)
+
+## Latest Requirements (Current Phase)
+- [x] Add monthly password auto-generation scheduler (every 1st at midnight)
+- [x] Send password email to haai.tools@gmail.com automatically
+- [x] Change DDC input to minutes, display as hours+minutes
+- [x] Add monthly manager assignment UI in auditor admin page
+- [x] Add manager badge to family members on homepage
+- [ ] Add 1st/2nd place badges to family members on homepage (will be dynamic based on real data)
+- [x] Change real names to nicknames (아빠, 엄마, 진, 션, 럄) for privacy
+- [x] Set 강지인 as February 2026 manager

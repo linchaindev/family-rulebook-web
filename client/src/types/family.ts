@@ -45,9 +45,9 @@ export interface Comment {
 }
 
 export const FAMILY_MEMBERS: FamilyMember[] = [
-  { id: 'dad', name: '강혁 (아빠)', role: 'parent', avatar: '👨', color: '#3498DB' },
-  { id: 'mom', name: '하정현 (엄마)', role: 'parent', avatar: '👩', color: '#E74C3C' },
-  { id: 'jin', name: '강지인 (진)', role: 'student', avatar: '👧', color: '#9B59B6' },
-  { id: 'sean', name: '강시현 (션)', role: 'student', avatar: '🧒', color: '#F39C12' },
-  { id: 'liam', name: '강리암 (럄)', role: 'student', avatar: '👦', color: '#1ABC9C' },
+  { id: 'dad', name: '아빠', role: 'parent', avatar: '👨', color: '#3498DB' },
+  { id: 'mom', name: '엄마', role: 'parent', avatar: '👩', color: '#E74C3C' },
+  { id: 'jin', name: '진', role: 'student', avatar: '👧', color: '#9B59B6' },
+  { id: 'sean', name: '션', role: 'student', avatar: '🧒', color: '#F39C12' },
+  { id: 'liam', name: '럄', role: 'student', avatar: '👦', color: '#1ABC9C' },
 ];

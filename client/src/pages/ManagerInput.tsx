@@ -172,9 +172,9 @@ export default function ManagerInput() {
 
         <Card className="border-2">
           <CardHeader>
-            <CardTitle>월간 스크린타임 입력 (단위: 분)</CardTitle>
+            <CardTitle>월간 스크린타임 입력</CardTitle>
             <CardDescription>
-              각 가족 구성원의 일별 스크린타임을 입력하세요. 0 또는 빈 칸은 저장되지 않습니다.
+              각 가족 구성원의 일별 스크린타임을 <strong>분 단위</strong>로 입력하세요. (예: 90분, 120분)
             </CardDescription>
           </CardHeader>
           <CardContent>

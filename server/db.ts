@@ -12,7 +12,9 @@ import {
   familyComments,
   InsertFamilyComment,
   passwords,
-  InsertPassword
+  InsertPassword,
+  monthlyManagers,
+  InsertMonthlyManager
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -360,4 +362,29 @@ export async function deleteRCRRecord(id: number) {
     .where(eq(rcrRecords.id, id));
   
   return result;
+}
+
+// Monthly Manager Functions
+export async function setMonthlyManager(month: string, managerId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(monthlyManagers).values({ month, managerId }).onDuplicateKeyUpdate({
+    set: { managerId, updatedAt: new Date() },
+  });
+}
+
+export async function getMonthlyManager(month: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(monthlyManagers).where(eq(monthlyManagers.month, month)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getAllMonthlyManagers() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(monthlyManagers).orderBy(desc(monthlyManagers.month));
 }
