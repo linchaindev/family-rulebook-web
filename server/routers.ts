@@ -1,0 +1,175 @@
+import { COOKIE_NAME } from "@shared/const";
+import { getSessionCookieOptions } from "./_core/cookies";
+import { systemRouter } from "./_core/systemRouter";
+import { publicProcedure, router } from "./_core/trpc";
+import { z } from "zod";
+import * as db from "./db";
+
+export const appRouter = router({
+    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
+  system: systemRouter,
+  auth: router({
+    me: publicProcedure.query(opts => opts.ctx.user),
+    logout: publicProcedure.mutation(({ ctx }) => {
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      return {
+        success: true,
+      } as const;
+    }),
+  }),
+
+  // DDC Records Router
+  ddc: router({
+    create: publicProcedure
+      .input(z.object({
+        date: z.string(),
+        memberId: z.string(),
+        screenTime: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createDDCRecord(input);
+        return { success: true };
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const records = await db.getAllDDCRecords();
+      return records;
+    }),
+    
+    getByMember: publicProcedure
+      .input(z.object({ memberId: z.string() }))
+      .query(async ({ input }) => {
+        const records = await db.getDDCRecordsByMember(input.memberId);
+        return records;
+      }),
+  }),
+
+  // RCR Records Router
+  rcr: router({
+    create: publicProcedure
+      .input(z.object({
+        date: z.string(),
+        memberId: z.string(),
+        level: z.enum(["minor", "moderate", "major", "maximum"]),
+        reason: z.string(),
+        appliedBy: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createRCRRecord(input);
+        return { success: true };
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const records = await db.getAllRCRRecords();
+      return records;
+    }),
+    
+    getByMember: publicProcedure
+      .input(z.object({ memberId: z.string() }))
+      .query(async ({ input }) => {
+        const records = await db.getRCRRecordsByMember(input.memberId);
+        return records;
+      }),
+  }),
+
+  // Manager Activities Router
+  manager: router({
+    create: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerId: z.string(),
+        wakeupCount: z.number().optional(),
+        academyCount: z.number().optional(),
+        homeworkCount: z.number().optional(),
+        sleepCount: z.number().optional(),
+        settlementCount: z.number().optional(),
+        evaluationCount: z.number().optional(),
+        oVotes: z.number().optional(),
+        reward: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createManagerActivity(input);
+        return { success: true };
+      }),
+    
+    getByMonth: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerId: z.string(),
+      }))
+      .query(async ({ input }) => {
+        const activity = await db.getManagerActivityByMonth(input.month, input.managerId);
+        return activity;
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const activities = await db.getAllManagerActivities();
+      return activities;
+    }),
+    
+    getByManager: publicProcedure
+      .input(z.object({ managerId: z.string() }))
+      .query(async ({ input }) => {
+        const activities = await db.getManagerActivitiesByManager(input.managerId);
+        return activities;
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerId: z.string(),
+        updates: z.object({
+          wakeupCount: z.number().optional(),
+          academyCount: z.number().optional(),
+          homeworkCount: z.number().optional(),
+          sleepCount: z.number().optional(),
+          settlementCount: z.number().optional(),
+          evaluationCount: z.number().optional(),
+          oVotes: z.number().optional(),
+          reward: z.number().optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateManagerActivity(input.month, input.managerId, input.updates);
+        return { success: true };
+      }),
+  }),
+
+  // Comments Router
+  comments: router({
+    create: publicProcedure
+      .input(z.object({
+        type: z.enum(["praise", "suggestion"]),
+        fromMember: z.string(),
+        toMember: z.string(),
+        content: z.string(),
+        date: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createComment(input);
+        return { success: true };
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const comments = await db.getAllComments();
+      return comments;
+    }),
+    
+    getByMember: publicProcedure
+      .input(z.object({ memberName: z.string() }))
+      .query(async ({ input }) => {
+        const comments = await db.getCommentsByMember(input.memberName);
+        return comments;
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteComment(input.id);
+        return { success: true };
+      }),
+  }),
+});
+
+export type AppRouter = typeof appRouter;

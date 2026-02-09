@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,12 +7,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Heart, Lightbulb, Send } from "lucide-react";
 import { Link } from "wouter";
 import { FAMILY_MEMBERS } from "@/types/family";
-import { sampleComments } from "@/lib/sampleData";
-import type { Comment } from "@/types/family";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function Comments() {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const { data: comments = [], refetch } = trpc.comments.getAll.useQuery();
+  const createCommentMutation = trpc.comments.create.useMutation({
+    onSuccess: () => {
+      toast.success('댓글이 등록되었습니다! 💕');
+      refetch();
+      setNewComment({ type: 'praise', from: '', to: '', content: '' });
+    },
+    onError: () => {
+      toast.error('댓글 등록에 실패했습니다.');
+    },
+  });
+  
   const [newComment, setNewComment] = useState({
     type: 'praise' as 'praise' | 'suggestion',
     from: '',
@@ -20,44 +30,19 @@ export default function Comments() {
     content: '',
   });
 
-  useEffect(() => {
-    // 로컬 스토리지에서 댓글 불러오기
-    const stored = localStorage.getItem('familyComments');
-    if (stored) {
-      setComments(JSON.parse(stored));
-    } else {
-      setComments(sampleComments);
-      localStorage.setItem('familyComments', JSON.stringify(sampleComments));
-    }
-  }, []);
-
   const handleSubmit = () => {
     if (!newComment.from || !newComment.to || !newComment.content.trim()) {
       toast.error('모든 항목을 입력해주세요!');
       return;
     }
 
-    const comment: Comment = {
-      id: Date.now().toString(),
+    createCommentMutation.mutate({
       type: newComment.type,
-      from: newComment.from,
-      to: newComment.to,
+      fromMember: newComment.from,
+      toMember: newComment.to,
       content: newComment.content,
       date: new Date().toISOString().split('T')[0],
-    };
-
-    const updatedComments = [comment, ...comments];
-    setComments(updatedComments);
-    localStorage.setItem('familyComments', JSON.stringify(updatedComments));
-
-    setNewComment({
-      type: 'praise',
-      from: '',
-      to: '',
-      content: '',
     });
-
-    toast.success('댓글이 등록되었습니다! 💕');
   };
 
   return (
@@ -180,11 +165,11 @@ export default function Comments() {
                       )}
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold">{comment.from}</span>
+                          <span className="font-semibold">{comment.fromMember}</span>
                           <span className="text-muted-foreground">→</span>
-                          <span className="font-semibold">{comment.to}</span>
+                          <span className="font-semibold">{comment.toMember}</span>
                         </div>
-                        <p className="text-sm text-muted-foreground">{comment.date}</p>
+                        <p className="text-sm text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString('ko-KR')}</p>
                       </div>
                     </div>
                     <Badge variant={comment.type === 'praise' ? 'default' : 'secondary'}>

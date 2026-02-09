@@ -1,0 +1,287 @@
+import { eq, and, desc } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/mysql2";
+import { 
+  InsertUser, 
+  users, 
+  ddcRecords, 
+  InsertDDCRecord,
+  rcrRecords,
+  InsertRCRRecord,
+  managerActivities,
+  InsertManagerActivity,
+  familyComments,
+  InsertFamilyComment
+} from "../drizzle/schema";
+import { ENV } from './_core/env';
+
+let _db: ReturnType<typeof drizzle> | null = null;
+
+// Lazily create the drizzle instance so local tooling can run without a DB.
+export async function getDb() {
+  if (!_db && process.env.DATABASE_URL) {
+    try {
+      _db = drizzle(process.env.DATABASE_URL);
+    } catch (error) {
+      console.warn("[Database] Failed to connect:", error);
+      _db = null;
+    }
+  }
+  return _db;
+}
+
+export async function upsertUser(user: InsertUser): Promise<void> {
+  if (!user.openId) {
+    throw new Error("User openId is required for upsert");
+  }
+
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot upsert user: database not available");
+    return;
+  }
+
+  try {
+    const values: InsertUser = {
+      openId: user.openId,
+    };
+    const updateSet: Record<string, unknown> = {};
+
+    const textFields = ["name", "email", "loginMethod"] as const;
+    type TextField = (typeof textFields)[number];
+
+    const assignNullable = (field: TextField) => {
+      const value = user[field];
+      if (value === undefined) return;
+      const normalized = value ?? null;
+      values[field] = normalized;
+      updateSet[field] = normalized;
+    };
+
+    textFields.forEach(assignNullable);
+
+    if (user.lastSignedIn !== undefined) {
+      values.lastSignedIn = user.lastSignedIn;
+      updateSet.lastSignedIn = user.lastSignedIn;
+    }
+    if (user.role !== undefined) {
+      values.role = user.role;
+      updateSet.role = user.role;
+    } else if (user.openId === ENV.ownerOpenId) {
+      values.role = 'admin';
+      updateSet.role = 'admin';
+    }
+
+    if (!values.lastSignedIn) {
+      values.lastSignedIn = new Date();
+    }
+
+    if (Object.keys(updateSet).length === 0) {
+      updateSet.lastSignedIn = new Date();
+    }
+
+    await db.insert(users).values(values).onDuplicateKeyUpdate({
+      set: updateSet,
+    });
+  } catch (error) {
+    console.error("[Database] Failed to upsert user:", error);
+    throw error;
+  }
+}
+
+export async function getUserByOpenId(openId: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+
+  return result.length > 0 ? result[0] : undefined;
+}
+
+// DDC Records
+export async function createDDCRecord(record: InsertDDCRecord) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(ddcRecords).values(record);
+  return result;
+}
+
+export async function getAllDDCRecords() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(ddcRecords)
+    .orderBy(desc(ddcRecords.date));
+  
+  return records;
+}
+
+export async function getDDCRecordsByMember(memberId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(ddcRecords)
+    .where(eq(ddcRecords.memberId, memberId))
+    .orderBy(desc(ddcRecords.date));
+  
+  return records;
+}
+
+// RCR Records
+export async function createRCRRecord(record: InsertRCRRecord) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(rcrRecords).values(record);
+  return result;
+}
+
+export async function getAllRCRRecords() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(rcrRecords)
+    .orderBy(desc(rcrRecords.date));
+  
+  return records;
+}
+
+export async function getRCRRecordsByMember(memberId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(rcrRecords)
+    .where(eq(rcrRecords.memberId, memberId))
+    .orderBy(desc(rcrRecords.date));
+  
+  return records;
+}
+
+// Manager Activities
+export async function createManagerActivity(activity: InsertManagerActivity) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(managerActivities).values(activity);
+  return result;
+}
+
+export async function getManagerActivityByMonth(month: string, managerId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(managerActivities)
+    .where(
+      and(
+        eq(managerActivities.month, month),
+        eq(managerActivities.managerId, managerId)
+      )
+    )
+    .limit(1);
+  
+  return records.length > 0 ? records[0] : null;
+}
+
+export async function getAllManagerActivities() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(managerActivities)
+    .orderBy(desc(managerActivities.month));
+  
+  return records;
+}
+
+export async function getManagerActivitiesByManager(managerId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const records = await db
+    .select()
+    .from(managerActivities)
+    .where(eq(managerActivities.managerId, managerId))
+    .orderBy(desc(managerActivities.month));
+  
+  return records;
+}
+
+export async function updateManagerActivity(
+  month: string,
+  managerId: string,
+  updates: Partial<InsertManagerActivity>
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .update(managerActivities)
+    .set(updates)
+    .where(
+      and(
+        eq(managerActivities.month, month),
+        eq(managerActivities.managerId, managerId)
+      )
+    );
+  
+  return result;
+}
+
+// Family Comments
+export async function createComment(comment: InsertFamilyComment) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(familyComments).values(comment);
+  return result;
+}
+
+export async function getAllComments() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const comments = await db
+    .select()
+    .from(familyComments)
+    .orderBy(desc(familyComments.createdAt));
+  
+  return comments;
+}
+
+export async function getCommentsByMember(memberName: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const comments = await db
+    .select()
+    .from(familyComments)
+    .where(eq(familyComments.toMember, memberName))
+    .orderBy(desc(familyComments.createdAt));
+  
+  return comments;
+}
+
+export async function deleteComment(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .delete(familyComments)
+    .where(eq(familyComments.id, id));
+  
+  return result;
+}
