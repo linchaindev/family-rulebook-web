@@ -59,10 +59,10 @@
 - [x] Add DDC record edit functionality in auditor admin page
 - [x] Add RCR record create/edit/delete functionality in auditor admin page
 - [x] Remove manager activity tab from auditor admin page
-- [ ] Add monthly evaluation voting tab in auditor admin page
-- [ ] Implement secret voting UI (4 family members vote one by one)
-- [ ] Show monthly manager and evaluation results in table
-- [ ] Show cumulative voting history
-- [ ] Create Family Games page
-- [ ] Implement ladder game with customizable penalties
-- [ ] Implement roulette game with customizable penalties/rewards
+- [x] Add monthly evaluation voting page
+- [x] Implement secret voting UI (4 family members vote one by one)
+- [x] Show monthly manager and evaluation results in table
+- [x] Show cumulative voting history
+- [x] Create Family Games page
+- [x] Implement ladder game with customizable penalties
+- [x] Implement roulette game with customizable penalties/rewards

@@ -251,6 +251,40 @@ export const appRouter = router({
     }),
   }),
 
+  // Manager Evaluation Router
+  managerEvaluation: router({
+    submitVote: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerId: z.string(),
+        voterId: z.string(),
+        vote: z.enum(["good", "bad"]),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createManagerEvaluation(input);
+        return { success: true };
+      }),
+    
+    getByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        const evaluations = await db.getManagerEvaluationsByMonth(input.month);
+        return evaluations;
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const evaluations = await db.getAllManagerEvaluations();
+      return evaluations;
+    }),
+    
+    deleteByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .mutation(async ({ input }) => {
+        await db.deleteManagerEvaluationsByMonth(input.month);
+        return { success: true };
+      }),
+  }),
+
   // Comments Router
   comments: router({
     create: publicProcedure

@@ -11,6 +11,8 @@ import Comments from "./pages/Comments";
 import NewbieGuide from "./pages/NewbieGuide";
 import ManagerInput from "./pages/ManagerInput";
 import AuditorAdmin from "./pages/AuditorAdmin";
+import ManagerEvaluation from "./pages/ManagerEvaluation";
+import FamilyGames from "./pages/FamilyGames";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -23,6 +25,8 @@ function Router() {
       <Route path={"/newbie-guide"} component={NewbieGuide} />
       <Route path={"/manager-input"} component={ManagerInput} />
       <Route path={"/auditor-admin"} component={AuditorAdmin} />
+      <Route path={"/manager-evaluation"} component={ManagerEvaluation} />
+      <Route path={"/family-games"} component={FamilyGames} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

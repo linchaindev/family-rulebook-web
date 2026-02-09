@@ -105,6 +105,16 @@ export default function Home() {
                 🔐 감사 관리
               </Button>
             </Link>
+            <Link href="/manager-evaluation">
+              <Button variant="ghost" size="sm">
+                🗳️ 월말 평가
+              </Button>
+            </Link>
+            <Link href="/family-games">
+              <Button variant="ghost" size="sm">
+                🎮 패밀리 게임
+              </Button>
+            </Link>
             <Button variant="ghost" size="sm" onClick={() => scrollToSection('glossary')}>
               📖 용어집
             </Button>

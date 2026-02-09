@@ -14,7 +14,9 @@ import {
   passwords,
   InsertPassword,
   monthlyManagers,
-  InsertMonthlyManager
+  InsertMonthlyManager,
+  managerEvaluations,
+  InsertManagerEvaluation
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -387,4 +389,33 @@ export async function getAllMonthlyManagers() {
   if (!db) return [];
   
   return await db.select().from(monthlyManagers).orderBy(desc(monthlyManagers.month));
+}
+
+// Manager Evaluation Functions
+export async function createManagerEvaluation(evaluation: InsertManagerEvaluation) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(managerEvaluations).values(evaluation);
+}
+
+export async function getManagerEvaluationsByMonth(month: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(managerEvaluations).where(eq(managerEvaluations.month, month));
+}
+
+export async function getAllManagerEvaluations() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(managerEvaluations);
+}
+
+export async function deleteManagerEvaluationsByMonth(month: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(managerEvaluations).where(eq(managerEvaluations.month, month));
 }
