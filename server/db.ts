@@ -10,7 +10,9 @@ import {
   managerActivities,
   InsertManagerActivity,
   familyComments,
-  InsertFamilyComment
+  InsertFamilyComment,
+  passwords,
+  InsertPassword
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -282,6 +284,80 @@ export async function deleteComment(id: number) {
   const result = await db
     .delete(familyComments)
     .where(eq(familyComments.id, id));
+  
+  return result;
+}
+
+// Password Management
+export async function createPassword(data: InsertPassword) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(passwords).values(data);
+  return result;
+}
+
+export async function getPasswordByMonth(month: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(passwords).where(eq(passwords.month, month)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function verifyManagerPassword(month: string, password: string): Promise<boolean> {
+  const record = await getPasswordByMonth(month);
+  return record?.managerPassword === password;
+}
+
+export async function verifyAuditorPassword(month: string, password: string): Promise<boolean> {
+  const record = await getPasswordByMonth(month);
+  return record?.auditorPassword === password;
+}
+
+// Update and Delete functions for Auditor Admin
+export async function updateDDCRecord(id: number, updates: Partial<InsertDDCRecord>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .update(ddcRecords)
+    .set(updates)
+    .where(eq(ddcRecords.id, id));
+  
+  return result;
+}
+
+export async function deleteDDCRecord(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .delete(ddcRecords)
+    .where(eq(ddcRecords.id, id));
+  
+  return result;
+}
+
+export async function updateRCRRecord(id: number, updates: Partial<InsertRCRRecord>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .update(rcrRecords)
+    .set(updates)
+    .where(eq(rcrRecords.id, id));
+  
+  return result;
+}
+
+export async function deleteRCRRecord(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .delete(rcrRecords)
+    .where(eq(rcrRecords.id, id));
   
   return result;
 }

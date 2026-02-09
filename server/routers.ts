@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { generateAndSendPasswords, getCurrentMonth } from "./passwordUtils";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -32,6 +33,21 @@ export const appRouter = router({
         return { success: true };
       }),
     
+    createBatch: publicProcedure
+      .input(z.object({
+        records: z.array(z.object({
+          date: z.string(),
+          memberId: z.string(),
+          screenTime: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        for (const record of input.records) {
+          await db.createDDCRecord(record);
+        }
+        return { success: true, count: input.records.length };
+      }),
+    
     getAll: publicProcedure.query(async () => {
       const records = await db.getAllDDCRecords();
       return records;
@@ -42,6 +58,27 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const records = await db.getDDCRecordsByMember(input.memberId);
         return records;
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        updates: z.object({
+          date: z.string().optional(),
+          memberId: z.string().optional(),
+          screenTime: z.number().optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateDDCRecord(input.id, input.updates);
+        return { success: true };
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteDDCRecord(input.id);
+        return { success: true };
       }),
   }),
 
@@ -70,6 +107,29 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const records = await db.getRCRRecordsByMember(input.memberId);
         return records;
+      }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        updates: z.object({
+          date: z.string().optional(),
+          memberId: z.string().optional(),
+          level: z.enum(["minor", "moderate", "major", "maximum"]).optional(),
+          reason: z.string().optional(),
+          appliedBy: z.string().optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateRCRRecord(input.id, input.updates);
+        return { success: true };
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteRCRRecord(input.id);
+        return { success: true };
       }),
   }),
 
@@ -133,6 +193,36 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await db.updateManagerActivity(input.month, input.managerId, input.updates);
         return { success: true };
+      }),
+  }),
+
+  // Password Router
+  password: router({  
+    verifyManager: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        password: z.string(),
+      }))
+      .query(async ({ input }) => {
+        const isValid = await db.verifyManagerPassword(input.month, input.password);
+        return { valid: isValid };
+      }),
+    
+    verifyAuditor: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        password: z.string(),
+      }))
+      .query(async ({ input }) => {
+        const isValid = await db.verifyAuditorPassword(input.month, input.password);
+        return { valid: isValid };
+      }),
+    
+    generateForCurrentMonth: publicProcedure
+      .mutation(async () => {
+        const month = getCurrentMonth();
+        const result = await generateAndSendPasswords(month);
+        return result;
       }),
   }),
 

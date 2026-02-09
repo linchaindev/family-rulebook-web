@@ -9,6 +9,8 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import Comments from "./pages/Comments";
 import NewbieGuide from "./pages/NewbieGuide";
+import ManagerInput from "./pages/ManagerInput";
+import AuditorAdmin from "./pages/AuditorAdmin";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -19,6 +21,8 @@ function Router() {
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/comments"} component={Comments} />
       <Route path={"/newbie-guide"} component={NewbieGuide} />
+      <Route path={"/manager-input"} component={ManagerInput} />
+      <Route path={"/auditor-admin"} component={AuditorAdmin} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

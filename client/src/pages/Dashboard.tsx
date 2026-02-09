@@ -4,12 +4,21 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, TrendingDown, AlertTriangle, BarChart3 } from "lucide-react";
 import { Link } from "wouter";
 import { FAMILY_MEMBERS } from "@/types/family";
-import { sampleDDCData, sampleRCRRecords, calculateMonthlyDDCStats } from "@/lib/sampleData";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { trpc } from "@/lib/trpc";
 
 export default function Dashboard() {
+  const { data: ddcRecords = [] } = trpc.ddc.getAll.useQuery();
+  const { data: rcrRecords = [] } = trpc.rcr.getAll.useQuery();
+  
   // 월별 DDC 통계 계산
-  const monthlyStats = calculateMonthlyDDCStats(sampleDDCData);
+  const monthlyStats: Record<string, Record<string, number>> = {};
+  ddcRecords.forEach(record => {
+    const month = record.date.substring(0, 7); // YYYY-MM
+    if (!monthlyStats[month]) monthlyStats[month] = {};
+    if (!monthlyStats[month][record.memberId]) monthlyStats[month][record.memberId] = 0;
+    monthlyStats[month][record.memberId] += record.screenTime;
+  });
   
   // 차트 데이터 변환
   const chartData = Object.entries(monthlyStats).map(([month, members]) => ({
@@ -24,11 +33,18 @@ export default function Dashboard() {
 
   // RCR 레벨별 통계
   const rcrStats = {
-    minor: sampleRCRRecords.filter(r => r.level === 'minor').length,
-    moderate: sampleRCRRecords.filter(r => r.level === 'moderate').length,
-    major: sampleRCRRecords.filter(r => r.level === 'major').length,
-    maximum: sampleRCRRecords.filter(r => r.level === 'maximum').length,
+    minor: rcrRecords.filter(r => r.level === 'minor').length,
+    moderate: rcrRecords.filter(r => r.level === 'moderate').length,
+    major: rcrRecords.filter(r => r.level === 'major').length,
+    maximum: rcrRecords.filter(r => r.level === 'maximum').length,
   };
+  
+  // 평균 스크린타임 계산 (2월)
+  const currentMonth = '2026-02';
+  const currentMonthData = ddcRecords.filter(r => r.date.startsWith(currentMonth));
+  const avgScreenTime = currentMonthData.length > 0
+    ? Math.round(currentMonthData.reduce((sum, r) => sum + r.screenTime, 0) / currentMonthData.length / 60 * 10) / 10
+    : 0;
 
   const rcrChartData = [
     { level: '경미', count: rcrStats.minor, color: '#FFB6C1' },
@@ -65,8 +81,8 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-primary">4.2시간</div>
-              <p className="text-sm text-muted-foreground mt-2">전월 대비 -12% ↓</p>
+              <div className="text-4xl font-bold text-primary">{avgScreenTime}시간</div>
+              <p className="text-sm text-muted-foreground mt-2">실시간 데이터 기반</p>
             </CardContent>
           </Card>
 
@@ -81,7 +97,7 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-destructive">{sampleRCRRecords.length}건</div>
+              <div className="text-4xl font-bold text-destructive">{rcrRecords.length}건</div>
               <p className="text-sm text-muted-foreground mt-2">경미 {rcrStats.minor} / 중등 {rcrStats.moderate} / 중대 {rcrStats.major}</p>
             </CardContent>
           </Card>
@@ -148,7 +164,8 @@ export default function Dashboard() {
 
             <div className="mt-6 space-y-3">
               <h3 className="font-semibold text-lg mb-4">최근 RCR 적용 내역</h3>
-              {sampleRCRRecords.map((record, index) => {
+              {(() => {
+                return rcrRecords.slice(0, 5).map((record, index) => {
                 const member = FAMILY_MEMBERS.find(m => m.id === record.memberId);
                 const levelColors = {
                   minor: 'bg-red-50 border-red-200',
@@ -179,7 +196,8 @@ export default function Dashboard() {
                     <p className="text-sm text-muted-foreground">적용자: {record.appliedBy}</p>
                   </div>
                 );
-              })}
+                });
+              })()}
             </div>
           </CardContent>
         </Card>
@@ -192,12 +210,20 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {FAMILY_MEMBERS.map((member, index) => {
-                const totalTime = sampleDDCData
-                  .filter(d => d.memberId === member.id && d.date.startsWith('2026-02'))
-                  .reduce((sum, d) => sum + d.screenTime, 0);
-                const hours = Math.floor(totalTime / 60);
-                const minutes = totalTime % 60;
+              {(() => {
+                // 멤버별 2월 총 스크린타임 계산
+                const memberTimes = FAMILY_MEMBERS.map(member => {
+                  const totalTime = ddcRecords
+                    .filter(d => d.memberId === member.id && d.date.startsWith('2026-02'))
+                    .reduce((sum, d) => sum + d.screenTime, 0);
+                  return { ...member, totalTime };
+                });
+                // 스크린타임 오름차순 정렬 (적을수록 1등)
+                memberTimes.sort((a, b) => a.totalTime - b.totalTime);
+                
+                return memberTimes.map((member, index) => {
+                  const hours = Math.floor(member.totalTime / 60);
+                  const minutes = member.totalTime % 60;
                 
                 return (
                   <Link key={member.id} href={`/profile/${member.id}`}>
@@ -225,7 +251,8 @@ export default function Dashboard() {
                     </div>
                   </Link>
                 );
-              })}
+                });
+              })()}
             </div>
           </CardContent>
         </Card>
