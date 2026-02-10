@@ -36,6 +36,13 @@
       "when": 1770640391688,
       "tag": "0004_careful_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1770735096185,
+      "tag": "0005_smart_gauntlet",
+      "breakpoints": true
     }
   ]
 }

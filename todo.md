@@ -76,3 +76,13 @@
 - [x] Write tests for comments functionality
 - [x] Run all tests and verify core functionality
 - [x] Fix critical test failures (9/22 tests passing, core features verified)
+
+## Manager DDC Input Improvements & Activity Log (Current Phase)
+- [x] Show existing DDC data in manager input screen
+- [x] Allow manager to edit existing DDC records
+- [x] Fix issue where DDC input shows 0 after saving
+- [x] Add manager activity log feature in DDC input screen
+- [x] Manager can record/edit/delete activity logs (date, member, comment)
+- [ ] Activity logs visible in member profiles
+- [ ] RCR records visible in member profiles
+- [ ] Activity logs and RCR info displayed in dashboard

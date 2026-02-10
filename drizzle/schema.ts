@@ -73,6 +73,21 @@ export const managerActivities = mysqlTable("manager_activities", {
 export type ManagerActivity = typeof managerActivities.$inferSelect;
 export type InsertManagerActivity = typeof managerActivities.$inferInsert;
 
+// Manager Activity Logs Table (일별 활동 일지)
+export const managerActivityLogs = mysqlTable("manager_activity_logs", {
+  id: int("id").autoincrement().primaryKey(),
+  date: varchar("date", { length: 10 }).notNull(), // YYYY-MM-DD
+  memberId: varchar("member_id", { length: 20 }).notNull(),
+  activityType: mysqlEnum("activity_type", ["tardiness", "absence", "homework_incomplete", "rule_violation", "other"]).notNull(),
+  comment: text("comment").notNull(),
+  recordedBy: varchar("recorded_by", { length: 20 }).notNull(), // 기록한 매니저 ID
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ManagerActivityLog = typeof managerActivityLogs.$inferSelect;
+export type InsertManagerActivityLog = typeof managerActivityLogs.$inferInsert;
+
 // Comments Table
 export const familyComments = mysqlTable("family_comments", {
   id: int("id").autoincrement().primaryKey(),

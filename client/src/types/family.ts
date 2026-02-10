@@ -1,8 +1,10 @@
 export interface FamilyMember {
   id: string;
   name: string;
+  nickname: string;
   role: 'parent' | 'student';
   avatar: string;
+  icon: string;
   color: string;
 }
 
@@ -45,9 +47,9 @@ export interface Comment {
 }
 
 export const FAMILY_MEMBERS: FamilyMember[] = [
-  { id: 'dad', name: '아빠', role: 'parent', avatar: '👨', color: '#3498DB' },
-  { id: 'mom', name: '엄마', role: 'parent', avatar: '👩', color: '#E74C3C' },
-  { id: 'jin', name: '진', role: 'student', avatar: '👧', color: '#9B59B6' },
-  { id: 'sean', name: '션', role: 'student', avatar: '🧒', color: '#F39C12' },
-  { id: 'liam', name: '럄', role: 'student', avatar: '👦', color: '#1ABC9C' },
+  { id: 'dad', name: '아빠', nickname: '아빠', role: 'parent', avatar: '👨', icon: '👨', color: '#3498DB' },
+  { id: 'mom', name: '엄마', nickname: '엄마', role: 'parent', avatar: '👩', icon: '👩', color: '#E74C3C' },
+  { id: 'jin', name: '진', nickname: '진', role: 'student', avatar: '👧', icon: '👧', color: '#9B59B6' },
+  { id: 'sean', name: '션', nickname: '션', role: 'student', avatar: '🧒', icon: '🧒', color: '#F39C12' },
+  { id: 'liam', name: '럄', nickname: '럄', role: 'student', avatar: '👦', icon: '👦', color: '#1ABC9C' },
 ];

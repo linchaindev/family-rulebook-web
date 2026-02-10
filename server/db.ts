@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { 
   InsertUser, 
@@ -16,7 +16,9 @@ import {
   monthlyManagers,
   InsertMonthlyManager,
   managerEvaluations,
-  InsertManagerEvaluation
+  InsertManagerEvaluation,
+  managerActivityLogs,
+  InsertManagerActivityLog
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -136,6 +138,20 @@ export async function getDDCRecordsByMember(memberId: string) {
     .from(ddcRecords)
     .where(eq(ddcRecords.memberId, memberId))
     .orderBy(desc(ddcRecords.date));
+  
+  return records;
+}
+
+export async function getDDCRecordsByMonth(month: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // month format: YYYY-MM, date format: YYYY-MM-DD
+  const records = await db
+    .select()
+    .from(ddcRecords)
+    .where(sql`DATE_FORMAT(${ddcRecords.date}, '%Y-%m') = ${month}`)
+    .orderBy(ddcRecords.date);
   
   return records;
 }
@@ -418,4 +434,75 @@ export async function deleteManagerEvaluationsByMonth(month: string) {
   if (!db) throw new Error("Database not available");
   
   await db.delete(managerEvaluations).where(eq(managerEvaluations.month, month));
+}
+
+// Manager Activity Logs Functions
+export async function createManagerActivityLog(log: InsertManagerActivityLog) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(managerActivityLogs).values(log);
+  return result;
+}
+
+export async function getManagerActivityLogsByMonth(month: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // month format: YYYY-MM, date format: YYYY-MM-DD
+  const logs = await db
+    .select()
+    .from(managerActivityLogs)
+    .where(sql`DATE_FORMAT(${managerActivityLogs.date}, '%Y-%m') = ${month}`)
+    .orderBy(desc(managerActivityLogs.date));
+  
+  return logs;
+}
+
+export async function getManagerActivityLogsByMember(memberId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const logs = await db
+    .select()
+    .from(managerActivityLogs)
+    .where(eq(managerActivityLogs.memberId, memberId))
+    .orderBy(desc(managerActivityLogs.date));
+  
+  return logs;
+}
+
+export async function getAllManagerActivityLogs() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const logs = await db
+    .select()
+    .from(managerActivityLogs)
+    .orderBy(desc(managerActivityLogs.date));
+  
+  return logs;
+}
+
+export async function updateManagerActivityLog(id: number, updates: Partial<InsertManagerActivityLog>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .update(managerActivityLogs)
+    .set(updates)
+    .where(eq(managerActivityLogs.id, id));
+  
+  return result;
+}
+
+export async function deleteManagerActivityLog(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .delete(managerActivityLogs)
+    .where(eq(managerActivityLogs.id, id));
+  
+  return result;
 }

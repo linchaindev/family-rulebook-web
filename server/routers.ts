@@ -60,6 +60,13 @@ export const appRouter = router({
         return records;
       }),
     
+    getByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        const records = await db.getDDCRecordsByMonth(input.month);
+        return records;
+      }),
+    
     update: publicProcedure
       .input(z.object({
         id: z.number(),
@@ -281,6 +288,63 @@ export const appRouter = router({
       .input(z.object({ month: z.string() }))
       .mutation(async ({ input }) => {
         await db.deleteManagerEvaluationsByMonth(input.month);
+        return { success: true };
+      }),
+  }),
+
+  // Manager Activity Logs Router
+  managerActivityLog: router({
+    create: publicProcedure
+      .input(z.object({
+        date: z.string(),
+        memberId: z.string(),
+        activityType: z.enum(["tardiness", "absence", "homework_incomplete", "rule_violation", "other"]),
+        comment: z.string(),
+        recordedBy: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createManagerActivityLog(input);
+        return { success: true };
+      }),
+    
+    getByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        const logs = await db.getManagerActivityLogsByMonth(input.month);
+        return logs;
+      }),
+    
+    getByMember: publicProcedure
+      .input(z.object({ memberId: z.string() }))
+      .query(async ({ input }) => {
+        const logs = await db.getManagerActivityLogsByMember(input.memberId);
+        return logs;
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      const logs = await db.getAllManagerActivityLogs();
+      return logs;
+    }),
+    
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        updates: z.object({
+          date: z.string().optional(),
+          memberId: z.string().optional(),
+          activityType: z.enum(["tardiness", "absence", "homework_incomplete", "rule_violation", "other"]).optional(),
+          comment: z.string().optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateManagerActivityLog(input.id, input.updates);
+        return { success: true };
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteManagerActivityLog(input.id);
         return { success: true };
       }),
   }),
