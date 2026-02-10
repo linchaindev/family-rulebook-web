@@ -384,6 +384,90 @@ export const appRouter = router({
         const history = await db.getMemberAllowanceHistory(input.memberId);
         return history;
       }),
+    
+    autoSettle: publicProcedure
+      .input(z.object({ 
+        currentMonth: z.string(),
+        nextMonth: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { currentMonth, nextMonth } = input;
+        
+        // 1. 현재 월 DDC 데이터 가져오기
+        const ddcRecords = await db.getAllDDCRecords();
+        const currentMonthDDC = ddcRecords.filter(r => r.date.startsWith(currentMonth));
+        
+        // 2. 현재 월 RCR 데이터 가져오기
+        const rcrRecords = await db.getAllRCRRecords();
+        const currentMonthRCR = rcrRecords.filter(r => r.date.startsWith(currentMonth));
+        
+        // 3. 각 구성원별 DDC 순위 계산
+        const memberTotals = new Map<string, number>();
+        currentMonthDDC.forEach(record => {
+          const current = memberTotals.get(record.memberId) || 0;
+          memberTotals.set(record.memberId, current + record.screenTime);
+        });
+        
+        // 순위 정렬
+        const rankings = Array.from(memberTotals.entries())
+          .map(([memberId, total]) => ({ memberId, total }))
+          .sort((a, b) => a.total - b.total);
+        
+        // 4. 각 구성원별 상금/벌금 계산
+        const settlements = new Map<string, { bonus: number; penalty: number }>();
+        
+        // DDC 1등 상금 (1만원)
+        if (rankings.length > 0) {
+          const firstPlace = rankings[0].memberId;
+          settlements.set(firstPlace, { bonus: 1, penalty: 0 });
+        }
+        
+        // RCR 벌금 계산
+        currentMonthRCR.forEach(rcr => {
+          const current = settlements.get(rcr.memberId) || { bonus: 0, penalty: 0 };
+          let penaltyAmount = 0;
+          
+          switch (rcr.level) {
+            case 'minor':
+              penaltyAmount = 1; // 1만원
+              break;
+            case 'moderate':
+              penaltyAmount = 2; // 2만원
+              break;
+            case 'major':
+              penaltyAmount = 3; // 3만원
+              break;
+          }
+          
+          settlements.set(rcr.memberId, {
+            bonus: current.bonus,
+            penalty: current.penalty + penaltyAmount,
+          });
+        });
+        
+        // 5. 다음달 용돈에 반영
+        const currentAllowances = await db.getAllMonthlyAllowances(currentMonth);
+        
+        for (const allowance of currentAllowances) {
+          const settlement = settlements.get(allowance.memberId) || { bonus: 0, penalty: 0 };
+          
+          await db.upsertMonthlyAllowance({
+            month: nextMonth,
+            memberId: allowance.memberId,
+            baseAllowance: allowance.baseAllowance, // 기본 용돈 유지
+            bonus: settlement.bonus,
+            penalty: settlement.penalty,
+          });
+        }
+        
+        return { 
+          success: true, 
+          settlements: Array.from(settlements.entries()).map(([memberId, data]) => ({
+            memberId,
+            ...data,
+          })),
+        };
+      }),
   }),
 
   // Comments Router

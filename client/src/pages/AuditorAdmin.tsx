@@ -212,6 +212,15 @@ export default function AuditorAdmin() {
       toast.error('용돈 저장에 실패했습니다.');
     },
   });
+  
+  const autoSettlementMutation = trpc.allowance.autoSettle.useMutation({
+    onSuccess: (data) => {
+      toast.success(`월말 정산이 완료되었습니다! ${data.settlements.length}명의 용돈이 계산되었습니다.`);
+    },
+    onError: () => {
+      toast.error('자동 정산에 실패했습니다.');
+    },
+  });
 
   const deleteCommentMutation = trpc.comments.delete.useMutation({
     onSuccess: () => {
@@ -232,6 +241,21 @@ export default function AuditorAdmin() {
       });
     }
     toast.success('모든 용돈이 저장되었습니다!');
+  };
+  
+  const handleAutoSettlement = async () => {
+    // 현재 월과 다음달 계산
+    const currentDate = new Date(allowanceMonth + '-01');
+    const nextDate = new Date(currentDate);
+    nextDate.setMonth(nextDate.getMonth() + 1);
+    
+    const currentMonth = allowanceMonth;
+    const nextMonth = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`;
+    
+    await autoSettlementMutation.mutateAsync({
+      currentMonth,
+      nextMonth,
+    });
   };
 
   const handlePasswordSubmit = async () => {
@@ -748,9 +772,14 @@ export default function AuditorAdmin() {
                   })}
                 </div>
 
-                <Button onClick={handleSaveAllowances} disabled={saveAllowancesMutation.isPending}>
-                  모두 저장
-                </Button>
+                <div className="flex gap-4">
+                  <Button onClick={handleSaveAllowances} disabled={saveAllowancesMutation.isPending}>
+                    모두 저장
+                  </Button>
+                  <Button variant="outline" onClick={handleAutoSettlement} disabled={autoSettlementMutation.isPending}>
+                    월말 자동 정산
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

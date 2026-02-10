@@ -473,6 +473,46 @@ export default function Profile() {
           </Card>
         )}
 
+        {/* Allowance History */}
+        {member.role === 'student' && allowanceHistory.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Award className="w-8 h-8 text-amber-600" />
+                <CardTitle>용돈 변동 내역</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {allowanceHistory.map((record) => (
+                  <div key={record.id} className="p-4 border-2 rounded-lg hover:bg-accent/5 transition-colors">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-semibold">{record.month}</span>
+                      <span className="text-2xl font-bold text-amber-600">
+                        {record.finalAllowance}만원
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-muted-foreground mb-1">기본 용돈</p>
+                        <p className="font-semibold">{record.baseAllowance}만원</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-1">상금</p>
+                        <p className="font-semibold text-green-600">+{record.bonus}만원</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-1">벌금</p>
+                        <p className="font-semibold text-red-600">-{record.penalty}만원</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Recent Activity */}
         <Card>
           <CardHeader>

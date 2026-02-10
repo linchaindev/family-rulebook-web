@@ -115,3 +115,13 @@
 - [x] Show real DDC records, RCR records, activity logs
 - [x] Calculate and display accurate statistics (participation days, rewards, rankings)
 - [x] Test all profile pages for data accuracy
+
+## Allowance History & Auto Settlement (Current Phase)
+- [x] Add allowance history section to profile pages
+- [x] Show monthly allowance changes with details (base, bonus, penalty)
+- [x] Add auto settlement button in auditor admin page
+- [x] Calculate DDC prize (1st place bonus)
+- [x] Calculate RCR penalties
+- [x] Apply calculated amounts to next month's allowance
+- [x] Test settlement calculation logic
+- [x] Verify allowance history display
