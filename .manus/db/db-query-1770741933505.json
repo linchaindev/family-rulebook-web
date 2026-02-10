@@ -1,0 +1,25 @@
+{
+  "query": "SELECT * FROM manager_activities;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT * FROM manager_activities;",
+  "rows": [
+    {
+      "id": "2",
+      "month": "2026-02",
+      "manager_id": "jin",
+      "wakeup_count": "25",
+      "academy_count": "22",
+      "homework_count": "28",
+      "sleep_count": "24",
+      "settlement_count": "1",
+      "evaluation_count": "1",
+      "o_votes": "3",
+      "reward": "4",
+      "created_at": "2026-02-09 01:26:29",
+      "updated_at": "2026-02-09 01:26:29"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tmonth\tmanager_id\twakeup_count\tacademy_count\thomework_count\tsleep_count\tsettlement_count\tevaluation_count\to_votes\treward\tcreated_at\tupdated_at\n2\t2026-02\tjin\t25\t22\t28\t24\t1\t1\t3\t4\t2026-02-09 01:26:29\t2026-02-09 01:26:29\n",
+  "stderr": "",
+  "execution_time_ms": 1520
+}

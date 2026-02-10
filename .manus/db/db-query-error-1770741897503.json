@@ -1,0 +1,8 @@
+{
+  "query": "SELECT * FROM managerActivities;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT * FROM managerActivities;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table '7fpmmwr5t9ji4cdjvw8t5d.managerActivities' doesn't exist"
+  ]
+}

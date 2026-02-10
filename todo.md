@@ -125,3 +125,9 @@
 - [x] Apply calculated amounts to next month's allowance
 - [x] Test settlement calculation logic
 - [x] Verify allowance history display
+
+## Remove Fake Manager Activity Data (URGENT)
+- [x] Check database for fake manager activity records (진, 럄)
+- [x] Remove or hide fake manager activity data from profile pages
+- [x] Only show real manager activity data from database
+- [x] Verify all profile pages show correct data
