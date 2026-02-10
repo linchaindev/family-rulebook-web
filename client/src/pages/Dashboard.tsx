@@ -65,8 +65,8 @@ export default function Dashboard() {
         </Link>
 
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">가족 대시보드</h1>
-          <p className="text-muted-foreground">월별 DDC 통계와 RCR 적용 현황을 한눈에 확인하세요</p>
+          <h1 className="text-4xl font-bold mb-2">가족 전투 지휘부</h1>
+          <p className="text-muted-foreground">스크린 타임 전쟁의 실시간 전황과 RCR 제재 현황을 모니터링합니다</p>
         </div>
 
         {/* 요약 카드 */}
@@ -83,7 +83,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-primary">{avgScreenTime}시간</div>
-              <p className="text-sm text-muted-foreground mt-2">실시간 데이터 기반</p>
+              <p className="text-sm text-muted-foreground mt-2">라이브 데이터 스트리밍 중</p>
             </CardContent>
           </Card>
 

@@ -71,10 +71,10 @@ export default function Home() {
             2026 KH 패밀리 룰북
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-medium">
-            함께 성장하는 우리 가족의 약속
+            생존을 위한 가족 서바이벌 가이드
           </p>
           <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-            KH 패밀리가 함께 성장하고 건강한 생활습관을 만들기 위해 전원 합의하에 제정한 규칙입니다.
+            스크린 타임과의 전쟁, 숙제와의 사투, 그리고 가족 평화를 위한 공식 규칙집입니다.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Button size="lg" onClick={() => scrollToSection('core-principles')} className="text-lg">
@@ -87,7 +87,7 @@ export default function Home() {
             </Link>
             <Link href="/newbie-guide">
               <Button size="lg" variant="secondary" className="text-lg">
-                뉴비 가이드 🎓
+                초보자 튜토리얼 🎮
               </Button>
             </Link>
           </div>
@@ -128,7 +128,7 @@ export default function Home() {
       <section className="container py-16 bg-muted/30">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">가족 구성원</h2>
-          <p className="text-muted-foreground">프로필을 클릭하면 개인별 DDC 순위와 매니저 활동을 확인할 수 있어요</p>
+          <p className="text-muted-foreground">클릭하면 각자의 전투력과 전적을 확인할 수 있습니다</p>
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {FAMILY_MEMBERS.map((member) => {

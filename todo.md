@@ -97,3 +97,11 @@
 - [x] Check homepage for data consistency
 - [x] Check dashboard for data consistency
 - [x] Test all data flows end-to-end
+
+## Tone & Copy Improvement (Current Phase)
+- [x] Fix remaining fake data in profile pages (럄, 진) - 데이터는 실제 DB에 있음
+- [x] Replace "함께 성장하는 우리 가족의 약속" with witty B-grade tone
+- [x] Replace "뉴비 가이드" with gaming-inspired clever phrase
+- [x] Update all cheesy/childish phrases to humorous, witty, sophisticated B-grade tone
+- [x] Review all pages for tone consistency
+- [x] Make content engaging for children (not boring)

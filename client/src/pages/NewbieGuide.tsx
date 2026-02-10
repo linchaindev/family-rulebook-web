@@ -18,11 +18,11 @@ export default function NewbieGuide() {
         {/* 헤더 */}
         <div className="text-center mb-12">
           <Badge className="mb-4 text-base" variant="secondary">
-            🎓 중1 럄이를 위한 특별 가이드
+            🎮 직1 럄이를 위한 특별 가이드
           </Badge>
-          <h1 className="text-5xl font-bold mb-4">뉴비 가이드</h1>
+          <h1 className="text-5xl font-bold mb-4">초보자 튜토리얼</h1>
           <p className="text-xl text-muted-foreground">
-            왜 우리 가족에게 룰북이 필요할까? 쉽게 알아보자!
+            왜 우리 가족에게 룰북이 필요할까? 게임처럼 쉽게 설명해줌게!
           </p>
         </div>
 
@@ -33,12 +33,12 @@ export default function NewbieGuide() {
               <div className="text-6xl mb-4">👋</div>
               <h2 className="text-2xl font-bold">안녕, 럄아!</h2>
               <p className="text-lg leading-relaxed">
-                중학생이 되면서 많은 게 달라졌지? 학원도 늘어나고, 숙제도 많아지고, 
-                친구들이랑 놀고 싶은 것도 많아졌을 거야. 그런데 가족들은 자꾸 
-                "공부해라", "핸드폰 그만 봐라" 이런 말만 하니까 답답하지?
+                중학생이 되면서 갑자기 난이도가 하드모드로 바뀔지? 학원 몸샷, 숙제 보스, 
+                친구들과의 레이드... 그런데 부모님은 자꾸 "공부해라", "핸드폰 그만 봐라" 
+                이런 난이도 높은 퀄스트만 주시잖아?
               </p>
               <p className="text-lg leading-relaxed font-semibold text-primary">
-                그래서 우리 가족은 <strong>"룰북"</strong>을 만들었어!
+                그래서 우리 가족은 <strong>"공식 룰북"</strong>을 제작했어! (게임 규칙서 같은 거지)
               </p>
             </div>
           </CardContent>
@@ -61,15 +61,14 @@ export default function NewbieGuide() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-lg">
-                  <strong>Before:</strong> "엄마, 친구랑 PC방 가도 돼요?" → "안 돼!" (이유도 모르고 화남 😠)
+                  <strong>Before:</strong> "엄마, 친구랑 PC방 가도 돼요?" → "안 돼!" (갑작 디나이 😠)
                 </p>
                 <p className="text-lg">
-                  <strong>After:</strong> "숙제 다 했고, 30분 이내니까 가도 되겠네!" → 스스로 판단 가능! 😊
+                  <strong>After:</strong> "숙제 다 했고, 30분 이내니까 가도 되겠네!" → 자동 승인! 😊
                 </p>
                 <div className="bg-primary/10 p-4 rounded-lg mt-4">
                   <p className="font-semibold">
-                    💡 룰북이 있으면 뭐가 되고 안 되는지 명확해져서, 부모님께 허락받을 때 
-                    덜 싸우게 돼요!
+                    💡 룰북이 있으면 허가/금지 조건이 명확해서 부모님과의 PvP가 줄어들어요!
                   </p>
                 </div>
               </CardContent>
@@ -84,12 +83,12 @@ export default function NewbieGuide() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-lg">
-                  룰북은 <strong>엄마, 아빠도 지켜야 해요!</strong> 디지털 디톡스 챌린지(DDC)는 
-                  부모님도 참여하잖아? 그래서 "나만 왜 이래!" 이런 생각이 안 들어요.
+                  룰북은 <strong>엄마, 아빠도 지켜야 해요!</strong> DDC는 부모님도 참여하는 
+                  서바이벌 게임이잖아? 그래서 "나만 왜 이래!" 이런 억울함이 사라져요.
                 </p>
                 <div className="bg-primary/10 p-4 rounded-lg mt-4">
                   <p className="font-semibold">
-                    💡 가족 모두가 같은 규칙을 따르니까 더 공평하고 납득이 가요!
+                    💡 전원 같은 규칙 적용 = 공평한 게임! 이건 진짜 밸런스 패치예요.
                   </p>
                 </div>
               </CardContent>
