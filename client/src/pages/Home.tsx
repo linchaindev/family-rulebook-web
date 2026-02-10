@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { FAMILY_MEMBERS } from "@/types/family";
+import { trpc } from "@/lib/trpc";
 
 export default function Home() {
   // The userAuth hooks provides authentication state
@@ -129,17 +131,16 @@ export default function Home() {
           <p className="text-muted-foreground">프로필을 클릭하면 개인별 DDC 순위와 매니저 활동을 확인할 수 있어요</p>
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
-          {[
-            { id: 'dad', name: '아빠', avatar: '👨', color: '#3498DB', role: '감사', isManager: false },
-            { id: 'mom', name: '엄마', avatar: '👩', color: '#E74C3C', role: '감사', isManager: false },
-            { id: 'jin', name: '진', avatar: '👧', color: '#9B59B6', role: '팀원', isManager: true },
-            { id: 'sean', name: '션', avatar: '🧒', color: '#F39C12', role: '팀원', isManager: false },
-            { id: 'liam', name: '럄', avatar: '👦', color: '#1ABC9C', role: '팀원', isManager: false },
-          ].map((member) => (
+          {FAMILY_MEMBERS.map((member) => {
+            // 현재 달 매니저 확인 (2월 = 진)
+            const currentMonth = '2026-02';
+            const isManager = member.id === 'jin'; // TODO: 데이터베이스에서 조회
+            
+            return (
             <Link key={member.id} href={`/profile/${member.id}`}>
               <Card className="border-2 hover:shadow-lg transition-all cursor-pointer hover:scale-105 relative">
                 <CardContent className="pt-6 text-center">
-                  {member.isManager && (
+                  {isManager && (
                     <div className="absolute -top-3 -left-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 animate-pulse z-10">
                       💼 매니저
                     </div>
@@ -150,12 +151,13 @@ export default function Home() {
                   >
                     {member.avatar}
                   </div>
-                  <h3 className="font-bold text-lg mb-1">{member.name}</h3>
-                  <Badge variant="outline">{member.role}</Badge>
+                  <h3 className="font-bold text-lg mb-1">{member.nickname}</h3>
+                  <Badge variant="outline">{member.role === 'parent' ? '감사' : '팀원'}</Badge>
                 </CardContent>
               </Card>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 
