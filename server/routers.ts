@@ -349,6 +349,43 @@ export const appRouter = router({
       }),
   }),
 
+  // Monthly Allowances Router
+  allowance: router({
+    upsert: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        memberId: z.string(),
+        baseAllowance: z.number(),
+        bonus: z.number().default(0),
+        penalty: z.number().default(0),
+      }))
+      .mutation(async ({ input }) => {
+        await db.upsertMonthlyAllowance(input);
+        return { success: true };
+      }),
+    
+    getByMonth: publicProcedure
+      .input(z.object({ month: z.string(), memberId: z.string() }))
+      .query(async ({ input }) => {
+        const allowance = await db.getMonthlyAllowance(input.month, input.memberId);
+        return allowance;
+      }),
+    
+    getAllByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        const allowances = await db.getAllMonthlyAllowances(input.month);
+        return allowances;
+      }),
+    
+    getHistory: publicProcedure
+      .input(z.object({ memberId: z.string() }))
+      .query(async ({ input }) => {
+        const history = await db.getMemberAllowanceHistory(input.memberId);
+        return history;
+      }),
+  }),
+
   // Comments Router
   comments: router({
     create: publicProcedure

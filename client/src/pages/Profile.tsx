@@ -21,6 +21,11 @@ export default function Profile() {
   const { data: activityLogs = [] } = trpc.managerActivityLog.getAll.useQuery();
   const { data: managerActivities = [] } = trpc.managerActivity.getAll.useQuery();
   
+  // 현재 월 계산
+  const currentMonth = '2026-02';
+  const { data: currentAllowance } = trpc.allowance.getByMonth.useQuery({ month: currentMonth, memberId });
+  const { data: allowanceHistory = [] } = trpc.allowance.getHistory.useQuery({ memberId });
+  
   if (!member) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -39,7 +44,6 @@ export default function Profile() {
   }
 
   // 현재 월 DDC 순위 계산
-  const currentMonth = '2026-02';
   const memberTimes = useMemo(() => {
     const times = FAMILY_MEMBERS.map(m => {
       const totalTime = ddcRecords
@@ -232,7 +236,7 @@ export default function Profile() {
         </div>
 
         {/* DDC Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
           <Card className="border-2">
             <CardHeader>
               <div className="flex items-center gap-3">
@@ -277,6 +281,28 @@ export default function Profile() {
                 {totalReward > 0 ? `+${totalReward}만원` : '0원'}
               </div>
               <p className="text-muted-foreground">2026년 누적</p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Award className="w-8 h-8 text-amber-600" />
+                <CardTitle>이번달 용돈</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-5xl font-bold mb-2 text-amber-600">
+                {currentAllowance ? `${currentAllowance.finalAllowance}만원` : '-'}
+              </div>
+              {currentAllowance && (
+                <p className="text-muted-foreground text-xs">
+                  기본 {currentAllowance.baseAllowance} + 상금 {currentAllowance.bonus} - 벌금 {currentAllowance.penalty}
+                </p>
+              )}
+              {!currentAllowance && (
+                <p className="text-muted-foreground">2월 현재까지</p>
+              )}
             </CardContent>
           </Card>
         </div>

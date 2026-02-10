@@ -18,7 +18,9 @@ import {
   managerEvaluations,
   InsertManagerEvaluation,
   managerActivityLogs,
-  InsertManagerActivityLog
+  InsertManagerActivityLog,
+  monthlyAllowances,
+  InsertMonthlyAllowance
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -503,6 +505,82 @@ export async function deleteManagerActivityLog(id: number) {
   const result = await db
     .delete(managerActivityLogs)
     .where(eq(managerActivityLogs.id, id));
+  
+  return result;
+}
+
+// ==================== Monthly Allowances ====================
+
+export async function upsertMonthlyAllowance(allowance: InsertMonthlyAllowance) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Calculate final allowance
+  const finalAllowance = (allowance.baseAllowance || 0) + (allowance.bonus || 0) - (allowance.penalty || 0);
+  
+  const existing = await db
+    .select()
+    .from(monthlyAllowances)
+    .where(
+      and(
+        eq(monthlyAllowances.month, allowance.month),
+        eq(monthlyAllowances.memberId, allowance.memberId)
+      )
+    );
+  
+  if (existing.length > 0) {
+    // Update existing record
+    await db
+      .update(monthlyAllowances)
+      .set({ ...allowance, finalAllowance })
+      .where(eq(monthlyAllowances.id, existing[0].id));
+  } else {
+    // Insert new record
+    await db
+      .insert(monthlyAllowances)
+      .values({ ...allowance, finalAllowance });
+  }
+}
+
+export async function getMonthlyAllowance(month: string, memberId: string) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(monthlyAllowances)
+    .where(
+      and(
+        eq(monthlyAllowances.month, month),
+        eq(monthlyAllowances.memberId, memberId)
+      )
+    );
+  
+  return result[0] || null;
+}
+
+export async function getAllMonthlyAllowances(month: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select()
+    .from(monthlyAllowances)
+    .where(eq(monthlyAllowances.month, month))
+    .orderBy(monthlyAllowances.memberId);
+  
+  return result;
+}
+
+export async function getMemberAllowanceHistory(memberId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select()
+    .from(monthlyAllowances)
+    .where(eq(monthlyAllowances.memberId, memberId))
+    .orderBy(desc(monthlyAllowances.month));
   
   return result;
 }

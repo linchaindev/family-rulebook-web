@@ -139,3 +139,19 @@ export const managerEvaluations = mysqlTable("manager_evaluations", {
 
 export type ManagerEvaluation = typeof managerEvaluations.$inferSelect;
 export type InsertManagerEvaluation = typeof managerEvaluations.$inferInsert;
+
+// Monthly Allowances Table
+export const monthlyAllowances = mysqlTable("monthly_allowances", {
+  id: int("id").autoincrement().primaryKey(),
+  month: varchar("month", { length: 7 }).notNull(), // YYYY-MM
+  memberId: varchar("member_id", { length: 20 }).notNull(),
+  baseAllowance: int("base_allowance").default(0).notNull(), // 기본 용돈 (만원 단위)
+  bonus: int("bonus").default(0).notNull(), // 상금 (만원 단위)
+  penalty: int("penalty").default(0).notNull(), // 벌금 (만원 단위)
+  finalAllowance: int("final_allowance").default(0).notNull(), // 최종 용돈 = base + bonus - penalty
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MonthlyAllowance = typeof monthlyAllowances.$inferSelect;
+export type InsertMonthlyAllowance = typeof monthlyAllowances.$inferInsert;

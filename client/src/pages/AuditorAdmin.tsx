@@ -131,6 +131,13 @@ export default function AuditorAdmin() {
     appliedBy: '',
   });
 
+  // 용돈 관리 상태
+  const [allowanceMonth, setAllowanceMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  });
+  const [memberAllowances, setMemberAllowances] = useState<Record<string, { baseAllowance: number; bonus: number; penalty: number }>>({});
+
   const verifyPasswordMutation = trpc.password.verifyAuditor.useQuery(
     { month: selectedMonth, password },
     { enabled: false }
@@ -197,12 +204,35 @@ export default function AuditorAdmin() {
     },
   });
 
+  const saveAllowancesMutation = trpc.allowance.upsert.useMutation({
+    onSuccess: () => {
+      toast.success('용돈이 저장되었습니다.');
+    },
+    onError: () => {
+      toast.error('용돈 저장에 실패했습니다.');
+    },
+  });
+
   const deleteCommentMutation = trpc.comments.delete.useMutation({
     onSuccess: () => {
       toast.success('댓글이 삭제되었습니다.');
       refetchComments();
     },
   });
+
+  const handleSaveAllowances = async () => {
+    for (const memberId of Object.keys(memberAllowances)) {
+      const allowance = memberAllowances[memberId];
+      await saveAllowancesMutation.mutateAsync({
+        month: allowanceMonth,
+        memberId,
+        baseAllowance: allowance.baseAllowance,
+        bonus: allowance.bonus,
+        penalty: allowance.penalty,
+      });
+    }
+    toast.success('모든 용돈이 저장되었습니다!');
+  };
 
   const handlePasswordSubmit = async () => {
     if (password.length !== 6) {
@@ -350,10 +380,11 @@ export default function AuditorAdmin() {
         </div>
 
         <Tabs defaultValue="ddc" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 text-xs md:text-sm">
+          <TabsList className="grid w-full grid-cols-5 text-xs md:text-sm">
             <TabsTrigger value="ddc">DDC</TabsTrigger>
             <TabsTrigger value="rcr">RCR</TabsTrigger>
             <TabsTrigger value="monthlyManager">월별 매니저</TabsTrigger>
+            <TabsTrigger value="allowance">용돈</TabsTrigger>
             <TabsTrigger value="comments">댓글</TabsTrigger>
           </TabsList>
 
@@ -634,6 +665,94 @@ export default function AuditorAdmin() {
 
           <TabsContent value="monthlyManager" className="space-y-4">
             <MonthlyManagerTab />
+          </TabsContent>
+          <TabsContent value="allowance" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>용돈 관리</CardTitle>
+                <CardDescription>가족 구성원의 월별 용돈을 설정합니다.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <Label>대상 월</Label>
+                    <Input
+                      type="month"
+                      value={allowanceMonth}
+                      onChange={(e) => setAllowanceMonth(e.target.value)}
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-semibold">가족 구성원별 용돈 설정</h3>
+                  {FAMILY_MEMBERS.map((member) => {
+                    const allowance = memberAllowances[member.id] || { baseAllowance: 0, bonus: 0, penalty: 0 };
+                    return (
+                      <Card key={member.id} className="border-2">
+                        <CardContent className="pt-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="text-2xl">{member.avatar}</div>
+                            <div>
+                              <h4 className="font-bold">{member.name}</h4>
+                              <p className="text-sm text-muted-foreground">{member.role === 'parent' ? '감사' : '팀원'}</p>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                              <Label>기본 용돈 (만원)</Label>
+                              <Input
+                                type="number"
+                                value={allowance.baseAllowance}
+                                onChange={(e) => setMemberAllowances({
+                                  ...memberAllowances,
+                                  [member.id]: { ...allowance, baseAllowance: parseInt(e.target.value) || 0 }
+                                })}
+                                className="mt-2"
+                              />
+                            </div>
+                            <div>
+                              <Label>상금 (만원)</Label>
+                              <Input
+                                type="number"
+                                value={allowance.bonus}
+                                onChange={(e) => setMemberAllowances({
+                                  ...memberAllowances,
+                                  [member.id]: { ...allowance, bonus: parseInt(e.target.value) || 0 }
+                                })}
+                                className="mt-2"
+                              />
+                            </div>
+                            <div>
+                              <Label>벌금 (만원)</Label>
+                              <Input
+                                type="number"
+                                value={allowance.penalty}
+                                onChange={(e) => setMemberAllowances({
+                                  ...memberAllowances,
+                                  [member.id]: { ...allowance, penalty: parseInt(e.target.value) || 0 }
+                                })}
+                                className="mt-2"
+                              />
+                            </div>
+                          </div>
+                          <div className="mt-4 p-3 bg-primary/10 rounded-lg">
+                            <p className="text-sm font-semibold">
+                              최종 용돈: {allowance.baseAllowance + allowance.bonus - allowance.penalty}만원
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+
+                <Button onClick={handleSaveAllowances} disabled={saveAllowancesMutation.isPending}>
+                  모두 저장
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="comments" className="space-y-4">

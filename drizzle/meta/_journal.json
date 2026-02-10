@@ -43,6 +43,13 @@
       "when": 1770735096185,
       "tag": "0005_smart_gauntlet",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1770737383095,
+      "tag": "0006_supreme_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

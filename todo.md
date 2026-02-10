@@ -105,3 +105,13 @@
 - [x] Update all cheesy/childish phrases to humorous, witty, sophisticated B-grade tone
 - [x] Review all pages for tone consistency
 - [x] Make content engaging for children (not boring)
+
+## Allowance System & Profile Remodeling (Current Phase)
+- [x] Add allowance database schema (monthlyAllowances table)
+- [x] Add allowance input feature in auditor admin page
+- [x] Remove fake manager activity data from profile pages
+- [x] Add allowance display in profile pages (base + bonus/penalty = final)
+- [x] Completely remodel all 5 family member profile pages with meaningful data
+- [x] Show real DDC records, RCR records, activity logs
+- [x] Calculate and display accurate statistics (participation days, rewards, rankings)
+- [x] Test all profile pages for data accuracy
