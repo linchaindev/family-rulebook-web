@@ -49,7 +49,7 @@ export interface Comment {
 export const FAMILY_MEMBERS: FamilyMember[] = [
   { id: 'dad', name: '아빠', nickname: '아빠', role: 'parent', avatar: '👨', icon: '👨', color: '#3498DB' },
   { id: 'mom', name: '엄마', nickname: '엄마', role: 'parent', avatar: '👩', icon: '👩', color: '#E74C3C' },
-  { id: 'jin', name: '진', nickname: '진', role: 'student', avatar: '👧', icon: '👧', color: '#9B59B6' },
   { id: 'sean', name: '션', nickname: '션', role: 'student', avatar: '🧒', icon: '🧒', color: '#F39C12' },
+  { id: 'jin', name: '진', nickname: '진', role: 'student', avatar: '👧', icon: '👧', color: '#9B59B6' },
   { id: 'liam', name: '럄', nickname: '럄', role: 'student', avatar: '👦', icon: '👦', color: '#1ABC9C' },
 ];
