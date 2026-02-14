@@ -225,3 +225,14 @@
 - [x] Rename management pages to "패밀리 매니저(FM) 전용" and "패밀리 감사(FA) 전용"
 - [x] Add DDC data duplication prevention (UNIQUE INDEX + upsert logic)
 - [x] Fix mouse back button error in Profile page (React hook order)
+
+## Homepage Redesign & Version Management (Completed)
+- [x] Remove 3 infographics from homepage
+- [x] Redesign button layout with consistent sizing
+- [x] Apply modern gradient design to all buttons
+- [x] Reorder buttons by usage frequency (Dashboard, Rulebook, FA, FM, Monthly Evaluation, Communication, etc.)
+- [x] Implement version management system (v1.0.1)
+- [x] Create release notes page
+- [x] Create and manage RELEASE.md file
+- [x] Add version badge with link to release notes
+- [x] Auto-increment minor version on each update

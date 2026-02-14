@@ -14,6 +14,7 @@ import AuditorAdmin from "./pages/AuditorAdmin";
 import ManagerEvaluation from "./pages/ManagerEvaluation";
 import FamilyGames from "./pages/FamilyGames";
 import MonthEndSettlement from "./pages/MonthEndSettlement";
+import ReleaseNotes from "./pages/ReleaseNotes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -29,6 +30,7 @@ function Router() {
       <Route path={"/manager-evaluation"} component={ManagerEvaluation} />
       <Route path={"/family-games"} component={FamilyGames} />
       <Route path={"/month-end-settlement"} component={MonthEndSettlement} />
+      <Route path={"/release-notes"} component={ReleaseNotes} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

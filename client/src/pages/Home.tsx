@@ -64,9 +64,11 @@ export default function Home() {
       {/* Hero Section */}
       <section className="container py-20 md:py-32">
         <div className="text-center space-y-6 max-w-4xl mx-auto">
-          <Badge className="mb-4 text-base px-4 py-2" variant="outline">
-            v1.0.0 · 2026년 2월 9일 시행
-          </Badge>
+          <Link href="/release-notes">
+            <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
+              v1.0.1 · 2026년 2월 14일 업데이트
+            </Badge>
+          </Link>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
             2026 KH 패밀리 룰북
           </h1>
@@ -76,56 +78,85 @@ export default function Home() {
           <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             스크린 타임과의 전쟁, 숙제와의 사투, 그리고 가족 평화를 위한 공식 규칙집입니다.
           </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Button size="lg" onClick={() => scrollToSection('core-principles')} className="text-lg">
-              룰북 보기
-            </Button>
+          {/* 주요 버튼 - 사용 빈도 순서로 배치 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {/* 1. 대시보드 - 가장 자주 사용 */}
             <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="text-lg">
+              <Button 
+                size="lg" 
+                className="w-full h-16 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <PieChart className="w-5 h-5 mr-2" />
                 대시보드
               </Button>
             </Link>
-            <Link href="/newbie-guide">
-              <Button size="lg" variant="secondary" className="text-lg">
-                초보자 튜토리얼 🎮
+
+            {/* 2. 룰북 보기 */}
+            <Button 
+              size="lg" 
+              onClick={() => scrollToSection('core-principles')} 
+              className="w-full h-16 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+            >
+              <BookOpen className="w-5 h-5 mr-2" />
+              룰북 보기
+            </Button>
+
+            {/* 3. 패밀리 감사(FA) 전용 */}
+            <Link href="/auditor-admin">
+              <Button 
+                size="lg"
+                className="w-full h-16 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                패밀리 감사(FA)
+                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black text-xs">SECURED</Badge>
+              </Button>
+            </Link>
+
+            {/* 4. 패밀리 매니저(FM) 전용 */}
+            <Link href="/manager-input">
+              <Button 
+                size="lg"
+                className="w-full h-16 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                패밀리 매니저(FM)
+                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black text-xs">SECURED</Badge>
+              </Button>
+            </Link>
+
+            {/* 5. 월말 평가 */}
+            <Link href="/manager-evaluation">
+              <Button 
+                size="lg"
+                className="w-full h-16 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Vote className="w-5 h-5 mr-2" />
+                월말 평가
+              </Button>
+            </Link>
+
+            {/* 6. 가족 소통 게시판 */}
+            <Link href="/comments">
+              <Button 
+                size="lg"
+                className="w-full h-16 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                가족 소통 게시판
               </Button>
             </Link>
           </div>
-          <div className="flex gap-3 justify-center flex-wrap mt-4">
-            <Link href="/comments">
-              <Button variant="ghost" size="sm">
-                💬 가족 소통 게시판
-              </Button>
-            </Link>
-            <Link href="/manager-input">
-              <Button 
-                variant="default" 
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
-              >
-                <Shield className="w-5 h-5 mr-2" />
-                패밀리 매니저(FM) 전용
-                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black">SECURED</Badge>
-              </Button>
-            </Link>
-            <Link href="/auditor-admin">
-              <Button 
-                variant="default" 
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
-              >
-                <Shield className="w-5 h-5 mr-2" />
-                패밀리 감사(FA) 전용
-                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black">SECURED</Badge>
-              </Button>
-            </Link>
-            <Link href="/manager-evaluation">
-              <Button variant="ghost" size="sm">
-                🗳️ 월말 평가
+
+          {/* 부가 버튼 */}
+          <div className="flex gap-3 justify-center flex-wrap mt-6">
+            <Link href="/newbie-guide">
+              <Button size="default" variant="outline" className="border-2">
+                🎮 초보자 튜토리얼
               </Button>
             </Link>
             <Link href="/family-games">
-              <Button variant="ghost" size="sm">
+              <Button size="default" variant="outline" className="border-2">
                 🎮 패밀리 게임
               </Button>
             </Link>
@@ -424,15 +455,7 @@ export default function Home() {
             </AccordionItem>
           </Accordion>
 
-          {/* Infographic */}
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Part 1 인포그래픽</h3>
-            <img 
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/YkrImXOmuHnSfbJR.png" 
-              alt="Part 1 데일리 룰 인포그래픽" 
-              className="w-full max-w-md mx-auto rounded-lg shadow-lg"
-            />
-          </div>
+
         </div>
       </section>
 
@@ -542,15 +565,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Infographic */}
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Part 2 인포그래픽</h3>
-            <img 
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/oZXOjuuHiKUuUPnn.png" 
-              alt="Part 2 디지털 디톡스 챌린지 룰 인포그래픽" 
-              className="w-full max-w-md mx-auto rounded-lg shadow-lg"
-            />
-          </div>
+
         </div>
       </section>
 
@@ -671,15 +686,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Infographic */}
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Part 3 인포그래픽</h3>
-            <img 
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/KUxFPgjohTphodyz.png" 
-              alt="Part 3 패밀리 매니저 룰 인포그래픽" 
-              className="w-full max-w-md mx-auto rounded-lg shadow-lg"
-            />
-          </div>
+
         </div>
       </section>
 
@@ -813,7 +820,9 @@ export default function Home() {
           <div className="text-center text-sm text-muted-foreground">
             <p>본 룰북은 전 가족의 합의하에 제정되었습니다.</p>
             <p className="mt-2">특별한 사정(질병, 긴급상황 등)이 있을 경우 부모님과 개별 협의 가능</p>
-            <p className="mt-4 font-semibold">Version 1.0.0 · 2026년 2월 9일 시행</p>
+            <Link href="/release-notes">
+              <p className="mt-4 font-semibold hover:text-primary cursor-pointer transition-colors">Version 1.0.1 · 2026년 2월 14일 업데이트</p>
+            </Link>
           </div>
         </div>
       </footer>

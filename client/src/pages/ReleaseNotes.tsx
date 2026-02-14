@@ -1,0 +1,149 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { ArrowLeft, CheckCircle2, Bug, Sparkles } from "lucide-react";
+
+export default function ReleaseNotes() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
+      <div className="container py-12 max-w-4xl">
+        {/* Header */}
+        <div className="mb-8">
+          <Link href="/">
+            <Button variant="ghost" className="mb-4">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              룰북으로 돌아가기
+            </Button>
+          </Link>
+          <h1 className="text-4xl font-bold mb-2">릴리즈 노트</h1>
+          <p className="text-muted-foreground">
+            KH 패밀리 룰북의 업데이트 내역을 확인하세요.
+          </p>
+        </div>
+
+        {/* v1.0.1 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.1</CardTitle>
+                <CardDescription>2026년 2월 14일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 개선사항 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <CheckCircle2 className="w-5 h-5 mr-2 text-green-600" />
+                개선사항
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • RCR "예로우카드" → "옐로우카드" 오타 수정 (전체 페이지 + 인포그래픽 이미지)
+                </li>
+                <li className="text-muted-foreground">
+                  • 홈페이지 버튼 배치 재디자인 (사용 빈도 순서, 일관성 있는 그라데이션 디자인)
+                </li>
+                <li className="text-muted-foreground">
+                  • 홈페이지 인포그래픽 3개 삭제 (Part 1, 2, 3)
+                </li>
+                <li className="text-muted-foreground">
+                  • 관리 페이지 이름 변경 ("패밀리 매니저(FM) 전용", "패밀리 감사(FA) 전용")
+                </li>
+                <li className="text-muted-foreground">
+                  • 관리 페이지 버튼 UI 개선 (큰 버튼 + SECURED 뱃지)
+                </li>
+              </ul>
+            </div>
+
+            {/* 버그 수정 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Bug className="w-5 h-5 mr-2 text-red-600" />
+                버그 수정
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • DDC 데이터 중복 저장 방지 (UNIQUE INDEX + upsert 로직)
+                </li>
+                <li className="text-muted-foreground">
+                  • 프로필 페이지 마우스 back 버튼 에러 수정 (React hook 순서 문제)
+                </li>
+                <li className="text-muted-foreground">
+                  • 월말 정산 비밀번호 중복 입력 문제 해결 (세션 스토리지)
+                </li>
+              </ul>
+            </div>
+
+            {/* 신규 기능 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2 text-yellow-600" />
+                신규 기능
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • 매니저 활동 기록 수정/삭제 기능 추가 (감사 관리 페이지)
+                </li>
+                <li className="text-muted-foreground">
+                  • 버전 관리 시스템 구축 (릴리즈 노트 페이지)
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* v1.0.0 */}
+        <Card>
+          <CardHeader>
+            <div>
+              <CardTitle className="text-2xl">v1.0.0</CardTitle>
+              <CardDescription>2026년 2월 9일</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 초기 릴리즈 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2 text-yellow-600" />
+                초기 릴리즈
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • KH 패밀리 룰북 웹사이트 출시
+                </li>
+                <li className="text-muted-foreground">
+                  • 데일리 룰 (DR), 디지털 디톡스 챌린지 (DDC), 패밀리 매니저 룰 (FMR) 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • RCR 10단계 카드 시스템 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 대시보드, 프로필 페이지, 가족 소통 게시판 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 매니저 DDC 입력 페이지 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 감사 관리 페이지 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 월말 정산 시스템 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 매니저 평가 시스템 구현
+                </li>
+                <li className="text-muted-foreground">
+                  • 비밀번호 자동 생성 및 이메일 발송 기능
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
