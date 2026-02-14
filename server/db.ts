@@ -20,7 +20,9 @@ import {
   managerActivityLogs,
   InsertManagerActivityLog,
   monthlyAllowances,
-  InsertMonthlyAllowance
+  InsertMonthlyAllowance,
+  bugReportRewards,
+  InsertBugReportReward
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -581,6 +583,51 @@ export async function getMemberAllowanceHistory(memberId: string) {
     .from(monthlyAllowances)
     .where(eq(monthlyAllowances.memberId, memberId))
     .orderBy(desc(monthlyAllowances.month));
+  
+  return result;
+}
+
+// ==================== Bug Report Rewards ====================
+
+export async function createBugReportReward(reward: InsertBugReportReward) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(bugReportRewards).values(reward);
+  return result;
+}
+
+export async function getAllBugReportRewards() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select()
+    .from(bugReportRewards)
+    .orderBy(desc(bugReportRewards.createdAt));
+  
+  return result;
+}
+
+export async function getBugReportRewardByCommentId(commentId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(bugReportRewards)
+    .where(eq(bugReportRewards.commentId, commentId));
+  
+  return result[0] || null;
+}
+
+export async function deleteBugReportReward(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .delete(bugReportRewards)
+    .where(eq(bugReportRewards.id, id));
   
   return result;
 }

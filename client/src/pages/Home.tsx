@@ -216,36 +216,76 @@ export default function Home() {
             <p className="text-xl text-muted-foreground">일상생활 7대 원칙과 차등 레드카드 시스템</p>
           </div>
 
-          {/* RCR Warning */}
-          <Card className="mb-8 border-destructive border-2 bg-destructive/5">
+          {/* RCR Card System */}
+          <Card className="mb-8 border-primary border-2 bg-gradient-to-br from-red-50 via-yellow-50 to-green-50">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <AlertTriangle className="w-8 h-8 text-destructive" />
+                <AlertTriangle className="w-8 h-8 text-primary" />
                 <div>
-                  <CardTitle className="text-destructive">레드카드 룰 (RCR)</CardTitle>
-                  <CardDescription>위반 수위에 따른 4단계 차등 제재</CardDescription>
+                  <CardTitle className="text-primary">RCR 10단계 카드 시스템</CardTitle>
+                  <CardDescription>패널티 카드 5종 + 보상 카드 5종</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
-                <Badge variant="destructive">경미</Badge>
-                <span className="text-sm">DDC 스크린타임 -5시간 차감</span>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-bold text-red-600 mb-2 flex items-center gap-2">
+                  🚨 패널티 카드
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 p-3 bg-yellow-100 rounded-lg border-2 border-yellow-400">
+                    <Badge className="bg-yellow-500 text-white hover:bg-yellow-600">🟡 Yellow Card</Badge>
+                    <span className="text-sm font-medium">DDC 스크린타임 +5시간</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border-2 border-red-300">
+                    <Badge variant="destructive">🟥 Red Card</Badge>
+                    <span className="text-sm font-medium">용돈 -1만원</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-red-100 rounded-lg border-2 border-red-400">
+                    <Badge variant="destructive">🟥🟥 Double Red</Badge>
+                    <span className="text-sm font-medium">용돈 -2만원</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-red-200 rounded-lg border-2 border-red-500">
+                    <Badge variant="destructive">🟥🟥🟥 Triple Red</Badge>
+                    <span className="text-sm font-medium">용돈 -3만원</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-red-300 rounded-lg border-2 border-red-600">
+                    <Badge variant="destructive" className="bg-red-700">🟥🟥🟥🟥 Quadro Red</Badge>
+                    <span className="text-sm font-bold">용돈 -4만원</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-red-100 rounded-lg border border-red-300">
-                <Badge variant="destructive">중등</Badge>
-                <span className="text-sm">용돈 1만원 삭감 + 전자기기 1주일 금지</span>
+              
+              <div>
+                <h4 className="font-bold text-green-600 mb-2 flex items-center gap-2">
+                  🏆 보상 카드
+                </h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border-2 border-green-300">
+                    <Badge className="bg-green-500 text-white hover:bg-green-600">🟢 Green Card</Badge>
+                    <span className="text-sm font-medium">DDC 스크린타임 -1시간</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-green-100 rounded-lg border-2 border-green-400">
+                    <Badge className="bg-green-600 text-white hover:bg-green-700">🟢🟢 Double Green</Badge>
+                    <span className="text-sm font-medium">DDC 스크린타임 -5시간</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-green-200 rounded-lg border-2 border-green-500">
+                    <Badge className="bg-green-700 text-white hover:bg-green-800">🟢🟢🟢 Triple Green</Badge>
+                    <span className="text-sm font-bold">용돈 +2만원</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-green-300 rounded-lg border-2 border-green-600">
+                    <Badge className="bg-green-800 text-white hover:bg-green-900">🟢🟢🟢🟢 Quadro Green</Badge>
+                    <span className="text-sm font-bold">용돈 +4만원</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-yellow-200 to-yellow-300 rounded-lg border-2 border-yellow-500">
+                    <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white">🎯 Golden Card</Badge>
+                    <span className="text-sm font-bold">매니저 의무 1개월 면제</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-red-200 rounded-lg border border-red-400">
-                <Badge variant="destructive">중대</Badge>
-                <span className="text-sm">용돈 3만원 삭감 + 전자기기 2주일 금지</span>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-red-300 rounded-lg border border-red-500">
-                <Badge variant="destructive">최대</Badge>
-                <span className="text-sm font-bold">용돈 전액 삭감 + 전자기기 한 달 금지</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                💡 특정 감사(엄마)의 패널티에 이의제기는 다른 감사(아빠)에게 요청 가능
+              
+              <p className="text-xs text-muted-foreground mt-4 p-3 bg-white/50 rounded-lg">
+                💡 모든 카드는 실시간으로 표시되지만, 월말 평가 시점에 일괄 정산됩니다. 특정 감사(엄마)의 패널티에 이의제기는 다른 감사(아빠)에게 요청 가능합니다.
               </p>
             </CardContent>
           </Card>

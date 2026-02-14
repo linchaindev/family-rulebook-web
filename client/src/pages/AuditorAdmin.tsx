@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Shield, Trash2, Edit, Plus } from "lucide-react";
+import { ArrowLeft, Shield, Trash2, Edit, Plus, Calculator } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -388,12 +388,20 @@ export default function AuditorAdmin() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
       <div className="container py-4 md:py-8 px-2 md:px-4 max-w-7xl">
-        <Link href="/">
-          <Button variant="ghost" className="mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            룰북으로 돌아가기
-          </Button>
-        </Link>
+        <div className="flex items-center justify-between mb-4">
+          <Link href="/">
+            <Button variant="ghost">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              룰북으로 돌아가기
+            </Button>
+          </Link>
+          <Link href="/month-end-settlement">
+            <Button variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
+              <Calculator className="w-4 h-4 mr-2" />
+              월말 정산 시스템
+            </Button>
+          </Link>
+        </div>
 
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
@@ -409,7 +417,7 @@ export default function AuditorAdmin() {
             <TabsTrigger value="rcr">RCR</TabsTrigger>
             <TabsTrigger value="monthlyManager">월별 매니저</TabsTrigger>
             <TabsTrigger value="allowance">용돈</TabsTrigger>
-            <TabsTrigger value="comments">댓글</TabsTrigger>
+            <TabsTrigger value="comments">버그 리포트</TabsTrigger>
           </TabsList>
 
           <TabsContent value="ddc" className="space-y-4">
@@ -812,38 +820,66 @@ export default function AuditorAdmin() {
           <TabsContent value="comments" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>댓글 관리 ({comments.length}개)</CardTitle>
-                <CardDescription>가족 소통 게시판의 댓글을 조회하고 삭제할 수 있습니다.</CardDescription>
+                <CardTitle>버그 리포트 보상 시스템 ({comments.length}개 댓글)</CardTitle>
+                <CardDescription>가족 소통 게시판의 버그 리포트를 검토하고 보상을 지급합니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="flex flex-col md:flex-row md:items-start justify-between p-3 border rounded-lg gap-2">
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <Badge variant={comment.type === 'praise' ? 'default' : 'secondary'}>
-                            {comment.type === 'praise' ? '칭찬' : '건의'}
-                          </Badge>
-                          <span className="text-sm font-medium">{comment.fromMember} → {comment.toMember}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(comment.createdAt).toLocaleString('ko-KR')}
-                          </span>
+                  {comments.map((comment) => {
+                    // 이미 보상이 지급된 댓글인지 확인 (향후 API로 구현)
+                    const isRewarded = false; // TODO: 보상 여부 확인 API 호출
+                    
+                    return (
+                      <div key={comment.id} className="flex flex-col md:flex-row md:items-start justify-between p-3 border rounded-lg gap-2">
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <Badge variant={comment.type === 'praise' ? 'default' : 'secondary'}>
+                              {comment.type === 'praise' ? '칭찬' : '건의'}
+                            </Badge>
+                            <span className="text-sm font-medium">{comment.fromMember} → {comment.toMember}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(comment.createdAt).toLocaleString('ko-KR')}
+                            </span>
+                            {isRewarded && (
+                              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+                                보상 지급 완료
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm">{comment.content}</p>
                         </div>
-                        <p className="text-sm">{comment.content}</p>
+                        <div className="flex gap-2">
+                          {!isRewarded && (
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700"
+                              onClick={() => {
+                                const amount = prompt('보상 금액을 입력하세요 (만원 단위):', '1');
+                                if (amount && !isNaN(parseInt(amount))) {
+                                  // TODO: 보상 지급 API 호출
+                                  toast.success(`${comment.fromMember}에게 ${amount}만원 보상이 지급되었습니다!`);
+                                }
+                              }}
+                            >
+                              🏆 보상 지급
+                            </Button>
+                          )}
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => {
+                              if (confirm('정말 삭제하시겠습니까?')) {
+                                deleteCommentMutation.mutate({ id: comment.id });
+                              }
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          if (confirm('정말 삭제하시겠습니까?')) {
-                            deleteCommentMutation.mutate({ id: comment.id });
-                          }
-                        }}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
+                    );
+                  })}
                   {comments.length === 0 && (
                     <p className="text-center text-muted-foreground py-8">아직 댓글이 없습니다.</p>
                   )}

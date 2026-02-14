@@ -166,3 +166,16 @@ export const monthlyAllowances = mysqlTable("monthly_allowances", {
 
 export type MonthlyAllowance = typeof monthlyAllowances.$inferSelect;
 export type InsertMonthlyAllowance = typeof monthlyAllowances.$inferInsert;
+
+// Bug Report Rewards Table
+export const bugReportRewards = mysqlTable("bug_report_rewards", {
+  id: int("id").autoincrement().primaryKey(),
+  commentId: int("comment_id").notNull(), // 대상 댓글 ID
+  memberId: varchar("member_id", { length: 20 }).notNull(), // 버그 리포터
+  rewardAmount: int("reward_amount").notNull(), // 보상 금액 (만원 단위)
+  verifiedBy: varchar("verified_by", { length: 50 }).notNull(), // 확인한 관리자
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type BugReportReward = typeof bugReportRewards.$inferSelect;
+export type InsertBugReportReward = typeof bugReportRewards.$inferInsert;

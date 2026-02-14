@@ -13,6 +13,7 @@ import ManagerInput from "./pages/ManagerInput";
 import AuditorAdmin from "./pages/AuditorAdmin";
 import ManagerEvaluation from "./pages/ManagerEvaluation";
 import FamilyGames from "./pages/FamilyGames";
+import MonthEndSettlement from "./pages/MonthEndSettlement";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,6 +28,7 @@ function Router() {
       <Route path={"/auditor-admin"} component={AuditorAdmin} />
       <Route path={"/manager-evaluation"} component={ManagerEvaluation} />
       <Route path={"/family-games"} component={FamilyGames} />
+      <Route path={"/month-end-settlement"} component={MonthEndSettlement} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

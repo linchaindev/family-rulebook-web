@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS bug_report_rewards (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  comment_id INT NOT NULL,\n  member_id VARCHAR(20) NOT NULL,\n  reward_amount INT NOT NULL,\n  verified_by VARCHAR(50) NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute CREATE TABLE IF NOT EXISTS bug_report_rewards (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  comment_id INT NOT NULL,\n  member_id VARCHAR(20) NOT NULL,\n  reward_amount INT NOT NULL,\n  verified_by VARCHAR(50) NOT NULL,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1730
+}

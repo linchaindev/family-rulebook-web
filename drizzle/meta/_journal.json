@@ -57,6 +57,13 @@
       "when": 1771057169981,
       "tag": "0007_chief_rachel_grey",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1771058236091,
+      "tag": "0008_natural_blindfold",
+      "breakpoints": true
     }
   ]
 }

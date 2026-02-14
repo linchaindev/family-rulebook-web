@@ -149,3 +149,27 @@
 - [x] Fix profile page back button error
 - [x] Update all RCR-related UI text from "경미/보통/중대/최대" to new card system
 - [ ] Update infographic to match new card system
+
+## Month-End Evaluation & Settlement System (Current Phase)
+- [x] Create month-end settlement page with 6-digit password protection
+- [x] Calculate DDC final rankings (screen time + RCR adjustments)
+- [x] Calculate manager compensation based on family votes
+- [x] Apply RCR rewards/penalties to next month's allowance
+- [x] Display detailed breakdown for each family member
+- [x] Add navigation link to settlement page in auditor admin
+- [ ] Test settlement calculation logic
+
+## Bug Report Reward System (Current Phase)
+- [x] Add bug report review interface in auditor admin
+- [x] Show all comments from communication board
+- [x] Allow admin to mark comments as valid bug reports
+- [x] Award compensation for verified bug reports
+- [x] Track bug report rewards in database
+- [ ] Display bug report rewards in profile pages
+
+## Homepage Infographic Update (Current Phase)
+- [x] Update RCR infographic to show 10-level card system
+- [x] Replace old 4-level system graphics
+- [x] Add visual representation of penalty/reward cards
+- [x] Update card descriptions and icons
+- [x] Ensure mobile responsive design
