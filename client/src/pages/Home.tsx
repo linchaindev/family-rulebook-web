@@ -228,6 +228,15 @@ export default function Home() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* 인포그래픽 이미지 */}
+              <div className="flex justify-center mb-6">
+                <img 
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/FNFRzhJAtStvZSgG.png" 
+                  alt="RCR 10단계 카드 시스템 인포그래픽" 
+                  className="w-full max-w-4xl rounded-lg shadow-lg"
+                />
+              </div>
+              
               <div>
                 <h4 className="font-bold text-red-600 mb-2 flex items-center gap-2">
                   🚨 패널티 카드

@@ -18,7 +18,7 @@ export default function NewbieGuide() {
         {/* 헤더 */}
         <div className="text-center mb-12">
           <Badge className="mb-4 text-base" variant="secondary">
-            🎮 직1 럄이를 위한 특별 가이드
+            🎮 중1 럄이를 위한 특별 가이드
           </Badge>
           <h1 className="text-5xl font-bold mb-4">초보자 튜토리얼</h1>
           <p className="text-xl text-muted-foreground">
@@ -61,7 +61,7 @@ export default function NewbieGuide() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-lg">
-                  <strong>Before:</strong> "엄마, 친구랑 PC방 가도 돼요?" → "안 돼!" (갑작 디나이 😠)
+                  <strong>Before:</strong> "엄마, 친구랑 PC방 가도 돼요?" → "안 돼!" 😠
                 </p>
                 <p className="text-lg">
                   <strong>After:</strong> "숙제 다 했고, 30분 이내니까 가도 되겠네!" → 자동 승인! 😊

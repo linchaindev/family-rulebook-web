@@ -179,3 +179,11 @@
 - [x] Fix infographic cache issue (RCR 10-level card system not showing)
 - [x] Verify all family members' screen time calculations are correct
 - [x] Test infographic display after cache fix
+
+## URGENT FIXES - Round 2 (Current Phase)
+- [x] Fix Profile page back button error (React error #300) - 에러 재현 안됨, 정상 작동
+- [x] Remove "갑작 디나이" from Tutorial page
+- [x] Fix "직1" to "중1" in Tutorial page
+- [x] Fix "렘" to "럄" in Part 3 infographic Manager Info (April) - 이미 올바르게 표시됨
+- [x] Review family communication board comments for bugs/typos
+- [x] Generate actual infographic images (not just text updates)
