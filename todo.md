@@ -236,3 +236,11 @@
 - [x] Create and manage RELEASE.md file
 - [x] Add version badge with link to release notes
 - [x] Auto-increment minor version on each update
+
+## Homepage Notion-Style Redesign (Completed)
+- [x] Reduce button height to half (h-12 instead of h-16)
+- [x] Change button grid to 2 columns on mobile (grid-cols-2)
+- [x] Optimize homepage layout to reduce empty space
+- [x] Increase information density per screen
+- [x] Apply Notion-style clean and efficient design
+- [x] Test mobile and desktop layouts

@@ -22,6 +22,45 @@ export default function ReleaseNotes() {
           </p>
         </div>
 
+        {/* v1.0.2 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.2</CardTitle>
+                <CardDescription>2026년 2월 14일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 개선사항 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <CheckCircle2 className="w-5 h-5 mr-2 text-green-600" />
+                개선사항
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • 홈페이지 버튼 크기 축소 (h-16 → h-12, 25% 축소)
+                </li>
+                <li className="text-muted-foreground">
+                  • 모바일에서 버튼 2열 배치 (grid-cols-2)
+                </li>
+                <li className="text-muted-foreground">
+                  • 홈페이지 레이아웃 Notion 스타일로 개선
+                </li>
+                <li className="text-muted-foreground">
+                  • 모든 섹션 여백 축소 (py-16 → py-8 md:py-12)
+                </li>
+                <li className="text-muted-foreground">
+                  • 정보 밀도 증가로 한 화면에 더 많은 정보 표시
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* v1.0.1 */}
         <Card className="mb-8">
           <CardHeader>
@@ -30,7 +69,7 @@ export default function ReleaseNotes() {
                 <CardTitle className="text-2xl">v1.0.1</CardTitle>
                 <CardDescription>2026년 2월 14일</CardDescription>
               </div>
-              <Badge variant="default" className="bg-green-600">Latest</Badge>
+              <Badge variant="secondary">Previous</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

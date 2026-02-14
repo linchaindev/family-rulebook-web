@@ -18,11 +18,11 @@ import {
   Sun,
   School,
   Book,
-  Shield,
   Moon,
   Calculator,
   Vote,
   Users,
+  Shield,
   Target,
   Gift,
   AlertTriangle,
@@ -62,29 +62,29 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
       {/* Hero Section */}
-      <section className="container py-20 md:py-32">
-        <div className="text-center space-y-6 max-w-4xl mx-auto">
+      <section className="container py-12 md:py-20">
+        <div className="text-center space-y-4 max-w-4xl mx-auto">
           <Link href="/release-notes">
             <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
-              v1.0.1 · 2026년 2월 14일 업데이트
+              v1.0.2 · 2026년 2월 14일 업데이트
             </Badge>
           </Link>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
             2026 KH 패밀리 룰북
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground font-medium">
+          <p className="text-lg md:text-xl text-muted-foreground font-medium">
             건강한 생활습관을 만들기 위한 가족 헌법
           </p>
-          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             스크린 타임과의 전쟁, 숙제와의 사투, 그리고 가족 평화를 위한 공식 규칙집입니다.
           </p>
           {/* 주요 버튼 - 사용 빈도 순서로 배치 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-4xl mx-auto mt-6">
             {/* 1. 대시보드 - 가장 자주 사용 */}
             <Link href="/dashboard">
               <Button 
-                size="lg" 
-                className="w-full h-16 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                size="default" 
+                className="w-full h-12 text-sm bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
                 <PieChart className="w-5 h-5 mr-2" />
                 대시보드
@@ -93,9 +93,9 @@ export default function Home() {
 
             {/* 2. 룰북 보기 */}
             <Button 
-              size="lg" 
+              size="default" 
               onClick={() => scrollToSection('core-principles')} 
-              className="w-full h-16 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              className="w-full h-12 text-sm bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
             >
               <BookOpen className="w-5 h-5 mr-2" />
               룰북 보기
@@ -104,8 +104,8 @@ export default function Home() {
             {/* 3. 패밀리 감사(FA) 전용 */}
             <Link href="/auditor-admin">
               <Button 
-                size="lg"
-                className="w-full h-16 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                size="default"
+                className="w-full h-12 text-sm bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
                 <Shield className="w-5 h-5 mr-2" />
                 패밀리 감사(FA)
@@ -116,8 +116,8 @@ export default function Home() {
             {/* 4. 패밀리 매니저(FM) 전용 */}
             <Link href="/manager-input">
               <Button 
-                size="lg"
-                className="w-full h-16 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                size="default"
+                className="w-full h-12 text-sm bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
                 <Shield className="w-5 h-5 mr-2" />
                 패밀리 매니저(FM)
@@ -128,8 +128,8 @@ export default function Home() {
             {/* 5. 월말 평가 */}
             <Link href="/manager-evaluation">
               <Button 
-                size="lg"
-                className="w-full h-16 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                size="default"
+                className="w-full h-12 text-sm bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
                 <Vote className="w-5 h-5 mr-2" />
                 월말 평가
@@ -139,8 +139,8 @@ export default function Home() {
             {/* 6. 가족 소통 게시판 */}
             <Link href="/comments">
               <Button 
-                size="lg"
-                className="w-full h-16 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                size="default"
+                className="w-full h-12 text-sm bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
                 <MessageCircle className="w-5 h-5 mr-2" />
                 가족 소통 게시판
@@ -168,9 +168,9 @@ export default function Home() {
       </section>
 
       {/* Family Members */}
-      <section className="container py-16 bg-muted/30">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">가족 구성원</h2>
+      <section className="container py-8 md:py-12 bg-muted/30">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">가족 구성원</h2>
           <p className="text-muted-foreground">클릭하면 각자의 전투력과 전적을 확인할 수 있습니다</p>
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
@@ -205,9 +205,9 @@ export default function Home() {
       </section>
 
       {/* Core Principles */}
-      <section id="core-principles" className="container py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">핵심 원칙</h2>
+      <section id="core-principles" className="container py-8 md:py-12">
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">핵심 원칙</h2>
           <p className="text-muted-foreground">우리 가족이 지향하는 4가지 가치</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -251,11 +251,11 @@ export default function Home() {
       </section>
 
       {/* Part 1: Daily Rules */}
-      <section id="part1" className="container py-16">
+      <section id="part1" className="container py-8 md:py-12">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <Badge className="mb-4 text-base" variant="secondary">Part 1</Badge>
-            <h2 className="text-4xl font-bold mb-4">데일리 룰 (DR)</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">데일리 룰 (DR)</h2>
             <p className="text-xl text-muted-foreground">일상생활 7대 원칙과 차등 레드카드 시스템</p>
           </div>
 
@@ -460,11 +460,11 @@ export default function Home() {
       </section>
 
       {/* Part 2: DDCR */}
-      <section id="part2" className="container py-16 bg-muted/30">
+      <section id="part2" className="container py-8 md:py-12 bg-muted/30">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <Badge className="mb-4 text-base" variant="secondary">Part 2</Badge>
-            <h2 className="text-4xl font-bold mb-4">디지털 디톡스 챌린지 룰 (DDCR)</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">디지털 디톡스 챌린지 룰 (DDCR)</h2>
             <p className="text-xl text-muted-foreground">전 가족 참여 스크린타임 관리 챌린지</p>
           </div>
 
@@ -570,11 +570,11 @@ export default function Home() {
       </section>
 
       {/* Part 3: FMR */}
-      <section id="part3" className="container py-16">
+      <section id="part3" className="container py-8 md:py-12">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-6 md:mb-8">
             <Badge className="mb-4 text-base" variant="secondary">Part 3</Badge>
-            <h2 className="text-4xl font-bold mb-4">패밀리 매니저 룰 (FMR)</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">패밀리 매니저 룰 (FMR)</h2>
             <p className="text-xl text-muted-foreground">학생 주도 학습 스케줄링 자율 책임 시스템</p>
           </div>
 
@@ -691,10 +691,10 @@ export default function Home() {
       </section>
 
       {/* Glossary */}
-      <section id="glossary" className="container py-16 bg-muted/30">
+      <section id="glossary" className="container py-8 md:py-12 bg-muted/30">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">용어집</h2>
+          <div className="text-center mb-6 md:mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">용어집</h2>
             <p className="text-muted-foreground">룰북에서 사용되는 주요 용어 정리</p>
           </div>
 
