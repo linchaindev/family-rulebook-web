@@ -22,6 +22,48 @@ export default function ReleaseNotes() {
           </p>
         </div>
 
+        {/* v1.0.5 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.5</CardTitle>
+                <CardDescription>2026년 2월 14일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 신규 기능 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2 text-yellow-600" />
+                신규 기능
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • 룰렛 게임 Canvas 기반으로 완전 개편
+                </li>
+                <li className="text-muted-foreground">
+                  • 실제 룰렛 원판 그래픽 렌더링
+                </li>
+                <li className="text-muted-foreground">
+                  • 핀 튱김 애니메이션 추가 (경계 통과 시)
+                </li>
+                <li className="text-muted-foreground">
+                  • 12가지 색상으로 항목 구분
+                </li>
+                <li className="text-muted-foreground">
+                  • 당첨 항목 하이라이트 (그림자 효과)
+                </li>
+                <li className="text-muted-foreground">
+                  • 부드러운 감속 회전 애니메이션
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* v1.0.4 */}
         <Card className="mb-8">
           <CardHeader>
@@ -30,7 +72,7 @@ export default function ReleaseNotes() {
                 <CardTitle className="text-2xl">v1.0.4</CardTitle>
                 <CardDescription>2026년 2월 14일</CardDescription>
               </div>
-              <Badge variant="default" className="bg-green-600">Latest</Badge>
+              <Badge variant="secondary">Previous</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

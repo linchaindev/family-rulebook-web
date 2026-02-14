@@ -73,7 +73,7 @@ export default function Home() {
         <div className="text-center space-y-4 max-w-4xl mx-auto">
           <Link href="/release-notes">
             <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
-              v1.0.4 · 2026년 2월 14일 업데이트
+              v1.0.5 · 2026년 2월 14일 업데이트
             </Badge>
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
