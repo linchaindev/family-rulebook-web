@@ -25,23 +25,6 @@ export default function Profile() {
   const currentMonth = '2026-02';
   const { data: currentAllowance } = trpc.allowance.getByMonth.useQuery({ month: currentMonth, memberId });
   const { data: allowanceHistory = [] } = trpc.allowance.getHistory.useQuery({ memberId });
-  
-  if (!member) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>프로필을 찾을 수 없습니다</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Link href="/">
-              <Button>홈으로 돌아가기</Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   // 현재 월 DDC 순위 계산
   const memberTimes = useMemo(() => {
@@ -122,6 +105,24 @@ export default function Profile() {
       .sort((a, b) => b.date.localeCompare(a.date));
   }, [activityLogs, memberId]);
   
+  // member가 없으면 early return
+  if (!member) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardHeader>
+            <CardTitle>프로필을 찾을 수 없습니다</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Link href="/">
+              <Button>홈으로 돌아가기</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   // 최근 활동 통합 (DDC, RCR, 활동 일지)
   const recentActivities = useMemo(() => {
     const activities: Array<{ date: string; type: string; content: string; variant: 'default' | 'destructive' | 'outline' }> = [];

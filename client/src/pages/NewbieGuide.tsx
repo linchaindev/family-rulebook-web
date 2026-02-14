@@ -35,7 +35,7 @@ export default function NewbieGuide() {
               <p className="text-lg leading-relaxed">
                 중학생이 되면서 갑자기 난이도가 하드모드로 바뀔지? 학원 몸샷, 숙제 보스, 
                 친구들과의 레이드... 그런데 부모님은 자꾸 "공부해라", "핸드폰 그만 봐라" 
-                이런 난이도 높은 퀄스트만 주시잖아?
+                이런 난이도 높은 퀘스트만 주시잖아?
               </p>
               <p className="text-lg leading-relaxed font-semibold text-primary">
                 그래서 우리 가족은 <strong>"공식 룰북"</strong>을 제작했어! (게임 규칙서 같은 거지)

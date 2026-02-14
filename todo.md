@@ -131,3 +131,15 @@
 - [x] Remove or hide fake manager activity data from profile pages
 - [x] Only show real manager activity data from database
 - [x] Verify all profile pages show correct data
+
+## Bug Fixes & RCR System Overhaul (Current Phase)
+- [x] Fix typo: "퀄스트" → "퀘스트" in tutorial page
+- [ ] Fix total screen time calculation error in family member page
+- [ ] Update RCR schema to 10-level card system (Yellow, Red, Double Red, Triple Red, Quadro Red + Green, Double Green, Triple Green, Quadro Green, Golden Card)
+- [ ] Update RCR penalty/reward rules (Yellow: +5h screen time, Green: -1h, Double Green: -5h, Triple Green: +20k allowance, Quadro Green: +40k allowance, Golden: Manager exemption)
+- [ ] Redesign auditor admin RCR tab for penalty/reward card input
+- [ ] Show RCR records in real-time on profile pages (without applying to allowance/DDC until month-end)
+- [ ] Implement month-end evaluation auto-settlement (DDC ranking, manager reward, RCR results)
+- [x] Fix profile page back button error
+- [ ] Update all RCR-related UI text from "경미/보통/중대/최대" to new card system
+- [ ] Update infographic to match new card system
