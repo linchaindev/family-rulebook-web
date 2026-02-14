@@ -71,7 +71,7 @@ export default function Home() {
             2026 KH 패밀리 룰북
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-medium">
-            생존을 위한 가족 서바이벌 가이드
+            건강한 생활습관을 만들기 위한 가족 헌법
           </p>
           <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             스크린 타임과의 전쟁, 숙제와의 사투, 그리고 가족 평화를 위한 공식 규칙집입니다.
