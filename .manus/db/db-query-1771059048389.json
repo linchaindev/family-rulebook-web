@@ -1,0 +1,118 @@
+{
+  "query": "SELECT date, screen_time FROM ddc_records WHERE member_id = 'liam' AND date LIKE '2026-02%' ORDER BY date;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT date, screen_time FROM ddc_records WHERE member_id = 'liam' AND date LIKE '2026-02%' ORDER BY date;",
+  "rows": [
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-09",
+      "screen_time": "55"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-10",
+      "screen_time": "63"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-11",
+      "screen_time": "133"
+    },
+    {
+      "date": "2026-02-12",
+      "screen_time": "89"
+    },
+    {
+      "date": "2026-02-12",
+      "screen_time": "89"
+    },
+    {
+      "date": "2026-02-12",
+      "screen_time": "89"
+    },
+    {
+      "date": "2026-02-12",
+      "screen_time": "89"
+    },
+    {
+      "date": "2026-02-13",
+      "screen_time": "292"
+    },
+    {
+      "date": "2026-02-13",
+      "screen_time": "292"
+    },
+    {
+      "date": "2026-02-13",
+      "screen_time": "292"
+    }
+  ],
+  "messages": [],
+  "stdout": "date\tscreen_time\n2026-02-09\t55\n2026-02-09\t55\n2026-02-09\t55\n2026-02-09\t55\n2026-02-09\t55\n2026-02-09\t55\n2026-02-09\t55\n2026-02-10\t63\n2026-02-10\t63\n2026-02-10\t63\n2026-02-10\t63\n2026-02-10\t63\n2026-02-10\t63\n2026-02-10\t63\n2026-02-11\t133\n2026-02-11\t133\n2026-02-11\t133\n2026-02-11\t133\n2026-02-11\t133\n2026-02-11\t133\n2026-02-12\t89\n2026-02-12\t89\n2026-02-12\t89\n2026-02-12\t89\n2026-02-13\t292\n2026-02-13\t292\n2026-02-13\t292\n",
+  "stderr": "",
+  "execution_time_ms": 1536
+}

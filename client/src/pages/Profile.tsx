@@ -26,12 +26,19 @@ export default function Profile() {
   const { data: currentAllowance } = trpc.allowance.getByMonth.useQuery({ month: currentMonth, memberId });
   const { data: allowanceHistory = [] } = trpc.allowance.getHistory.useQuery({ memberId });
 
-  // 현재 월 DDC 순위 계산
+  // 현재 월 DDC 순위 계산 (중복 제거)
   const memberTimes = useMemo(() => {
     const times = FAMILY_MEMBERS.map(m => {
-      const totalTime = ddcRecords
-        .filter(d => d.memberId === m.id && d.date.startsWith(currentMonth))
-        .reduce((sum, d) => sum + d.screenTime, 0);
+      // 중복 제거: 같은 날짜의 레코드 중 가장 최신 것만 사용
+      const memberRecords = ddcRecords.filter(d => d.memberId === m.id && d.date.startsWith(currentMonth));
+      const uniqueRecords = new Map<string, typeof ddcRecords[0]>();
+      memberRecords.forEach(record => {
+        const existing = uniqueRecords.get(record.date);
+        if (!existing || new Date(record.updatedAt) > new Date(existing.updatedAt)) {
+          uniqueRecords.set(record.date, record);
+        }
+      });
+      const totalTime = Array.from(uniqueRecords.values()).reduce((sum, d) => sum + d.screenTime, 0);
       return { memberId: m.id, total: totalTime };
     });
     times.sort((a, b) => a.total - b.total);
@@ -51,16 +58,23 @@ export default function Profile() {
     return uniqueDates.size;
   }, [ddcRecords, memberId]);
   
-  // 1등 횟수 계산 (월별로 1등인 횟수)
+  // 1등 횟수 계산 (월별로 1등인 횟수, 중복 제거)
   const firstPlaceCount = useMemo(() => {
     const months = new Set(ddcRecords.map(d => d.date.substring(0, 7)));
     let count = 0;
     
     months.forEach(month => {
       const monthlyTimes = FAMILY_MEMBERS.map(m => {
-        const totalTime = ddcRecords
-          .filter(d => d.memberId === m.id && d.date.startsWith(month))
-          .reduce((sum, d) => sum + d.screenTime, 0);
+        // 중복 제거
+        const memberRecords = ddcRecords.filter(d => d.memberId === m.id && d.date.startsWith(month));
+        const uniqueRecords = new Map<string, typeof ddcRecords[0]>();
+        memberRecords.forEach(record => {
+          const existing = uniqueRecords.get(record.date);
+          if (!existing || new Date(record.updatedAt) > new Date(existing.updatedAt)) {
+            uniqueRecords.set(record.date, record);
+          }
+        });
+        const totalTime = Array.from(uniqueRecords.values()).reduce((sum, d) => sum + d.screenTime, 0);
         return { memberId: m.id, total: totalTime };
       });
       monthlyTimes.sort((a, b) => a.total - b.total);
