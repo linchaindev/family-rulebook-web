@@ -244,3 +244,9 @@
 - [x] Increase information density per screen
 - [x] Apply Notion-style clean and efficient design
 - [x] Test mobile and desktop layouts
+
+## Mobile Button Layout Fix (Completed)
+- [x] Remove SECURED badges from management page buttons
+- [x] Add lock icon (Lock) to the front of secured buttons
+- [x] Test mobile layout to ensure buttons don't overflow
+- [x] Verify desktop layout still looks good

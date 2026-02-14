@@ -22,6 +22,39 @@ export default function ReleaseNotes() {
           </p>
         </div>
 
+        {/* v1.0.3 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.3</CardTitle>
+                <CardDescription>2026년 2월 14일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 버그 수정 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Bug className="w-5 h-5 mr-2 text-red-600" />
+                버그 수정
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • 모바일에서 SECURED 뱃지로 인한 버튼 깨짐 문제 해결
+                </li>
+                <li className="text-muted-foreground">
+                  • SECURED 뱃지를 제거하고 열쇠 아이콘(Lock)으로 대체
+                </li>
+                <li className="text-muted-foreground">
+                  • 모바일 2열 배치에서 버튼이 정상적으로 표시됨
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* v1.0.2 */}
         <Card className="mb-8">
           <CardHeader>
@@ -30,7 +63,7 @@ export default function ReleaseNotes() {
                 <CardTitle className="text-2xl">v1.0.2</CardTitle>
                 <CardDescription>2026년 2월 14일</CardDescription>
               </div>
-              <Badge variant="default" className="bg-green-600">Latest</Badge>
+              <Badge variant="secondary">Previous</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

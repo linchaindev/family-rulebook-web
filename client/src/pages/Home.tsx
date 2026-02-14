@@ -23,6 +23,7 @@ import {
   Vote,
   Users,
   Shield,
+  Lock,
   Target,
   Gift,
   AlertTriangle,
@@ -66,7 +67,7 @@ export default function Home() {
         <div className="text-center space-y-4 max-w-4xl mx-auto">
           <Link href="/release-notes">
             <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
-              v1.0.2 · 2026년 2월 14일 업데이트
+              v1.0.3 · 2026년 2월 14일 업데이트
             </Badge>
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
@@ -107,9 +108,8 @@ export default function Home() {
                 size="default"
                 className="w-full h-12 text-sm bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
-                <Shield className="w-5 h-5 mr-2" />
+                <Lock className="w-4 h-4 mr-2" />
                 패밀리 감사(FA)
-                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black text-xs">SECURED</Badge>
               </Button>
             </Link>
 
@@ -119,9 +119,8 @@ export default function Home() {
                 size="default"
                 className="w-full h-12 text-sm bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all"
               >
-                <Shield className="w-5 h-5 mr-2" />
+                <Lock className="w-4 h-4 mr-2" />
                 패밀리 매니저(FM)
-                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black text-xs">SECURED</Badge>
               </Button>
             </Link>
 
