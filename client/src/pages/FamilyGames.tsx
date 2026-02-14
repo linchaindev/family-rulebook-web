@@ -4,130 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Shuffle, Play, RotateCw } from "lucide-react";
+import { ArrowLeft, Shuffle } from "lucide-react";
 import { Link } from "wouter";
 import { FAMILY_MEMBERS } from "@/types/family";
 import { toast } from "sonner";
-
-// 사다리 타기 컴포넌트
-function LadderGame() {
-  const [penalties, setPenalties] = useState<string[]>(Array(5).fill(''));
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [results, setResults] = useState<Record<string, string>>({});
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const handleStart = () => {
-    if (penalties.some(p => !p.trim())) {
-      toast.error('모든 벌칙을 입력해주세요!');
-      return;
-    }
-
-    setIsPlaying(true);
-    setCurrentStep(0);
-    
-    // 사다리 타기 시뮬레이션
-    const shuffledPenalties = [...penalties].sort(() => Math.random() - 0.5);
-    const newResults: Record<string, string> = {};
-    
-    FAMILY_MEMBERS.forEach((member, index) => {
-      newResults[member.id] = shuffledPenalties[index];
-    });
-
-    // 애니메이션 효과
-    let step = 0;
-    const interval = setInterval(() => {
-      step++;
-      setCurrentStep(step);
-      
-      if (step >= FAMILY_MEMBERS.length) {
-        clearInterval(interval);
-        setResults(newResults);
-      }
-    }, 800);
-  };
-
-  const handleReset = () => {
-    setIsPlaying(false);
-    setResults({});
-    setCurrentStep(0);
-  };
-
-  return (
-    <div className="space-y-6">
-      {!isPlaying ? (
-        <>
-          <div>
-            <h3 className="font-semibold mb-3">벌칙 입력</h3>
-            <div className="space-y-3">
-              {penalties.map((penalty, index) => (
-                <div key={index}>
-                  <Label>벌칙 {index + 1}</Label>
-                  <Input
-                    value={penalty}
-                    onChange={(e) => {
-                      const newPenalties = [...penalties];
-                      newPenalties[index] = e.target.value;
-                      setPenalties(newPenalties);
-                    }}
-                    placeholder={`예: ${index === 0 ? '설거지' : index === 1 ? '청소' : index === 2 ? '빨래' : index === 3 ? '꽝' : '간식 사기'}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <Button className="w-full" size="lg" onClick={handleStart}>
-            <Play className="w-5 h-5 mr-2" />
-            사다리 타기 시작!
-          </Button>
-        </>
-      ) : (
-        <div className="space-y-4">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold mb-2">사다리 타는 중...</h3>
-            <p className="text-muted-foreground">스릴 넘치는 순간!</p>
-          </div>
-
-          <div className="space-y-3">
-            {FAMILY_MEMBERS.map((member, index) => (
-              <div
-                key={member.id}
-                className={`p-4 border-2 rounded-lg transition-all duration-500 ${
-                  currentStep > index
-                    ? results[member.id]?.includes('꽝')
-                      ? 'bg-green-50 border-green-500'
-                      : 'bg-red-50 border-red-500'
-                    : 'border-muted'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">{member.avatar}</span>
-                    <span className="font-semibold text-lg">{member.name}</span>
-                  </div>
-                  {currentStep > index && (
-                    <div className="text-right">
-                      <div className={`text-2xl font-bold ${results[member.id]?.includes('꽝') ? 'text-green-600' : 'text-red-600'}`}>
-                        {results[member.id]}
-                        {results[member.id]?.includes('꽝') ? '' : ' 당첨!'}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {currentStep >= FAMILY_MEMBERS.length && (
-            <Button className="w-full" size="lg" onClick={handleReset}>
-              <RotateCw className="w-5 h-5 mr-2" />
-              다시 하기
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
+import LadderGame from "@/components/LadderGame";
 
 // 룰렛 게임 컴포넌트
 function RouletteGame() {
@@ -284,7 +165,7 @@ export default function FamilyGames() {
               <CardHeader>
                 <CardTitle>사다리 타기 게임</CardTitle>
                 <CardDescription>
-                  5가지 벌칙을 입력하고 사다리를 타서 누가 어떤 벌칙을 받을지 정해보세요!
+                  플레이어 수와 결과를 입력하고 사다리를 타서 누가 어떤 결과를 받을지 정해보세요!
                 </CardDescription>
               </CardHeader>
               <CardContent>
