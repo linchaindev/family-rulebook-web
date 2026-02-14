@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE rcr_records DROP COLUMN level;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute ALTER TABLE rcr_records DROP COLUMN level;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1091 (42000) at line 1: Can't DROP 'level'; check that column/key exists"
+  ]
+}

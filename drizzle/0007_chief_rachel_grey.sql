@@ -1,0 +1,2 @@
+ALTER TABLE `rcr_records` ADD `card_type` enum('yellow','red','double_red','triple_red','quadro_red','green','double_green','triple_green','quadro_green','golden') NOT NULL;--> statement-breakpoint
+ALTER TABLE `rcr_records` DROP COLUMN `level`;

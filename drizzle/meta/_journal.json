@@ -50,6 +50,13 @@
       "when": 1770737383095,
       "tag": "0006_supreme_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1771057169981,
+      "tag": "0007_chief_rachel_grey",
+      "breakpoints": true
     }
   ]
 }

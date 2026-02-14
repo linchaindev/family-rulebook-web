@@ -32,12 +32,10 @@ export default function Dashboard() {
     ),
   }));
 
-  // RCR 레벨별 통계
+  // RCR 10단계 카드 통계
   const rcrStats = {
-    minor: rcrRecords.filter(r => r.level === 'minor').length,
-    moderate: rcrRecords.filter(r => r.level === 'moderate').length,
-    major: rcrRecords.filter(r => r.level === 'major').length,
-    maximum: rcrRecords.filter(r => r.level === 'maximum').length,
+    penalty: rcrRecords.filter(r => ['yellow', 'red', 'double_red', 'triple_red', 'quadro_red'].includes(r.cardType)).length,
+    reward: rcrRecords.filter(r => ['green', 'double_green', 'triple_green', 'quadro_green', 'golden'].includes(r.cardType)).length,
   };
   
   // 평균 스크린타임 계산 (2월)
@@ -48,10 +46,8 @@ export default function Dashboard() {
     : 0;
 
   const rcrChartData = [
-    { level: '경미', count: rcrStats.minor, color: '#FFB6C1' },
-    { level: '중등', count: rcrStats.moderate, color: '#FF6B6B' },
-    { level: '중대', count: rcrStats.major, color: '#E74C3C' },
-    { level: '최대', count: rcrStats.maximum, color: '#C0392B' },
+    { level: '벌칙 카드', count: rcrStats.penalty, color: '#E74C3C' },
+    { level: '보상 카드', count: rcrStats.reward, color: '#27AE60' },
   ];
 
   return (
@@ -99,7 +95,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-destructive">{rcrRecords.length}건</div>
-              <p className="text-sm text-muted-foreground mt-2">경미 {rcrStats.minor} / 중등 {rcrStats.moderate} / 중대 {rcrStats.major}</p>
+              <p className="text-sm text-muted-foreground mt-2">벌칙 {rcrStats.penalty}건 / 보상 {rcrStats.reward}건</p>
             </CardContent>
           </Card>
 
@@ -168,21 +164,23 @@ export default function Dashboard() {
               {(() => {
                 return rcrRecords.slice(0, 5).map((record, index) => {
                 const member = FAMILY_MEMBERS.find(m => m.id === record.memberId);
-                const levelColors = {
-                  minor: 'bg-red-50 border-red-200',
-                  moderate: 'bg-red-100 border-red-300',
-                  major: 'bg-red-200 border-red-400',
-                  maximum: 'bg-red-300 border-red-500',
+                const cardLabels: Record<string, string> = {
+                  yellow: '🟨 예로우카드',
+                  red: '🟥 레드카드',
+                  double_red: '🟥🟥 더블레드',
+                  triple_red: '🟥🟥🟥 트리플레드',
+                  quadro_red: '🟥🟥🟥🟥 쿼드로레드',
+                  green: '🟩 그린카드',
+                  double_green: '🟩🟩 더블그린',
+                  triple_green: '🟩🟩🟩 트리플그린',
+                  quadro_green: '🟩🟩🟩🟩 쿼드로그린',
+                  golden: '🏆 골든카드'
                 };
-                const levelLabels = {
-                  minor: '경미',
-                  moderate: '중등',
-                  major: '중대',
-                  maximum: '최대',
-                };
+                const isPenalty = ['yellow', 'red', 'double_red', 'triple_red', 'quadro_red'].includes(record.cardType);
+                const cardColor = isPenalty ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200';
                 
                 return (
-                  <div key={index} className={`p-4 rounded-lg border-2 ${levelColors[record.level]}`}>
+                  <div key={index} className={`p-4 rounded-lg border-2 ${cardColor}`}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{member?.avatar}</span>
@@ -191,7 +189,7 @@ export default function Dashboard() {
                           <p className="text-sm text-muted-foreground">{record.date}</p>
                         </div>
                       </div>
-                      <Badge variant="destructive">{levelLabels[record.level]}</Badge>
+                      <Badge variant={isPenalty ? "destructive" : "default"}>{cardLabels[record.cardType] || record.cardType}</Badge>
                     </div>
                     <p className="text-sm"><strong>사유:</strong> {record.reason}</p>
                     <p className="text-sm text-muted-foreground">적용자: {record.appliedBy}</p>

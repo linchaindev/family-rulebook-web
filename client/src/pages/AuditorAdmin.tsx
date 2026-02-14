@@ -126,7 +126,7 @@ export default function AuditorAdmin() {
   const [rcrFormData, setRcrFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     memberId: '',
-    level: 'minor' as 'minor' | 'moderate' | 'major' | 'maximum',
+    cardType: 'yellow' as 'yellow' | 'red' | 'double_red' | 'triple_red' | 'quadro_red' | 'green' | 'double_green' | 'triple_green' | 'quadro_green' | 'golden',
     reason: '',
     appliedBy: '',
   });
@@ -294,7 +294,7 @@ export default function AuditorAdmin() {
     setRcrFormData({
       date: new Date().toISOString().split('T')[0],
       memberId: '',
-      level: 'minor',
+      cardType: 'yellow',
       reason: '',
       appliedBy: '',
     });
@@ -313,7 +313,7 @@ export default function AuditorAdmin() {
     setRcrFormData({
       date: record.date,
       memberId: record.memberId,
-      level: record.level,
+      cardType: record.cardType,
       reason: record.reason,
       appliedBy: record.appliedBy,
     });
@@ -541,16 +541,22 @@ export default function AuditorAdmin() {
                           </Select>
                         </div>
                         <div>
-                          <Label>레벨</Label>
-                          <Select value={rcrFormData.level} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, level: val })}>
+                          <Label>카드 종류</Label>
+                          <Select value={rcrFormData.cardType} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, cardType: val })}>
                             <SelectTrigger>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="minor">경미</SelectItem>
-                              <SelectItem value="moderate">보통</SelectItem>
-                              <SelectItem value="major">중대</SelectItem>
-                              <SelectItem value="maximum">최대</SelectItem>
+                              <SelectItem value="yellow">🟨 예로우카드 (+5시간)</SelectItem>
+                              <SelectItem value="red">🟥 레드카드 (-1만원)</SelectItem>
+                              <SelectItem value="double_red">🟥🟥 더블레드 (-2만원)</SelectItem>
+                              <SelectItem value="triple_red">🟥🟥🟥 트리플레드 (-3만원)</SelectItem>
+                              <SelectItem value="quadro_red">🟥🟥🟥🟥 쿼드로레드 (-4만원)</SelectItem>
+                              <SelectItem value="green">🟩 그린카드 (-1시간)</SelectItem>
+                              <SelectItem value="double_green">🟩🟩 더블그린 (-5시간)</SelectItem>
+                              <SelectItem value="triple_green">🟩🟩🟩 트리플그린 (+2만원)</SelectItem>
+                              <SelectItem value="quadro_green">🟩🟩🟩🟩 쿼드로그린 (+4만원)</SelectItem>
+                              <SelectItem value="golden">🏆 골든카드 (매니저 면제)</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -610,16 +616,22 @@ export default function AuditorAdmin() {
                               </Select>
                             </div>
                             <div>
-                              <Label>레벨</Label>
-                              <Select value={rcrFormData.level} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, level: val })}>
+                              <Label>카드 종류</Label>
+                              <Select value={rcrFormData.cardType} onValueChange={(val: any) => setRcrFormData({ ...rcrFormData, cardType: val })}>
                                 <SelectTrigger>
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="minor">경미</SelectItem>
-                                  <SelectItem value="moderate">보통</SelectItem>
-                                  <SelectItem value="major">중대</SelectItem>
-                                  <SelectItem value="maximum">최대</SelectItem>
+                                  <SelectItem value="yellow">🟨 예로우카드 (+5시간)</SelectItem>
+                                  <SelectItem value="red">🟥 레드카드 (-1만원)</SelectItem>
+                                  <SelectItem value="double_red">🟥🟥 더블레드 (-2만원)</SelectItem>
+                                  <SelectItem value="triple_red">🟥🟥🟥 트리플레드 (-3만원)</SelectItem>
+                                  <SelectItem value="quadro_red">🟥🟥🟥🟥 쿼드로레드 (-4만원)</SelectItem>
+                                  <SelectItem value="green">🟩 그린카드 (-1시간)</SelectItem>
+                                  <SelectItem value="double_green">🟩🟩 더블그린 (-5시간)</SelectItem>
+                                  <SelectItem value="triple_green">🟩🟩🟩 트리플그린 (+2만원)</SelectItem>
+                                  <SelectItem value="quadro_green">🟩🟩🟩🟩 쿼드로그린 (+4만원)</SelectItem>
+                                  <SelectItem value="golden">🏆 골든카드 (매니저 면제)</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -650,7 +662,20 @@ export default function AuditorAdmin() {
                             <div className="flex flex-wrap items-center gap-2 mb-2">
                               <Badge>{record.date}</Badge>
                               <span className="font-medium">{FAMILY_MEMBERS.find(m => m.id === record.memberId)?.name}</span>
-                              <Badge variant="destructive">{record.level}</Badge>
+                              <Badge variant={['yellow', 'red', 'double_red', 'triple_red', 'quadro_red'].includes(record.cardType) ? "destructive" : "default"}>
+                                {{
+                                  yellow: '🟨 예로우',
+                                  red: '🟥 레드',
+                                  double_red: '🟥🟥 더블레드',
+                                  triple_red: '🟥🟥🟥 트리플레드',
+                                  quadro_red: '🟥🟥🟥🟥 쿼드로레드',
+                                  green: '🟩 그린',
+                                  double_green: '🟩🟩 더블그린',
+                                  triple_green: '🟩🟩🟩 트리플그린',
+                                  quadro_green: '🟩🟩🟩🟩 쿼드로그린',
+                                  golden: '🏆 골든'
+                                }[record.cardType] || record.cardType}
+                              </Badge>
                               <span className="text-sm text-muted-foreground">적용: {record.appliedBy}</span>
                             </div>
                             <p className="text-sm">{record.reason}</p>

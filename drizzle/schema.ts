@@ -38,12 +38,23 @@ export const ddcRecords = mysqlTable("ddc_records", {
 export type DDCRecord = typeof ddcRecords.$inferSelect;
 export type InsertDDCRecord = typeof ddcRecords.$inferInsert;
 
-// RCR Records Table
+// RCR Records Table - 10단계 카드 시스템
 export const rcrRecords = mysqlTable("rcr_records", {
   id: int("id").autoincrement().primaryKey(),
   date: varchar("date", { length: 10 }).notNull(), // YYYY-MM-DD
   memberId: varchar("member_id", { length: 20 }).notNull(),
-  level: mysqlEnum("level", ["minor", "moderate", "major", "maximum"]).notNull(),
+  cardType: mysqlEnum("card_type", [
+    "yellow",        // 벌칙: 스크린타임 +5시간
+    "red",           // 벌칙: 용돈 -1만원
+    "double_red",    // 벌칙: 용돈 -2만원
+    "triple_red",    // 벌칙: 용돈 -3만원
+    "quadro_red",    // 벌칙: 용돈 -4만원
+    "green",         // 보상: 스크린타임 -1시간
+    "double_green",  // 보상: 스크린타임 -5시간
+    "triple_green",  // 보상: 용돀 +2만원
+    "quadro_green",  // 보상: 용돀 +4만원
+    "golden"         // 보상: 매니저 1개월 면제
+  ]).notNull(),
   reason: text("reason").notNull(),
   appliedBy: varchar("applied_by", { length: 50 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),

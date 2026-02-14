@@ -89,13 +89,13 @@ export const appRouter = router({
       }),
   }),
 
-  // RCR Records Router
+  // RCR Records Router - 10단계 카드 시스템
   rcr: router({
     create: publicProcedure
       .input(z.object({
         date: z.string(),
         memberId: z.string(),
-        level: z.enum(["minor", "moderate", "major", "maximum"]),
+        cardType: z.enum(["yellow", "red", "double_red", "triple_red", "quadro_red", "green", "double_green", "triple_green", "quadro_green", "golden"]),
         reason: z.string(),
         appliedBy: z.string(),
       }))
@@ -122,7 +122,7 @@ export const appRouter = router({
         updates: z.object({
           date: z.string().optional(),
           memberId: z.string().optional(),
-          level: z.enum(["minor", "moderate", "major", "maximum"]).optional(),
+          cardType: z.enum(["yellow", "red", "double_red", "triple_red", "quadro_red", "green", "double_green", "triple_green", "quadro_green", "golden"]).optional(),
           reason: z.string().optional(),
           appliedBy: z.string().optional(),
         }),
@@ -422,25 +422,41 @@ export const appRouter = router({
           settlements.set(firstPlace, { bonus: 1, penalty: 0 });
         }
         
-        // RCR 벌금 계산
+        // RCR 10단계 카드 시스템 처리
+        // 벌칙 카드: yellow(+5시간), red(-1만원), double_red(-2만원), triple_red(-3만원), quadro_red(-4만원)
+        // 보상 카드: green(-1시간), double_green(-5시간), triple_green(+2만원), quadro_green(+4만원), golden(매니저 면제)
+        // 월말 평가에서만 일괄 반영
         currentMonthRCR.forEach(rcr => {
           const current = settlements.get(rcr.memberId) || { bonus: 0, penalty: 0 };
+          let bonusAmount = 0;
           let penaltyAmount = 0;
           
-          switch (rcr.level) {
-            case 'minor':
-              penaltyAmount = 1; // 1만원
+          switch (rcr.cardType) {
+            // 벌칙 카드 (용돀 감소)
+            case 'red':
+              penaltyAmount = 1;
               break;
-            case 'moderate':
-              penaltyAmount = 2; // 2만원
+            case 'double_red':
+              penaltyAmount = 2;
               break;
-            case 'major':
-              penaltyAmount = 3; // 3만원
+            case 'triple_red':
+              penaltyAmount = 3;
               break;
+            case 'quadro_red':
+              penaltyAmount = 4;
+              break;
+            // 보상 카드 (용돀 증가)
+            case 'triple_green':
+              bonusAmount = 2;
+              break;
+            case 'quadro_green':
+              bonusAmount = 4;
+              break;
+            // yellow, green, double_green, golden은 DDC 스크린타임이나 매니저 면제로 처리 (용돀 미반영)
           }
           
           settlements.set(rcr.memberId, {
-            bonus: current.bonus,
+            bonus: current.bonus + bonusAmount,
             penalty: current.penalty + penaltyAmount,
           });
         });

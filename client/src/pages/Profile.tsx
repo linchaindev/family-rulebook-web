@@ -140,19 +140,25 @@ export default function Profile() {
         });
       });
     
-    // RCR 기록
+    // RCR 기록 - 10단계 카드 시스템
     memberRcrRecords.slice(0, 3).forEach(r => {
-      const levelLabels = {
-        minor: '경미',
-        moderate: '보통',
-        major: '중대',
-        maximum: '최대'
+      const cardLabels: Record<string, string> = {
+        yellow: '🟨 예로우카드',
+        red: '🟥 레드카드',
+        double_red: '🟥🟥 더블레드',
+        triple_red: '🟥🟥🟥 트리플레드',
+        quadro_red: '🟥🟥🟥🟥 쿼드로레드',
+        green: '🟩 그린카드',
+        double_green: '🟩🟩 더블그린',
+        triple_green: '🟩🟩🟩 트리플그린',
+        quadro_green: '🟩🟩🟩🟩 쿼드로그린',
+        golden: '🏆 골든카드'
       };
       activities.push({
         date: r.date,
         type: 'RCR',
-        content: `${levelLabels[r.level]} - ${r.reason}`,
-        variant: 'destructive'
+        content: `${cardLabels[r.cardType] || r.cardType} - ${r.reason}`,
+        variant: r.cardType.includes('green') || r.cardType === 'golden' ? 'default' : 'destructive'
       });
     });
     
@@ -407,24 +413,36 @@ export default function Profile() {
             <CardContent>
               <div className="space-y-3">
                 {memberRcrRecords.slice(0, 5).map((rcr) => {
-                  const levelLabels = {
-                    minor: '경미',
-                    moderate: '보통',
-                    major: '중대',
-                    maximum: '최대'
+                  const cardLabels: Record<string, string> = {
+                    yellow: '🟨 예로우카드',
+                    red: '🟥 레드카드',
+                    double_red: '🟥🟥 더블레드',
+                    triple_red: '🟥🟥🟥 트리플레드',
+                    quadro_red: '🟥🟥🟥🟥 쿼드로레드',
+                    green: '🟩 그린카드',
+                    double_green: '🟩🟩 더블그린',
+                    triple_green: '🟩🟩🟩 트리플그린',
+                    quadro_green: '🟩🟩🟩🟩 쿼드로그린',
+                    golden: '🏆 골든카드'
                   };
-                  const levelColors = {
-                    minor: 'bg-yellow-100 text-yellow-800',
-                    moderate: 'bg-orange-100 text-orange-800',
-                    major: 'bg-red-100 text-red-800',
-                    maximum: 'bg-purple-100 text-purple-800'
+                  const cardColors: Record<string, string> = {
+                    yellow: 'bg-yellow-100 text-yellow-800',
+                    red: 'bg-red-100 text-red-800',
+                    double_red: 'bg-red-200 text-red-900',
+                    triple_red: 'bg-red-300 text-red-950',
+                    quadro_red: 'bg-red-400 text-white',
+                    green: 'bg-green-100 text-green-800',
+                    double_green: 'bg-green-200 text-green-900',
+                    triple_green: 'bg-green-300 text-green-950',
+                    quadro_green: 'bg-green-400 text-white',
+                    golden: 'bg-yellow-400 text-yellow-950'
                   };
                   return (
                     <div key={rcr.id} className="p-3 border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-muted-foreground">{rcr.date}</span>
-                        <Badge className={levelColors[rcr.level]}>
-                          {levelLabels[rcr.level]}
+                        <Badge className={cardColors[rcr.cardType] || 'bg-gray-100 text-gray-800'}>
+                          {cardLabels[rcr.cardType] || rcr.cardType}
                         </Badge>
                       </div>
                       <p className="text-sm">{rcr.reason}</p>

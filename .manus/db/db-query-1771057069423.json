@@ -1,0 +1,30 @@
+{
+  "query": "SELECT member_id, SUM(screen_time) as total_minutes FROM ddc_records WHERE date LIKE '2026-02%' GROUP BY member_id ORDER BY total_minutes;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT member_id, SUM(screen_time) as total_minutes FROM ddc_records WHERE date LIKE '2026-02%' GROUP BY member_id ORDER BY total_minutes;",
+  "rows": [
+    {
+      "member_id": "liam",
+      "total_minutes": "2856"
+    },
+    {
+      "member_id": "dad",
+      "total_minutes": "2857"
+    },
+    {
+      "member_id": "jin",
+      "total_minutes": "4207"
+    },
+    {
+      "member_id": "mom",
+      "total_minutes": "4747"
+    },
+    {
+      "member_id": "sean",
+      "total_minutes": "11641"
+    }
+  ],
+  "messages": [],
+  "stdout": "member_id\ttotal_minutes\nliam\t2856\ndad\t2857\njin\t4207\nmom\t4747\nsean\t11641\n",
+  "stderr": "",
+  "execution_time_ms": 1519
+}
