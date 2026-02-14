@@ -22,6 +22,48 @@ export default function ReleaseNotes() {
           </p>
         </div>
 
+        {/* v1.0.4 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.4</CardTitle>
+                <CardDescription>2026년 2월 14일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* 신규 기능 */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2 text-yellow-600" />
+                신규 기능
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">
+                  • 라이트/다크 모드 테마 전환 기능 추가
+                </li>
+                <li className="text-muted-foreground">
+                  • 우측 상단에 테마 토글 버튼 추가 (달/해 아이콘)
+                </li>
+                <li className="text-muted-foreground">
+                  • localStorage에 사용자 테마 선호도 저장
+                </li>
+                <li className="text-muted-foreground">
+                  • 사다리 게임 Canvas 기반으로 완전 개편
+                </li>
+                <li className="text-muted-foreground">
+                  • 경로 추적 애니메이션 추가 (1.4초)
+                </li>
+                <li className="text-muted-foreground">
+                  • 플레이어별 고유 색상으로 경로 표시
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* v1.0.3 */}
         <Card className="mb-8">
           <CardHeader>
@@ -30,7 +72,7 @@ export default function ReleaseNotes() {
                 <CardTitle className="text-2xl">v1.0.3</CardTitle>
                 <CardDescription>2026년 2월 14일</CardDescription>
               </div>
-              <Badge variant="default" className="bg-green-600">Latest</Badge>
+              <Badge variant="secondary">Previous</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

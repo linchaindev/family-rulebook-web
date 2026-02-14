@@ -1,5 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -62,12 +64,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
+      {/* 테마 토글 버튼 - 우측 상단 */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       {/* Hero Section */}
       <section className="container py-12 md:py-20">
         <div className="text-center space-y-4 max-w-4xl mx-auto">
           <Link href="/release-notes">
             <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
-              v1.0.3 · 2026년 2월 14일 업데이트
+              v1.0.4 · 2026년 2월 14일 업데이트
             </Badge>
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
