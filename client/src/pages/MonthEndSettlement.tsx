@@ -12,8 +12,14 @@ import { FAMILY_MEMBERS } from "@/types/family";
 
 export default function MonthEndSettlement() {
   const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // 세션 스토리지에서 인증 상태 확인
+    return sessionStorage.getItem('auditor_authenticated') === 'true';
+  });
   const [selectedMonth, setSelectedMonth] = useState(() => {
+    // 세션 스토리지에서 월 정보 확인
+    const storedMonth = sessionStorage.getItem('auditor_month');
+    if (storedMonth) return storedMonth;
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });

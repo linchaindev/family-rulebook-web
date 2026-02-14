@@ -165,7 +165,7 @@ export default function Dashboard() {
                 return rcrRecords.slice(0, 5).map((record, index) => {
                 const member = FAMILY_MEMBERS.find(m => m.id === record.memberId);
                 const cardLabels: Record<string, string> = {
-                  yellow: '🟨 예로우카드',
+                  yellow: '🟨 옐로우카드',
                   red: '🟥 레드카드',
                   double_red: '🟥🟥 더블레드',
                   triple_red: '🟥🟥🟥 트리플레드',

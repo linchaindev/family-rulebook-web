@@ -15,6 +15,163 @@ import { Textarea } from "@/components/ui/textarea";
 import { FAMILY_MEMBERS } from "@/types/family";
 import { formatMinutesToHoursAndMinutes } from "@/lib/timeUtils";
 
+// 매니저 활동 기록 컴포넌트
+function ManagerActivityLogTab() {
+  const [editingLog, setEditingLog] = useState<number | null>(null);
+  const [editLogData, setEditLogData] = useState({
+    date: '',
+    memberId: '',
+    activityType: 'tardiness' as 'tardiness' | 'absence' | 'homework_incomplete' | 'rule_violation' | 'other',
+    comment: '',
+  });
+
+  const { data: activityLogs = [], refetch } = trpc.managerActivityLog.getAll.useQuery();
+
+  const updateLogMutation = trpc.managerActivityLog.update.useMutation({
+    onSuccess: () => {
+      toast.success('매니저 활동 기록이 수정되었습니다.');
+      refetch();
+      setEditingLog(null);
+    },
+    onError: () => {
+      toast.error('매니저 활동 기록 수정에 실패했습니다.');
+    },
+  });
+
+  const deleteLogMutation = trpc.managerActivityLog.delete.useMutation({
+    onSuccess: () => {
+      toast.success('매니저 활동 기록이 삭제되었습니다.');
+      refetch();
+    },
+  });
+
+  const handleEditLog = (log: any) => {
+    setEditingLog(log.id);
+    setEditLogData({
+      date: log.date,
+      memberId: log.memberId,
+      activityType: log.activityType,
+      comment: log.comment,
+    });
+  };
+
+  const handleSaveLog = () => {
+    if (!editingLog) return;
+    updateLogMutation.mutate({
+      id: editingLog,
+      updates: editLogData,
+    });
+  };
+
+  const activityTypeLabels: Record<string, string> = {
+    tardiness: '지각',
+    absence: '결석',
+    homework_incomplete: '숙제 미완료',
+    rule_violation: '규칙 위반',
+    other: '기타',
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>매니저 활동 기록 관리 ({activityLogs.length}개)</CardTitle>
+        <CardDescription>매니저가 기록한 활동 내역을 조회, 수정, 삭제할 수 있습니다.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          {activityLogs.map((log) => {
+            const member = FAMILY_MEMBERS.find(m => m.id === log.memberId);
+            return (
+              <div key={log.id} className="flex flex-col md:flex-row md:items-center justify-between p-3 border rounded-lg gap-2">
+                {editingLog === log.id ? (
+                  <>
+                    <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-2">
+                      <Input
+                        type="date"
+                        value={editLogData.date}
+                        onChange={(e) => setEditLogData({ ...editLogData, date: e.target.value })}
+                      />
+                      <Select value={editLogData.memberId} onValueChange={(val) => setEditLogData({ ...editLogData, memberId: val })}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {FAMILY_MEMBERS.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              {member.avatar} {member.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Select value={editLogData.activityType} onValueChange={(val: any) => setEditLogData({ ...editLogData, activityType: val })}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="tardiness">지각</SelectItem>
+                          <SelectItem value="absence">결석</SelectItem>
+                          <SelectItem value="homework_incomplete">숙제 미완료</SelectItem>
+                          <SelectItem value="rule_violation">규칙 위반</SelectItem>
+                          <SelectItem value="other">기타</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Textarea
+                        value={editLogData.comment}
+                        onChange={(e) => setEditLogData({ ...editLogData, comment: e.target.value })}
+                        placeholder="상세 내용"
+                        className="col-span-full"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={handleSaveLog}>저장</Button>
+                      <Button size="sm" variant="outline" onClick={() => setEditingLog(null)}>취소</Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge variant="outline">{log.date}</Badge>
+                        <span className="font-medium">{member?.avatar} {member?.name}</span>
+                        <Badge>{activityTypeLabels[log.activityType]}</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{log.comment}</p>
+                      <p className="text-xs text-muted-foreground mt-1">기록자: {log.recordedBy}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditLog(log)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          if (confirm('정말 삭제하시겠습니까?')) {
+                            deleteLogMutation.mutate({ id: log.id });
+                          }
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
+          {activityLogs.length === 0 && (
+            <p className="text-center text-muted-foreground py-8">아직 매니저 활동 기록이 없습니다.</p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // 월별 매니저 지정 컴포넌트
 function MonthlyManagerTab() {
   const [newMonth, setNewMonth] = useState(() => {
@@ -395,12 +552,19 @@ export default function AuditorAdmin() {
               룰북으로 돌아가기
             </Button>
           </Link>
-          <Link href="/month-end-settlement">
-            <Button variant="default" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
-              <Calculator className="w-4 h-4 mr-2" />
-              월말 정산 시스템
-            </Button>
-          </Link>
+          <Button 
+            variant="default" 
+            className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
+            onClick={() => {
+              // 인증 상태를 세션 스토리지에 저장
+              sessionStorage.setItem('auditor_authenticated', 'true');
+              sessionStorage.setItem('auditor_month', selectedMonth);
+              window.location.href = '/month-end-settlement';
+            }}
+          >
+            <Calculator className="w-4 h-4 mr-2" />
+            월말 정산 시스템
+          </Button>
         </div>
 
         <div className="mb-6">
@@ -412,10 +576,11 @@ export default function AuditorAdmin() {
         </div>
 
         <Tabs defaultValue="ddc" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 text-xs md:text-sm">
+          <TabsList className="grid w-full grid-cols-6 text-xs md:text-sm">
             <TabsTrigger value="ddc">DDC</TabsTrigger>
             <TabsTrigger value="rcr">RCR</TabsTrigger>
             <TabsTrigger value="monthlyManager">월별 매니저</TabsTrigger>
+            <TabsTrigger value="managerActivityLog">매니저 활동</TabsTrigger>
             <TabsTrigger value="allowance">용돈</TabsTrigger>
             <TabsTrigger value="comments">버그 리포트</TabsTrigger>
           </TabsList>
@@ -555,7 +720,7 @@ export default function AuditorAdmin() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="yellow">🟨 예로우카드 (+5시간)</SelectItem>
+                              <SelectItem value="yellow">🟨 옐로우카드 (+5시간)</SelectItem>
                               <SelectItem value="red">🟥 레드카드 (-1만원)</SelectItem>
                               <SelectItem value="double_red">🟥🟥 더블레드 (-2만원)</SelectItem>
                               <SelectItem value="triple_red">🟥🟥🟥 트리플레드 (-3만원)</SelectItem>
@@ -630,7 +795,7 @@ export default function AuditorAdmin() {
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="yellow">🟨 예로우카드 (+5시간)</SelectItem>
+                                  <SelectItem value="yellow">🟨 옐로우카드 (+5시간)</SelectItem>
                                   <SelectItem value="red">🟥 레드카드 (-1만원)</SelectItem>
                                   <SelectItem value="double_red">🟥🟥 더블레드 (-2만원)</SelectItem>
                                   <SelectItem value="triple_red">🟥🟥🟥 트리플레드 (-3만원)</SelectItem>
@@ -723,6 +888,11 @@ export default function AuditorAdmin() {
           <TabsContent value="monthlyManager" className="space-y-4">
             <MonthlyManagerTab />
           </TabsContent>
+
+          <TabsContent value="managerActivityLog" className="space-y-4">
+            <ManagerActivityLogTab />
+          </TabsContent>
+
           <TabsContent value="allowance" className="space-y-4">
             <Card>
               <CardHeader>

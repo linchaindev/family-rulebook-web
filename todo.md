@@ -205,3 +205,23 @@
 - [ ] Test manager compensation calculation with family votes
 - [ ] Test RCR rewards/penalties application
 - [ ] Verify all calculations are accurate
+
+## RCR Typo Fix & Management Page Improvements (Current Phase)
+- [ ] Fix "예로우카드" → "옐로우카드" typo in all pages
+- [ ] Fix "예로우카드" → "옐로우카드" typo in infographic image
+- [ ] Add manager activity log edit/delete functionality in auditor admin page
+- [ ] Fix month-end settlement password duplicate input issue
+- [ ] Improve manager DDC input page UI (large button + Secured badge)
+- [ ] Improve auditor admin page UI (large button + Secured badge)
+- [ ] Rename "매니저 DDC 입력" to "패밀리 매니저(FM) 전용"
+- [ ] Rename "감사 관리" to "패밀리 감사(FA) 전용"
+
+## RCR Typo Fix & Management Page UI Improvements (Completed)
+- [x] Fix "예로우카드" → "옐로우카드" typo in all pages
+- [x] Regenerate RCR infographic image with correct spelling
+- [x] Add manager activity log edit/delete functionality in auditor admin
+- [x] Fix month-end settlement password duplicate input issue (session storage)
+- [x] Improve management page buttons with large size + SECURED badges
+- [x] Rename management pages to "패밀리 매니저(FM) 전용" and "패밀리 감사(FA) 전용"
+- [x] Add DDC data duplication prevention (UNIQUE INDEX + upsert logic)
+- [x] Fix mouse back button error in Profile page (React hook order)

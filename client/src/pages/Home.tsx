@@ -18,11 +18,11 @@ import {
   Sun,
   School,
   Book,
+  Shield,
   Moon,
   Calculator,
   Vote,
   Users,
-  Shield,
   Target,
   Gift,
   AlertTriangle,
@@ -98,13 +98,25 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/manager-input">
-              <Button variant="ghost" size="sm">
-                📝 매니저 DDC 입력
+              <Button 
+                variant="default" 
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                패밀리 매니저(FM) 전용
+                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black">SECURED</Badge>
               </Button>
             </Link>
             <Link href="/auditor-admin">
-              <Button variant="ghost" size="sm">
-                🔐 감사 관리
+              <Button 
+                variant="default" 
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Shield className="w-5 h-5 mr-2" />
+                패밀리 감사(FA) 전용
+                <Badge variant="secondary" className="ml-2 bg-yellow-400 text-black">SECURED</Badge>
               </Button>
             </Link>
             <Link href="/manager-evaluation">
@@ -663,7 +675,7 @@ export default function Home() {
           <div className="mt-12">
             <h3 className="text-2xl font-bold mb-6 text-center">Part 3 인포그래픽</h3>
             <img 
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/gusinLAcDzhCDXtI.png" 
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663101403784/KUxFPgjohTphodyz.png" 
               alt="Part 3 패밀리 매니저 룰 인포그래픽" 
               className="w-full max-w-md mx-auto rounded-lg shadow-lg"
             />

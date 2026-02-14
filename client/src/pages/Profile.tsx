@@ -157,7 +157,7 @@ export default function Profile() {
     // RCR 기록 - 10단계 카드 시스템
     memberRcrRecords.slice(0, 3).forEach(r => {
       const cardLabels: Record<string, string> = {
-        yellow: '🟨 예로우카드',
+        yellow: '🟨 옐로우카드',
         red: '🟥 레드카드',
         double_red: '🟥🟥 더블레드',
         triple_red: '🟥🟥🟥 트리플레드',
@@ -442,7 +442,7 @@ export default function Profile() {
               <div className="space-y-3">
                 {memberRcrRecords.slice(0, 5).map((rcr) => {
                   const cardLabels: Record<string, string> = {
-                    yellow: '🟨 예로우카드',
+                    yellow: '🟨 옐로우카드',
                     red: '🟥 레드카드',
                     double_red: '🟥🟥 더블레드',
                     triple_red: '🟥🟥🟥 트리플레드',
