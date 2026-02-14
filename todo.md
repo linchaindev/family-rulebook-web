@@ -250,3 +250,13 @@
 - [x] Add lock icon (Lock) to the front of secured buttons
 - [x] Test mobile layout to ensure buttons don't overflow
 - [x] Verify desktop layout still looks good
+
+## Ladder Game Canvas Improvement & Theme Switcher (Current Phase)
+- [ ] Sync GitHub commit (Canvas-based ladder game with path tracking animation)
+- [ ] Review ladder game improvements
+- [ ] Test ladder game functionality
+- [ ] Add light/dark mode theme switcher
+- [ ] Add theme toggle button in header/navigation
+- [ ] Persist user theme preference in localStorage
+- [ ] Test theme switching on all pages
+- [ ] Save checkpoint and publish
