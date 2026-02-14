@@ -1,0 +1,9 @@
+{
+  "query": "DELETE t1 FROM ddc_records t1\nINNER JOIN (\n  SELECT date, member_id, MAX(id) as max_id\n  FROM ddc_records\n  GROUP BY date, member_id\n  HAVING COUNT(*) > 1\n) t2 ON t1.date = t2.date AND t1.member_id = t2.member_id AND t1.id < t2.max_id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute DELETE t1 FROM ddc_records t1\nINNER JOIN (\n  SELECT date, member_id, MAX(id) as max_id\n  FROM ddc_records\n  GROUP BY date, member_id\n  HAVING COUNT(*) > 1\n) t2 ON t1.date = t2.date AND t1.member_id = t2.member_id AND t1.id < t2.max_id;",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1566
+}

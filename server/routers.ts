@@ -49,10 +49,37 @@ export const appRouter = router({
         })),
       }))
       .mutation(async ({ input }) => {
+        let successCount = 0;
+        let duplicateCount = 0;
+        
         for (const record of input.records) {
-          await db.createDDCRecord(record);
+          try {
+            await db.createDDCRecord(record);
+            successCount++;
+          } catch (error: any) {
+            // 중복 데이터 에러 (MySQL error code 1062)
+            if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+              duplicateCount++;
+              // 중복 데이터는 업데이트로 처리
+              await db.updateDDCRecordByDateAndMember(
+                { date: record.date, memberId: record.memberId }, 
+                { screenTime: record.screenTime }
+              );
+              successCount++;
+            } else {
+              throw error;
+            }
+          }
         }
-        return { success: true, count: input.records.length };
+        
+        return { 
+          success: true, 
+          count: successCount,
+          duplicates: duplicateCount,
+          message: duplicateCount > 0 
+            ? `${successCount}개 저장 (중복 ${duplicateCount}개 업데이트)`
+            : `${successCount}개 저장`
+        };
       }),
     
     getAll: publicProcedure.query(async () => {

@@ -187,3 +187,21 @@
 - [x] Fix "렘" to "럄" in Part 3 infographic Manager Info (April) - 이미 올바르게 표시됨
 - [x] Review family communication board comments for bugs/typos
 - [x] Generate actual infographic images (not just text updates)
+
+## DDC Data Duplication Prevention (Current Phase)
+- [x] Add UNIQUE INDEX constraint to DDC table (date + memberId)
+- [x] Update DDC input page to prevent duplicate submissions
+- [x] Add error handling for duplicate data attempts
+- [ ] Test duplicate prevention logic
+
+## Mouse Back Button Error Fix (Current Phase)
+- [x] Investigate browser history back error in Profile page
+- [x] Fix React error #300 when using mouse back button
+- [x] Test browser back button functionality
+- [ ] Ensure all navigation methods work correctly
+
+## Month-End Settlement Testing (Current Phase)
+- [ ] Test DDC ranking calculation with real February data
+- [ ] Test manager compensation calculation with family votes
+- [ ] Test RCR rewards/penalties application
+- [ ] Verify all calculations are accurate

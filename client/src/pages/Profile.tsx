@@ -199,6 +199,20 @@ export default function Profile() {
     return activities.slice(0, 10);
   }, [ddcRecords, memberRcrRecords, memberActivityLogs, memberId]);
 
+  // member가 없으면 404 페이지로 리다이렉트
+  if (!member) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">가족 구성원을 찾을 수 없습니다</h1>
+          <Link href="/">
+            <Button>홈으로 돌아가기</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
       {/* Header */}

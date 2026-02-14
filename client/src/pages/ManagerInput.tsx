@@ -107,7 +107,7 @@ export default function ManagerInput() {
   
   const createBatchMutation = trpc.ddc.createBatch.useMutation({
     onSuccess: (data) => {
-      toast.success(`${data.count}개의 DDC 기록이 저장되었습니다!`);
+      toast.success(data.message || `${data.count}개의 DDC 기록이 저장되었습니다!`);
       // 저장 후 데이터 다시 불러오기
       refetchDdcData();
     },

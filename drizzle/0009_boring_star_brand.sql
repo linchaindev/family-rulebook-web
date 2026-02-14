@@ -1,0 +1,1 @@
+ALTER TABLE `ddc_records` ADD CONSTRAINT `ddc_records_date_member_id_unique` UNIQUE(`date`,`member_id`);

@@ -352,6 +352,25 @@ export async function updateDDCRecord(id: number, updates: Partial<InsertDDCReco
   return result;
 }
 
+// Update DDC record by date and memberId (for duplicate handling)
+export async function updateDDCRecordByDateAndMember(
+  filter: { date: string; memberId: string },
+  updates: Partial<InsertDDCRecord>
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .update(ddcRecords)
+    .set(updates)
+    .where(and(
+      eq(ddcRecords.date, filter.date),
+      eq(ddcRecords.memberId, filter.memberId)
+    ));
+  
+  return result;
+}
+
 export async function deleteDDCRecord(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

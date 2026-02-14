@@ -1,0 +1,13 @@
+{
+  "query": "SELECT auditor_password FROM passwords WHERE month = '2026-02';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT auditor_password FROM passwords WHERE month = '2026-02';",
+  "rows": [
+    {
+      "auditor_password": "397094"
+    }
+  ],
+  "messages": [],
+  "stdout": "auditor_password\n397094\n",
+  "stderr": "",
+  "execution_time_ms": 1522
+}

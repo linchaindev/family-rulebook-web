@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, unique, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -33,7 +33,10 @@ export const ddcRecords = mysqlTable("ddc_records", {
   screenTime: int("screen_time").notNull(), // in minutes
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
-});
+}, (table) => ({
+  // 중복 데이터 방지: 같은 날짜에 같은 멤버의 데이터는 한 번만 저장
+  uniqueDateMember: unique().on(table.date, table.memberId),
+}));
 
 export type DDCRecord = typeof ddcRecords.$inferSelect;
 export type InsertDDCRecord = typeof ddcRecords.$inferInsert;

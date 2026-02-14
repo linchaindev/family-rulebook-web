@@ -64,6 +64,13 @@
       "when": 1771058236091,
       "tag": "0008_natural_blindfold",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1771060882390,
+      "tag": "0009_boring_star_brand",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,110 @@
+{
+  "query": "SELECT date, member_id, COUNT(*) as count FROM ddc_records GROUP BY date, member_id HAVING count > 1 ORDER BY count DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT date, member_id, COUNT(*) as count FROM ddc_records GROUP BY date, member_id HAVING count > 1 ORDER BY count DESC LIMIT 20;",
+  "rows": [
+    {
+      "date": "2026-02-10",
+      "member_id": "dad",
+      "count": "8"
+    },
+    {
+      "date": "2026-02-09",
+      "member_id": "jin",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-10",
+      "member_id": "mom",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-09",
+      "member_id": "liam",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-09",
+      "member_id": "mom",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-09",
+      "member_id": "dad",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-09",
+      "member_id": "sean",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-10",
+      "member_id": "liam",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-10",
+      "member_id": "sean",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-10",
+      "member_id": "jin",
+      "count": "7"
+    },
+    {
+      "date": "2026-02-11",
+      "member_id": "dad",
+      "count": "6"
+    },
+    {
+      "date": "2026-02-11",
+      "member_id": "mom",
+      "count": "6"
+    },
+    {
+      "date": "2026-02-11",
+      "member_id": "sean",
+      "count": "6"
+    },
+    {
+      "date": "2026-02-11",
+      "member_id": "liam",
+      "count": "6"
+    },
+    {
+      "date": "2026-02-11",
+      "member_id": "jin",
+      "count": "6"
+    },
+    {
+      "date": "2026-02-12",
+      "member_id": "jin",
+      "count": "4"
+    },
+    {
+      "date": "2026-02-12",
+      "member_id": "liam",
+      "count": "4"
+    },
+    {
+      "date": "2026-02-12",
+      "member_id": "dad",
+      "count": "4"
+    },
+    {
+      "date": "2026-02-12",
+      "member_id": "sean",
+      "count": "4"
+    },
+    {
+      "date": "2026-02-12",
+      "member_id": "mom",
+      "count": "4"
+    }
+  ],
+  "messages": [],
+  "stdout": "date\tmember_id\tcount\n2026-02-10\tdad\t8\n2026-02-09\tjin\t7\n2026-02-10\tmom\t7\n2026-02-09\tliam\t7\n2026-02-09\tmom\t7\n2026-02-09\tdad\t7\n2026-02-09\tsean\t7\n2026-02-10\tliam\t7\n2026-02-10\tsean\t7\n2026-02-10\tjin\t7\n2026-02-11\tdad\t6\n2026-02-11\tmom\t6\n2026-02-11\tsean\t6\n2026-02-11\tliam\t6\n2026-02-11\tjin\t6\n2026-02-12\tjin\t4\n2026-02-12\tliam\t4\n2026-02-12\tdad\t4\n2026-02-12\tsean\t4\n2026-02-12\tmom\t4\n",
+  "stderr": "",
+  "execution_time_ms": 1620
+}
