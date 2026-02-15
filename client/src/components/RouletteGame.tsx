@@ -55,6 +55,28 @@ function playFanfare() {
     });
   } catch { /* ignore */ }
 }
+/** 😜 야바위 결과 - 유저 놀리기 */
+function playTeaseTune() {
+  try {
+    const ctx = getAudioCtx(); if (!ctx) return;
+    // "엥~↗ 뚝" — 올라갔다 뚝 떨어지는 효과
+    const notes = [
+      { freq: 880,  t: 0,    dur: 0.12 },
+      { freq: 1047, t: 0.14, dur: 0.12 },
+      { freq: 330,  t: 0.30, dur: 0.4  },
+    ];
+    notes.forEach(({ freq, t, dur }) => {
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'square'; osc.frequency.value = freq;
+      const s = ctx.currentTime + t;
+      gain.gain.setValueAtTime(0.15, s);
+      gain.gain.exponentialRampToValueAtTime(0.001, s + dur);
+      osc.start(s); osc.stop(s + dur + 0.02);
+    });
+  } catch { /* ignore */ }
+}
+
 function playYabawiActivate() {
   try {
     const ctx = getAudioCtx(); if (!ctx) return;
@@ -307,7 +329,7 @@ export default function RouletteGame() {
         setResult(items[params.winIdx]);
         setPhase('result');
         animIdRef.current = null;
-        playFanfare();
+        yabawiModeRef.current ? playTeaseTune() : playFanfare();
       }
     };
     animIdRef.current = requestAnimationFrame(animate);
