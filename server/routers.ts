@@ -308,6 +308,42 @@ export const appRouter = router({
         await db.deleteManagerEvaluationsByMonth(input.month);
         return { success: true };
       }),
+
+    // 평가 완료 후 다음달 비밀번호 생성 및 매니저에게 알림 전송
+    completeAndNotify: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .mutation(async ({ input }) => {
+        const { month } = input;
+        const nextMonth = getNextMonth(month);
+
+        // 다음달 비밀번호 생성 및 알림 전송
+        const passwords = await generateAndSendPasswords(nextMonth);
+
+        // 다음달 매니저 정보 조회
+        const nextManager = await db.getMonthlyManager(nextMonth);
+        const managerName = nextManager?.managerId || '미지정';
+
+        // 이번달 평가 결과 조회
+        const evaluations = await db.getManagerEvaluationsByMonth(month);
+        const goodVotes = evaluations.filter((e: any) => e.vote === 'good').length;
+        const badVotes = evaluations.filter((e: any) => e.vote === 'bad').length;
+
+        // 이번달 매니저 정보
+        const currentManager = await db.getMonthlyManager(month);
+
+        const { notifyOwner } = await import('./_core/notification');
+        await notifyOwner({
+          title: `${month} 매니저 평가 완료 → ${nextMonth} 비밀번호 발급`,
+          content: `${month} 매니저(${currentManager?.managerId || '미지정'}) 평가 완료\n👍 잘했음: ${goodVotes}표 / 👎 못했음: ${badVotes}표\n\n${nextMonth} 매니저 비밀번호: ${passwords?.managerPassword || '생성 실패'}\n${nextMonth} 감사 비밀번호: ${passwords?.auditorPassword || '생성 실패'}\n\n매니저 비밀번호를 ${nextMonth} 매니저(${managerName})에게 전달해주세요.`,
+        });
+
+        return {
+          success: true,
+          nextMonth,
+          managerPassword: passwords?.managerPassword,
+          auditorPassword: passwords?.auditorPassword,
+        };
+      }),
   }),
 
   // Manager Activity Logs Router

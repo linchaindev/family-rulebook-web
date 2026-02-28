@@ -20,7 +20,13 @@ export default function MonthEndSettlement() {
     // 세션 스토리지에서 월 정보 확인
     const storedMonth = sessionStorage.getItem('auditor_month');
     if (storedMonth) return storedMonth;
+    // 월초(1~5일)에는 이전달 정산이 남아있을 가능성이 높으므로 이전달 표시
     const now = new Date();
+    const day = now.getDate();
+    if (day <= 5) {
+      const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      return `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`;
+    }
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
   
