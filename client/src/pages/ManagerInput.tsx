@@ -132,11 +132,19 @@ export default function ManagerInput() {
   };
 
   const handleSave = () => {
+    // 기존 DB에 저장된 날짜+멤버 조합 목록 (Set으로 빠른 조회)
+    const existingKeys = new Set(
+      (existingDdcData || []).map(r => `${r.date}__${r.memberId}`)
+    );
+
     const records = [];
     for (const date in ddcData) {
       for (const memberId in ddcData[date]) {
         const screenTime = ddcData[date][memberId];
-        if (screenTime > 0) {
+        const key = `${date}__${memberId}`;
+        // 기존 데이터가 있으면 0이어도 저장 (수정 허용)
+        // 기존 데이터가 없으면 0은 저장하지 않음 (빈 칸)
+        if (screenTime > 0 || existingKeys.has(key)) {
           records.push({
             memberId,
             date,

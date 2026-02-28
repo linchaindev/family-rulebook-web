@@ -280,3 +280,8 @@
 - [x] Zod 유효성 검사 스키마 확인
 - [x] 실제 에러 원인 파악 및 수정 (createDDCRecord에 onDuplicateKeyUpdate 적용)
 - [x] 테스트 후 체크포인트 저장
+
+## DDC 0값 저장 버그 수정 (Completed)
+- [x] handleSave에서 기존 DB 데이터 존재 시 0도 저장 가능하도록 수정
+- [x] 기존 데이터가 있는 날짜는 0이어도 upsert 처리
+- [x] 테스트 및 체크포인트 저장
