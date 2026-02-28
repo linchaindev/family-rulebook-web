@@ -266,3 +266,8 @@
 - [x] Review roulette game improvements
 - [x] Test roulette game functionality
 - [x] Save checkpoint and publish
+
+## GitHub Sync - month 필드 버그픽스 (Completed)
+- [x] GitHub 커밋 1681e4f 동기화 (ManagerInput.tsx month 필드 제거)
+- [x] DDC 기록 저장 기능 정상 동작 확인
+- [x] 체크포인트 저장 및 게시
