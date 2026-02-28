@@ -117,7 +117,10 @@ export async function createDDCRecord(record: InsertDDCRecord) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  const result = await db.insert(ddcRecords).values(record);
+  // INSERT ... ON DUPLICATE KEY UPDATE: 중복 데이터가 있으면 업데이트, 없으면 삽입
+  const result = await db.insert(ddcRecords).values(record).onDuplicateKeyUpdate({
+    set: { screenTime: record.screenTime }
+  });
   return result;
 }
 

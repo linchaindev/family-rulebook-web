@@ -1,0 +1,18 @@
+{
+  "query": "SELECT * FROM passwords;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT * FROM passwords;",
+  "rows": [
+    {
+      "id": "1",
+      "month": "2026-02",
+      "manager_password": "6208",
+      "auditor_password": "397094",
+      "created_at": "2026-02-09 01:47:15",
+      "updated_at": "2026-02-09 01:47:15"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tmonth\tmanager_password\tauditor_password\tcreated_at\tupdated_at\n1\t2026-02\t6208\t397094\t2026-02-09 01:47:15\t2026-02-09 01:47:15\n",
+  "stderr": "",
+  "execution_time_ms": 1528
+}

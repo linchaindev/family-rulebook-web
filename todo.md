@@ -271,3 +271,12 @@
 - [x] GitHub 커밋 1681e4f 동기화 (ManagerInput.tsx month 필드 제거)
 - [x] DDC 기록 저장 기능 정상 동작 확인
 - [x] 체크포인트 저장 및 게시
+
+## DDC 저장 실패 버그 재분석 (Completed)
+- [x] 서버 로그에서 실제 에러 메시지 확인
+- [x] ManagerInput.tsx 클라이언트 코드 분석
+- [x] server/routers.ts DDC 저장 프로시저 분석
+- [x] drizzle/schema.ts DDC 테이블 스키마 확인
+- [x] Zod 유효성 검사 스키마 확인
+- [x] 실제 에러 원인 파악 및 수정 (createDDCRecord에 onDuplicateKeyUpdate 적용)
+- [x] 테스트 후 체크포인트 저장
