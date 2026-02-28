@@ -140,7 +140,6 @@ export default function ManagerInput() {
           records.push({
             memberId,
             date,
-            month: selectedMonth,
             screenTime,
           });
         }
