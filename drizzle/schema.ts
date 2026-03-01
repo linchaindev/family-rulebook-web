@@ -163,6 +163,8 @@ export const monthlyAllowances = mysqlTable("monthly_allowances", {
   bonus: int("bonus").default(0).notNull(), // 상금 (만원 단위)
   penalty: int("penalty").default(0).notNull(), // 벌금 (만원 단위)
   finalAllowance: int("final_allowance").default(0).notNull(), // 최종 용돈 = base + bonus - penalty
+  breakdownFormula: text("breakdown_formula"), // "기본 5만원 + 상금 1만원 - 벌금 0만원"
+  customMessage: text("custom_message"), // 커스텀 메시지 (여러 줄 가능)
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });

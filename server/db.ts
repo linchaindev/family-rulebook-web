@@ -569,6 +569,34 @@ export async function upsertMonthlyAllowance(allowance: InsertMonthlyAllowance) 
   }
 }
 
+export async function updateMonthlyAllowanceFields(
+  month: string,
+  memberId: string,
+  updates: Partial<InsertMonthlyAllowance>
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const existing = await db
+    .select()
+    .from(monthlyAllowances)
+    .where(
+      and(
+        eq(monthlyAllowances.month, month),
+        eq(monthlyAllowances.memberId, memberId)
+      )
+    );
+  
+  if (existing.length === 0) {
+    throw new Error("Allowance record not found");
+  }
+  
+  await db
+    .update(monthlyAllowances)
+    .set(updates)
+    .where(eq(monthlyAllowances.id, existing[0].id));
+}
+
 export async function getMonthlyAllowance(month: string, memberId: string) {
   const db = await getDb();
   if (!db) return null;

@@ -535,6 +535,8 @@ export const appRouter = router({
         baseAllowance: z.number(),
         bonus: z.number().default(0),
         penalty: z.number().default(0),
+        breakdownFormula: z.string().optional(),
+        customMessage: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         await db.upsertMonthlyAllowance(input);
@@ -819,65 +821,7 @@ export const appRouter = router({
         const rcrRecords = (await db.getAllRCRRecords()).filter(r => r.date.startsWith(month));
         const currentAllowances = await db.getAllMonthlyAllowances(month);
         
-        // 각 구성원별 처리
-        for (const allowance of currentAllowances) {
-          // DDC 계산
-          const memberDDC = settlementData.filter(r => r.memberId === allowance.memberId);
-          const totalScreenTime = memberDDC.reduce((sum, r) => sum + r.screenTime, 0);
-          
-          // RCR 조정
-          const memberRCR = rcrRecords.filter(r => r.memberId === allowance.memberId);
-          let rcrAdjustment = 0;
-          let rcrBonus = 0;
-          let rcrPenalty = 0;
-          
-          memberRCR.forEach(rcr => {
-            switch (rcr.cardType) {
-              case 'yellow':
-                rcrAdjustment += 5 * 60;
-                break;
-              case 'green':
-                rcrAdjustment -= 1 * 60;
-                break;
-              case 'double_green':
-                rcrAdjustment -= 5 * 60;
-                break;
-              case 'red':
-                rcrPenalty += 1;
-                break;
-              case 'double_red':
-                rcrPenalty += 2;
-                break;
-              case 'triple_red':
-                rcrPenalty += 3;
-                break;
-              case 'quadro_red':
-                rcrPenalty += 4;
-                break;
-              case 'triple_green':
-                rcrBonus += 2;
-                break;
-              case 'quadro_green':
-                rcrBonus += 4;
-                break;
-            }
-          });
-          
-          // 순위 계산을 위한 최종 스크린타임
-          const finalScreenTime = totalScreenTime + rcrAdjustment;
-          
-          // DDC 1등 보너스는 모든 구성원 계산 후 결정해야 하므로 나중에 처리
-          // 일단 기본 용돈 + RCR 보상/패널티만 반영
-          await db.upsertMonthlyAllowance({
-            month: nextMonth,
-            memberId: allowance.memberId,
-            baseAllowance: allowance.baseAllowance,
-            bonus: rcrBonus,
-            penalty: rcrPenalty,
-          });
-        }
-        
-        // DDC 1등 계산
+        // 1. DDC 1등 먼저 계산
         const allMembers = currentAllowances.map(a => {
           const memberDDC = settlementData.filter(r => r.memberId === a.memberId);
           const totalScreenTime = memberDDC.reduce((sum, r) => sum + r.screenTime, 0);
@@ -895,41 +839,122 @@ export const appRouter = router({
         });
         
         allMembers.sort((a, b) => a.finalScreenTime - b.finalScreenTime);
-        const firstPlace = allMembers[0];
+        const ddcWinnerId = allMembers[0]?.memberId;
         
-        // 1등에게 보너스 추가
-        const firstPlaceAllowance = await db.getMonthlyAllowance(nextMonth, firstPlace.memberId);
-        if (firstPlaceAllowance) {
-          await db.upsertMonthlyAllowance({
-            month: nextMonth,
-            memberId: firstPlace.memberId,
-            baseAllowance: firstPlaceAllowance.baseAllowance,
-            bonus: firstPlaceAllowance.bonus + 1, // DDC 1등 보너스 1만원
-            penalty: firstPlaceAllowance.penalty,
-          });
-        }
-        
-        // 매니저 평가 보상 처리
+        // 2. 매니저 평가 보상 계산
         const managerAssignment = await db.getMonthlyManager(month);
+        let managerBonusId: string | null = null;
+        
         if (managerAssignment) {
           const evaluations = await db.getManagerEvaluationsByMonth(month);
           const goodVotes = evaluations.filter((e: any) => e.vote === 'good').length;
           const badVotes = evaluations.filter((e: any) => e.vote === 'bad').length;
           
           if (goodVotes > badVotes) {
-            const managerAllowance = await db.getMonthlyAllowance(nextMonth, managerAssignment.managerId);
-            if (managerAllowance) {
-              await db.upsertMonthlyAllowance({
-                month: nextMonth,
-                memberId: managerAssignment.managerId,
-                baseAllowance: managerAllowance.baseAllowance,
-                bonus: managerAllowance.bonus + 1, // 매니저 보상 1만원
-                penalty: managerAllowance.penalty,
-              });
-            }
+            managerBonusId = managerAssignment.managerId;
           }
         }
         
+        // 3. 각 구성원별 한 번에 처리
+        for (const allowance of currentAllowances) {
+          // RCR 보너스/패널티 계산
+          const memberRCR = rcrRecords.filter(r => r.memberId === allowance.memberId);
+          let rcrBonus = 0;
+          let rcrPenalty = 0;
+          const rcrBonusDetails: string[] = [];
+          const rcrPenaltyDetails: string[] = [];
+          
+          memberRCR.forEach(rcr => {
+            switch (rcr.cardType) {
+              case 'red':
+                rcrPenalty += 1;
+                rcrPenaltyDetails.push('레드 카드 -1만원');
+                break;
+              case 'double_red':
+                rcrPenalty += 2;
+                rcrPenaltyDetails.push('더블 레드 카드 -2만원');
+                break;
+              case 'triple_red':
+                rcrPenalty += 3;
+                rcrPenaltyDetails.push('트리플 레드 카드 -3만원');
+                break;
+              case 'quadro_red':
+                rcrPenalty += 4;
+                rcrPenaltyDetails.push('쿼드로 레드 카드 -4만원');
+                break;
+              case 'triple_green':
+                rcrBonus += 2;
+                rcrBonusDetails.push('트리플 그린 카드 +2만원');
+                break;
+              case 'quadro_green':
+                rcrBonus += 4;
+                rcrBonusDetails.push('쿼드로 그린 카드 +4만원');
+                break;
+            }
+          });
+          
+          // DDC 보너스 계산
+          const ddcBonus = allowance.memberId === ddcWinnerId ? 1 : 0;
+          const bonusDetails: string[] = [...rcrBonusDetails];
+          if (ddcBonus > 0) {
+            bonusDetails.push('DDC 1등 상금 +1만원');
+          }
+          
+          // 매니저 보상 계산
+          const managerBonus = allowance.memberId === managerBonusId ? 1 : 0;
+          if (managerBonus > 0) {
+            bonusDetails.push('패밀리 매니저 보상 +1만원');
+          }
+          
+          // 총 보너스/패널티
+          const totalBonus = rcrBonus + ddcBonus + managerBonus;
+          const totalPenalty = rcrPenalty;
+          
+          // breakdownFormula 생성
+          const parts: string[] = [`기본 ${allowance.baseAllowance}만원`];
+          if (totalBonus > 0) parts.push(`상금 +${totalBonus}만원`);
+          if (totalPenalty > 0) parts.push(`벌금 -${totalPenalty}만원`);
+          const breakdownFormula = parts.join(' + ');
+          
+          // customMessage 생성
+          const messages: string[] = [];
+          if (bonusDetails.length > 0) {
+            messages.push('🎉 ' + bonusDetails.join(', '));
+          }
+          if (rcrPenaltyDetails.length > 0) {
+            messages.push('⚠️ ' + rcrPenaltyDetails.join(', '));
+          }
+          const customMessage = messages.join('\n');
+          
+          // 한 번에 upsert
+          await db.upsertMonthlyAllowance({
+            month: nextMonth,
+            memberId: allowance.memberId,
+            baseAllowance: allowance.baseAllowance,
+            bonus: totalBonus,
+            penalty: totalPenalty,
+            breakdownFormula,
+            customMessage: customMessage || null,
+          });
+        }
+        
+        return { success: true };
+      }),
+    
+    updateAllowance: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        memberId: z.string(),
+        baseAllowance: z.number().optional(),
+        bonus: z.number().optional(),
+        penalty: z.number().optional(),
+        finalAllowance: z.number(),
+        breakdownFormula: z.string().optional(),
+        customMessage: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { month, memberId, ...updates } = input;
+        await db.updateMonthlyAllowanceFields(month, memberId, updates);
         return { success: true };
       }),
   }),

@@ -187,6 +187,14 @@ export default function AuditorAdmin() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
 
+  const [memberAllowances, setMemberAllowances] = useState<Record<string, { 
+    baseAllowance: number; 
+    bonus: number; 
+    penalty: number;
+    breakdownFormula?: string;
+    customMessage?: string;
+  }>>({});
+
   // 버프/너프 추가 상태
   const [newAdjustment, setNewAdjustment] = useState({ memberId: '', amount: 0, message: '', createdBy: '감사' });
 
@@ -216,6 +224,10 @@ export default function AuditorAdmin() {
     { month: allowanceMonth },
     { enabled: isAuthenticated }
   );
+  const { data: currentMonthAllowances = [], refetch: refetchAllowances } = trpc.allowance.getAllByMonth.useQuery(
+    { month: allowanceMonth },
+    { enabled: isAuthenticated }
+  );
   const { data: allSettings = {} } = trpc.appSettings.getAll.useQuery(undefined, { enabled: isAuthenticated });
 
   // 기존 DDC 데이터를 테이블 상태에 로드
@@ -237,6 +249,36 @@ export default function AuditorAdmin() {
     const settings = allSettings as Record<string, string>;
     if (settings['notify_email']) setNotifyEmail(settings['notify_email']);
   }, [allSettings]);
+
+  // 용돈 데이터 로드
+  useEffect(() => {
+    if (currentMonthAllowances && currentMonthAllowances.length > 0) {
+      const loaded: Record<string, any> = {};
+      currentMonthAllowances.forEach((a: any) => {
+        loaded[a.memberId] = {
+          baseAllowance: a.baseAllowance,
+          bonus: a.bonus,
+          penalty: a.penalty,
+          breakdownFormula: a.breakdownFormula || '',
+          customMessage: a.customMessage || '',
+        };
+      });
+      setMemberAllowances(loaded);
+    } else {
+      // 초기값 설정 (기본 용돈만)
+      const initial: Record<string, any> = {};
+      FAMILY_MEMBERS.filter(m => m.role === 'student').forEach(m => {
+        initial[m.id] = {
+          baseAllowance: 5, // 기본값
+          bonus: 0,
+          penalty: 0,
+          breakdownFormula: '',
+          customMessage: '',
+        };
+      });
+      setMemberAllowances(initial);
+    }
+  }, [currentMonthAllowances]);
 
   const createBatchMutation = trpc.ddc.createBatch.useMutation({
     onSuccess: (data) => { toast.success(data.message || `${data.count}개 저장`); refetchDDC(); },
@@ -264,6 +306,11 @@ export default function AuditorAdmin() {
   const createAdjustmentMutation = trpc.allowanceAdjustment.create.useMutation({
     onSuccess: () => { toast.success('버프/너프가 추가되었습니다.'); refetchAdjustments(); setNewAdjustment({ memberId: '', amount: 0, message: '', createdBy: '감사' }); },
     onError: () => toast.error('버프/너프 추가에 실패했습니다.'),
+  });
+
+  const saveAllowancesMutation = trpc.allowance.upsert.useMutation({
+    onSuccess: () => { refetchAllowances(); },
+    onError: () => toast.error('용돈 저장에 실패했습니다.'),
   });
 
   const deleteAdjustmentMutation = trpc.allowanceAdjustment.delete.useMutation({
@@ -373,6 +420,22 @@ export default function AuditorAdmin() {
       toast.error('구성원, 금액(0 제외), 메시지를 모두 입력해주세요.'); return;
     }
     createAdjustmentMutation.mutate({ month: allowanceMonth, ...newAdjustment });
+  };
+
+  const handleSaveAllowances = async () => {
+    for (const memberId of Object.keys(memberAllowances)) {
+      const allowance = memberAllowances[memberId];
+      await saveAllowancesMutation.mutateAsync({
+        month: allowanceMonth,
+        memberId,
+        baseAllowance: allowance.baseAllowance,
+        bonus: allowance.bonus,
+        penalty: allowance.penalty,
+        breakdownFormula: allowance.breakdownFormula || undefined,
+        customMessage: allowance.customMessage || undefined,
+      });
+    }
+    toast.success('모든 용돈이 저장되었습니다!');
   };
 
   const handleBugReward = (comment: any) => {
@@ -697,6 +760,100 @@ export default function AuditorAdmin() {
                     })
                   )}
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>용돈 직접 수정</CardTitle>
+                <CardDescription>각 구성원의 용돈을 직접 수정하고 계산식/메시지를 커스터마이징할 수 있습니다.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {FAMILY_MEMBERS.filter(m => m.role === 'student').map((member) => {
+                  const allowance = memberAllowances[member.id] || { baseAllowance: 5, bonus: 0, penalty: 0, breakdownFormula: '', customMessage: '' };
+                  const finalAllowance = allowance.baseAllowance + allowance.bonus - allowance.penalty;
+                  
+                  return (
+                    <Card key={member.id} className="border-2">
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <span>{member.avatar}</span>
+                          <span>{member.name}</span>
+                          <Badge variant="outline" className="ml-auto text-lg">{finalAllowance}만원</Badge>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="grid grid-cols-3 gap-3">
+                          <div>
+                            <Label>기본 용돈 (만원)</Label>
+                            <Input
+                              type="number"
+                              value={allowance.baseAllowance}
+                              onChange={(e) => setMemberAllowances({
+                                ...memberAllowances,
+                                [member.id]: { ...allowance, baseAllowance: parseInt(e.target.value) || 0 }
+                              })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label>상금 (만원)</Label>
+                            <Input
+                              type="number"
+                              value={allowance.bonus}
+                              onChange={(e) => setMemberAllowances({
+                                ...memberAllowances,
+                                [member.id]: { ...allowance, bonus: parseInt(e.target.value) || 0 }
+                              })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label>벌금 (만원)</Label>
+                            <Input
+                              type="number"
+                              value={allowance.penalty}
+                              onChange={(e) => setMemberAllowances({
+                                ...memberAllowances,
+                                [member.id]: { ...allowance, penalty: parseInt(e.target.value) || 0 }
+                              })}
+                              className="mt-2"
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4 space-y-3">
+                          <div>
+                            <Label>계산식 (자동 생성되지만 직접 수정 가능)</Label>
+                            <Input
+                              value={allowance.breakdownFormula || ''}
+                              onChange={(e) => setMemberAllowances({
+                                ...memberAllowances,
+                                [member.id]: { ...allowance, breakdownFormula: e.target.value }
+                              })}
+                              placeholder="예: 기본 5만원 + 상금 1만원 - 벌금 0만원"
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label>추가 메시지 (여러 줄 가능)</Label>
+                            <textarea
+                              value={allowance.customMessage || ''}
+                              onChange={(e) => setMemberAllowances({
+                                ...memberAllowances,
+                                [member.id]: { ...allowance, customMessage: e.target.value }
+                              })}
+                              placeholder="예: 룰북 홈페이지 버그를 많이 찾아줘서! (+1만원)"
+                              className="mt-2 w-full min-h-[80px] px-3 py-2 text-sm rounded-md border border-input bg-background"
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+                <Button onClick={handleSaveAllowances} className="w-full" size="lg" disabled={saveAllowancesMutation.isPending}>
+                  <Save className="w-4 h-4 mr-2" />모든 용돈 저장
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>

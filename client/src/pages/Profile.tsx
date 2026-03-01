@@ -175,8 +175,17 @@ export default function Profile() {
               <div className="text-4xl font-bold text-amber-600 mb-2">
                 {allowance!.finalAllowance}만원
               </div>
-              <div className="text-xs text-muted-foreground space-y-1">
-                <div>기본 {allowance!.baseAllowance}만원 + 상금 {allowance!.bonus}만원 - 벌금 {allowance!.penalty}만원</div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground text-sm">
+                  {allowance!.breakdownFormula || `기본 ${allowance!.baseAllowance}만원 + 상금 ${allowance!.bonus}만원 - 벌금 ${allowance!.penalty}만원`}
+                </p>
+                {allowance!.customMessage && (
+                  <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
+                    <p className="text-sm text-amber-900 dark:text-amber-100 whitespace-pre-wrap">
+                      {allowance!.customMessage}
+                    </p>
+                  </div>
+                )}
               </div>
               {/* 버프/너프 메시지 */}
               {adjustments.length > 0 && (
