@@ -26,6 +26,8 @@ import {
   allowanceAdjustments,
   InsertAllowanceAdjustment,
   appSettings,
+  auditorConfig,
+  InsertAuditorConfig,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -340,9 +342,35 @@ export async function verifyManagerPassword(month: string, password: string): Pr
   return record?.managerPassword === password;
 }
 
-export async function verifyAuditorPassword(month: string, password: string): Promise<boolean> {
-  const record = await getPasswordByMonth(month);
-  return record?.auditorPassword === password;
+export async function verifyAuditorPassword(password: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  const records = await db.select().from(auditorConfig).limit(1);
+  if (records.length === 0) return false;
+  
+  return records[0].password === password;
+}
+
+export async function getAuditorPassword(): Promise<string | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const records = await db.select().from(auditorConfig).limit(1);
+  return records.length > 0 ? records[0].password : null;
+}
+
+export async function updateAuditorPassword(password: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const existing = await db.select().from(auditorConfig).limit(1);
+  
+  if (existing.length > 0) {
+    await db.update(auditorConfig).set({ password }).where(eq(auditorConfig.id, existing[0].id));
+  } else {
+    await db.insert(auditorConfig).values({ password });
+  }
 }
 
 // Update and Delete functions for Auditor Admin
@@ -761,12 +789,12 @@ export async function getAllAppSettings(): Promise<Record<string, string>> {
 
 // ==================== Password CRUD ====================
 
-export async function upsertPassword(month: string, managerPassword: string, auditorPassword: string): Promise<void> {
+export async function upsertPassword(month: string, managerPassword: string): Promise<void> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  await db.insert(passwords).values({ month, managerPassword, auditorPassword }).onDuplicateKeyUpdate({
-    set: { managerPassword, auditorPassword, updatedAt: new Date() }
+  await db.insert(passwords).values({ month, managerPassword }).onDuplicateKeyUpdate({
+    set: { managerPassword, updatedAt: new Date() }
   });
 }
 

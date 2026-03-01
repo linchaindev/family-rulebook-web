@@ -1,4 +1,4 @@
-import { createPassword, getPasswordByMonth, getAppSetting, upsertPassword } from "./db";
+import { createPassword, getPasswordByMonth, getAppSetting, upsertPassword, getAuditorPassword } from "./db";
 import { notifyOwner } from "./_core/notification";
 
 /**
@@ -16,41 +16,44 @@ export function generateAuditorPassword(): string {
 }
 
 /**
- * Generate passwords for a specific month and send email
+ * Generate FM password for a specific month and send notification.
+ * FA password is managed globally (auditorConfig table) and is NOT regenerated here.
  */
 export async function generateAndSendPasswords(month: string) {
   // Check if passwords already exist for this month
   const existing = await getPasswordByMonth(month);
   if (existing) {
     console.log(`Passwords already exist for ${month}`);
-    return existing;
+    // Return with current auditor password for notification purposes
+    const auditorPassword = await getAuditorPassword();
+    return { ...existing, auditorPassword: auditorPassword ?? '(미설정)' };
   }
 
-  // Generate new passwords
+  // Generate new manager password only
   const managerPassword = generateManagerPassword();
-  const auditorPassword = generateAuditorPassword();
 
-  // Save to database
+  // Save to database (FM 비밀번호만 저장)
   await createPassword({
     month,
     managerPassword,
-    auditorPassword,
   });
 
-  // Send email to auditor
+  // Get current global FA password for notification
+  const auditorPassword = await getAuditorPassword();
+
+  // Send notification
   const emailContent = `
 📅 **${month} 패밀리 룰북 비밀번호**
 
 안녕하세요, 감사님!
 
-이번 달 비밀번호가 생성되었습니다:
+이번 달 매니저 비밀번호가 생성되었습니다:
 
 🔐 **매니저 비밀번호 (4자리)**: ${managerPassword}
-🔐 **감사 비밀번호 (6자리)**: ${auditorPassword}
+🔐 **감사 비밀번호 (6자리)**: ${auditorPassword ?? '(감사 관리 페이지에서 설정 필요)'}
 
 매니저 비밀번호는 감사님이 직접 매니저에게 전달해주세요.
-
-감사 비밀번호는 감사 전용 관리 페이지 접속 시 사용됩니다.
+감사 비밀번호는 전역으로 관리되며 변경되지 않습니다.
 
 ---
 KH 패밀리 룰북 시스템
@@ -61,12 +64,12 @@ KH 패밀리 룰북 시스템
     content: emailContent,
   });
 
-  console.log(`Passwords generated and sent for ${month}`);
+  console.log(`Manager password generated and sent for ${month}`);
   
   return {
     month,
     managerPassword,
-    auditorPassword,
+    auditorPassword: auditorPassword ?? '(미설정)',
   };
 }
 

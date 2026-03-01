@@ -235,13 +235,26 @@ export const appRouter = router({
     
     verifyAuditor: publicProcedure
       .input(z.object({
-        month: z.string(),
         password: z.string(),
       }))
       .query(async ({ input }) => {
-        const isValid = await db.verifyAuditorPassword(input.month, input.password);
+        const isValid = await db.verifyAuditorPassword(input.password);
         return { valid: isValid };
       }),
+    
+    updateAuditor: publicProcedure
+      .input(z.object({
+        password: z.string().length(6),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateAuditorPassword(input.password);
+        return { success: true };
+      }),
+    
+    getAuditor: publicProcedure.query(async () => {
+      const password = await db.getAuditorPassword();
+      return { password };
+    }),
     
     generateForCurrentMonth: publicProcedure
       .mutation(async () => {
@@ -788,7 +801,7 @@ export const appRouter = router({
           const evaluations = await db.getManagerEvaluationsByMonth(month);
           const goodVotes = evaluations.filter((e: any) => e.vote === 'good').length;
           const badVotes = evaluations.filter((e: any) => e.vote === 'bad').length;
-          const reward = goodVotes > badVotes ? 1 : 0; // 잘했음이 많으면 1만원
+          const reward = goodVotes > badVotes ? 1 + goodVotes : 0; // 기본 1만원 + 잘했음 투표 수
           
           managerEvaluation = {
             managerId: managerAssignment.managerId,
@@ -844,6 +857,7 @@ export const appRouter = router({
         // 2. 매니저 평가 보상 계산
         const managerAssignment = await db.getMonthlyManager(month);
         let managerBonusId: string | null = null;
+        let managerBonusAmount = 0;
         
         if (managerAssignment) {
           const evaluations = await db.getManagerEvaluationsByMonth(month);
@@ -852,6 +866,7 @@ export const appRouter = router({
           
           if (goodVotes > badVotes) {
             managerBonusId = managerAssignment.managerId;
+            managerBonusAmount = 1 + goodVotes; // 기본 1만원 + 잘했음 투표당 1만원
           }
         }
         
@@ -901,9 +916,9 @@ export const appRouter = router({
           }
           
           // 매니저 보상 계산
-          const managerBonus = allowance.memberId === managerBonusId ? 1 : 0;
+          const managerBonus = allowance.memberId === managerBonusId ? managerBonusAmount : 0;
           if (managerBonus > 0) {
-            bonusDetails.push('패밀리 매니저 보상 +1만원');
+            bonusDetails.push(`패밀리 매니저 보상 +${managerBonus}만원`);
           }
           
           // 총 보너스/패널티
@@ -1019,10 +1034,9 @@ export const appRouter = router({
       .input(z.object({
         month: z.string(),
         managerPassword: z.string(),
-        auditorPassword: z.string(),
       }))
       .mutation(async ({ input }) => {
-        await db.upsertPassword(input.month, input.managerPassword, input.auditorPassword);
+        await db.upsertPassword(input.month, input.managerPassword);
         return { success: true };
       }),
   }),

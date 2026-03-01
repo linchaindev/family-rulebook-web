@@ -32,7 +32,7 @@ export default function MonthEndSettlement() {
   
   const [verifyAttempt, setVerifyAttempt] = useState(false);
   const verifyPasswordQuery = trpc.password.verifyAuditor.useQuery(
-    { month: selectedMonth, password },
+    { password },
     { enabled: verifyAttempt }
   );
   const getSettlementDataQuery = trpc.settlement.getMonthData.useQuery(

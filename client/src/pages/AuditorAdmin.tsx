@@ -166,6 +166,16 @@ export default function AuditorAdmin() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
+  
+  // FA 비밀번호 관리
+  const [newFaPassword, setNewFaPassword] = useState('');
+  const updateFaPasswordMutation = trpc.password.updateAuditor.useMutation({
+    onSuccess: () => {
+      toast.success('FA 비밀번호가 변경되었습니다!');
+      setNewFaPassword('');
+    },
+    onError: () => toast.error('비밀번호 변경에 실패했습니다.'),
+  });
 
   // DDC 데이터 상태 (FM과 동일한 월별 테이블 방식)
   const [ddcData, setDdcData] = useState<Record<string, Record<string, number>>>({});
@@ -208,7 +218,7 @@ export default function AuditorAdmin() {
   const [notifyEmail, setNotifyEmail] = useState('');
 
   const verifyPasswordMutation = trpc.password.verifyAuditor.useQuery(
-    { month: selectedMonth, password },
+    { password },
     { enabled: false }
   );
 
@@ -318,8 +328,13 @@ export default function AuditorAdmin() {
   });
 
   const updatePasswordMutation = trpc.appSettings.updatePassword.useMutation({
-    onSuccess: () => toast.success('비밀번호가 업데이트되었습니다.'),
+    onSuccess: () => toast.success('FM 비밀번호가 업데이트되었습니다.'),
     onError: () => toast.error('비밀번호 업데이트에 실패했습니다.'),
+  });
+
+  const updateAuditorMutation = trpc.password.updateAuditor.useMutation({
+    onSuccess: () => { toast.success('FA 비밀번호가 변경되었습니다!'); setNewAuditorPw(''); },
+    onError: () => toast.error('FA 비밀번호 변경에 실패했습니다.'),
   });
 
   const setEmailMutation = trpc.appSettings.set.useMutation({
@@ -374,6 +389,18 @@ export default function AuditorAdmin() {
     const result = await verifyPasswordMutation.refetch();
     if (result.data?.valid) { setIsAuthenticated(true); toast.success('감사 인증되었습니다!'); }
     else toast.error('비밀번호가 올바르지 않습니다.');
+  };
+
+  const handleUpdateFaPassword = async () => {
+    if (newFaPassword.length !== 6) {
+      toast.error('FA 비밀번호는 6자리여야 합니다.');
+      return;
+    }
+    try {
+      await updateFaPasswordMutation.mutateAsync({ password: newFaPassword });
+    } catch {
+      // 에러 처리는 mutation의 onError에서 처리
+    }
   };
 
   const handleSaveDDC = () => {
@@ -1050,34 +1077,41 @@ export default function AuditorAdmin() {
                   <Input type="month" value={settingsMonth} onChange={(e) => setSettingsMonth(e.target.value)} className="mt-1 w-48" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>FM 비밀번호 (4자리)</Label>
+                  <div className="space-y-2 border rounded-lg p-4">
+                    <Label className="font-semibold">FM 비밀번호 (4자리) — 대상 월 적용</Label>
                     <Input type="text" inputMode="numeric" maxLength={4} value={newManagerPw}
                       onChange={(e) => setNewManagerPw(e.target.value.replace(/\D/g, ''))}
-                      placeholder="4자리 숫자" className="mt-1 tracking-widest text-center text-lg" />
+                      placeholder="4자리 숫자" className="tracking-widest text-center text-lg" />
+                    <Button
+                      className="w-full"
+                      onClick={() => {
+                        if (newManagerPw.length !== 4) { toast.error('FM 비밀번호는 4자리여야 합니다.'); return; }
+                        updatePasswordMutation.mutate({ month: settingsMonth, managerPassword: newManagerPw });
+                      }}
+                      disabled={updatePasswordMutation.isPending}
+                    >
+                      FM 비밀번호 저장
+                    </Button>
                   </div>
-                  <div>
-                    <Label>FA 비밀번호 (6자리)</Label>
+                  <div className="space-y-2 border rounded-lg p-4">
+                    <Label className="font-semibold">FA 비밀번호 (6자리) — 전역 관리</Label>
+                    <p className="text-xs text-muted-foreground">월과 무관하게 항상 동일한 비밀번호 사용</p>
                     <Input type="text" inputMode="numeric" maxLength={6} value={newAuditorPw}
                       onChange={(e) => setNewAuditorPw(e.target.value.replace(/\D/g, ''))}
-                      placeholder="6자리 숫자" className="mt-1 tracking-widest text-center text-lg" />
+                      placeholder="6자리 숫자" className="tracking-widest text-center text-lg" />
+                    <Button
+                      className="w-full"
+                      variant="secondary"
+                      onClick={() => {
+                        if (newAuditorPw.length !== 6) { toast.error('FA 비밀번호는 6자리여야 합니다.'); return; }
+                        updateAuditorMutation.mutate({ password: newAuditorPw });
+                      }}
+                      disabled={updateAuditorMutation?.isPending}
+                    >
+                      FA 비밀번호 저장
+                    </Button>
                   </div>
                 </div>
-                <Button
-                  onClick={() => {
-                    if (newManagerPw.length !== 4 && newAuditorPw.length !== 6) {
-                      toast.error('FM은 4자리, FA는 6자리를 입력해주세요.'); return;
-                    }
-                    updatePasswordMutation.mutate({
-                      month: settingsMonth,
-                      managerPassword: newManagerPw || '0000',
-                      auditorPassword: newAuditorPw || '000000',
-                    });
-                  }}
-                  disabled={updatePasswordMutation.isPending}
-                >
-                  비밀번호 업데이트
-                </Button>
               </CardContent>
             </Card>
           </TabsContent>

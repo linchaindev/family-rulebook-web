@@ -117,18 +117,27 @@ export const familyComments = mysqlTable("family_comments", {
 export type FamilyComment = typeof familyComments.$inferSelect;
 export type InsertFamilyComment = typeof familyComments.$inferInsert;
 
-// Passwords Table
+// Passwords Table (FM 비밀번호만 월별 관리)
 export const passwords = mysqlTable("passwords", {
   id: int("id").autoincrement().primaryKey(),
   month: varchar("month", { length: 7 }).notNull().unique(), // YYYY-MM
   managerPassword: varchar("manager_password", { length: 4 }).notNull(), // 4-digit
-  auditorPassword: varchar("auditor_password", { length: 6 }).notNull(), // 6-digit
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Password = typeof passwords.$inferSelect;
 export type InsertPassword = typeof passwords.$inferInsert;
+
+// Global Auditor Config Table (FA 비밀번호 전역 관리)
+export const auditorConfig = mysqlTable("auditor_config", {
+  id: int("id").autoincrement().primaryKey(),
+  password: varchar("password", { length: 6 }).notNull(), // 6-digit
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AuditorConfig = typeof auditorConfig.$inferSelect;
+export type InsertAuditorConfig = typeof auditorConfig.$inferInsert;
 
 // Monthly Manager Assignment Table
 export const monthlyManagers = mysqlTable("monthly_managers", {
