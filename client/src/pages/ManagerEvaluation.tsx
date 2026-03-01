@@ -143,8 +143,8 @@ function CelebrationPage({
   const managerDDC = dedupedDDC.filter(r => r.memberId === managerId);
   const managerTotalScreenTime = managerDDC.reduce((sum, r) => sum + r.screenTime, 0);
 
-  // DDC 순위 계산 (중복 제거 후)
-  const memberTotals = FAMILY_MEMBERS.filter(m => m.role === 'student').map(m => ({
+  // DDC 순위 계산 (5인 전체 기준 - 중복 제거 후)
+  const memberTotals = FAMILY_MEMBERS.map(m => ({
     member: m,
     total: dedupedDDC.filter(r => r.memberId === m.id).reduce((sum, r) => sum + r.screenTime, 0),
   })).sort((a, b) => a.total - b.total);
@@ -327,7 +327,7 @@ function CelebrationPage({
                   </span>
                   <span className="text-xl">{item.member.avatar}</span>
                   <span className="text-white font-medium">
-                    {item.member.name}
+                    {item.member.nickname}
                     {item.member.id === managerId && (
                       <span className="ml-2 text-yellow-400 text-xs">★ 매니저</span>
                     )}

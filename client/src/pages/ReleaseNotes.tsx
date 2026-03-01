@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle2, Bug, Sparkles } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Bug, Sparkles, Wrench } from "lucide-react";
 
 export default function ReleaseNotes() {
   return (
@@ -59,6 +59,36 @@ export default function ReleaseNotes() {
               <ul className="space-y-2 ml-7">
                 <li className="text-muted-foreground">• FA 감사 페이지에서 월말 정산 시스템 제거 (월말평가 페이지로 통합)</li>
                 <li className="text-muted-foreground">• 매니저 평가 완료 후 비밀번호 자동 생성 및 이메일 전송</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* v1.0.6 */}
+        <Card className="mb-8 border-primary">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.0.6</CardTitle>
+                <CardDescription>2026년 3월 2일</CardDescription>
+              </div>
+              <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">최신</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Wrench className="w-5 h-5 mr-2 text-blue-600" />
+                버그 수정
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">• 월말평가 버튼을 FA 감사 페이지 전용으로 이동 (보안 강화)</li>
+                <li className="text-muted-foreground">• 월말평가 취소(롤백) 기능 추가 — 평가 기록 및 용돈 정산 일괄 삭제</li>
+                <li className="text-muted-foreground">• FA 비밀번호 초기값 자동 생성 (000000) 및 로그인 화면 월 선택 제거</li>
+                <li className="text-muted-foreground">• DDCR 상금/벌금 규칙 수정: 1등+5만, 2등+3만, 3등 0, 4등-3만, 5등-5만</li>
+                <li className="text-muted-foreground">• 월말평가 CelebrationPage DDC 순위·스크린타임 0분 오류 수정</li>
+                <li className="text-muted-foreground">• 매니저 배지 표시 월 오류 수정 (평가 완료 기준 달 표시)</li>
+                <li className="text-muted-foreground">• 프로필 DDC 순위 꼴찌 표현 제거, 숫자 순위로 통일</li>
               </ul>
             </div>
           </CardContent>

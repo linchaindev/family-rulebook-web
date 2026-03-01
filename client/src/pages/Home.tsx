@@ -62,6 +62,17 @@ export default function Home() {
     }
   };
 
+  // 매니저 배지: 이전달 평가 완료 여부로 현재 달 매니저 표시
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const prevMonth = `${now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear()}-${String(now.getMonth() === 0 ? 12 : now.getMonth()).padStart(2, '0')}`;
+  // 이전달 용돈이 정산되어 있으면 평가 완료 → 현재달 매니저 표시
+  const { data: prevAllowances = [] } = trpc.allowance.getAllByMonth.useQuery({ month: currentMonth });
+  const isEvaluationDone = prevAllowances.length > 0;
+  // 평가 완료되면 현재달 매니저, 아니면 이전님 매니저
+  const managerMonth = isEvaluationDone ? currentMonth : prevMonth;
+  const { data: currentManagerData } = trpc.monthlyManager.get.useQuery({ month: managerMonth });
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
       {/* 테마 토글 버튼 - 우측 상단 */}
@@ -73,7 +84,7 @@ export default function Home() {
         <div className="text-center space-y-4 max-w-4xl mx-auto">
           <Link href="/release-notes">
             <Badge className="mb-4 text-base px-4 py-2 cursor-pointer hover:bg-primary/10 transition-colors" variant="outline">
-              v1.0.5 · 2026년 2월 14일 업데이트
+              v1.0.6 · 2026년 3월 2일 업데이트
             </Badge>
           </Link>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
@@ -169,9 +180,7 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {FAMILY_MEMBERS.map((member) => {
-            // 현재 달 매니저 확인 (2월 = 진)
-            const currentMonth = '2026-02';
-            const isManager = member.id === 'jin'; // TODO: 데이터베이스에서 조회
+            const isManager = currentManagerData?.managerId === member.id;
             
             return (
             <Link key={member.id} href={`/profile/${member.id}`}>
