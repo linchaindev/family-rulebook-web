@@ -309,40 +309,163 @@ export const appRouter = router({
         return { success: true };
       }),
 
-    // 평가 완료 후 다음달 비밀번호 생성 및 매니저에게 알림 전송
-    completeAndNotify: publicProcedure
+    // 평가 완료 후 통합 정산 + 다음달 비밀번호 생성 및 알림 전송
+    completeAndSettle: publicProcedure
       .input(z.object({ month: z.string() }))
       .mutation(async ({ input }) => {
         const { month } = input;
         const nextMonth = getNextMonth(month);
 
-        // 다음달 비밀번호 생성 및 알림 전송
-        const passwords = await generateAndSendPasswords(nextMonth);
+        // ===== 1. DDC 정산 =====
+        const ddcData = await db.getDDCRecordsByMonth(month);
+        const allRcrRecords = (await db.getAllRCRRecords()).filter((r: any) => r.date.startsWith(month));
+        const currentAllowances = await db.getAllMonthlyAllowances(month);
 
-        // 다음달 매니저 정보 조회
+        // 구성원별 DDC 총합 계산
+        const memberScreenTime = new Map<string, number>();
+        ddcData.forEach((r: any) => {
+          memberScreenTime.set(r.memberId, (memberScreenTime.get(r.memberId) || 0) + r.screenTime);
+        });
+
+        // RCR 스크린타임 조정 (yellow: +5h, green: -1h, double_green: -5h, bug_report: -1h)
+        const rcrTimeAdj = new Map<string, number>();
+        const rcrMoney = new Map<string, { bonus: number; penalty: number }>();
+        allRcrRecords.forEach((rcr: any) => {
+          const cur = rcrMoney.get(rcr.memberId) || { bonus: 0, penalty: 0 };
+          switch (rcr.cardType) {
+            case 'yellow': rcrTimeAdj.set(rcr.memberId, (rcrTimeAdj.get(rcr.memberId) || 0) + 5 * 60); break;
+            case 'green': rcrTimeAdj.set(rcr.memberId, (rcrTimeAdj.get(rcr.memberId) || 0) - 1 * 60); break;
+            case 'double_green': rcrTimeAdj.set(rcr.memberId, (rcrTimeAdj.get(rcr.memberId) || 0) - 5 * 60); break;
+            case 'red': rcrMoney.set(rcr.memberId, { ...cur, penalty: cur.penalty + 1 }); break;
+            case 'double_red': rcrMoney.set(rcr.memberId, { ...cur, penalty: cur.penalty + 2 }); break;
+            case 'triple_red': rcrMoney.set(rcr.memberId, { ...cur, penalty: cur.penalty + 3 }); break;
+            case 'quadro_red': rcrMoney.set(rcr.memberId, { ...cur, penalty: cur.penalty + 4 }); break;
+            case 'triple_green': rcrMoney.set(rcr.memberId, { ...cur, bonus: cur.bonus + 2 }); break;
+            case 'quadro_green': rcrMoney.set(rcr.memberId, { ...cur, bonus: cur.bonus + 4 }); break;
+          }
+        });
+
+        // 버그 리포트 보상 (DDC -1시간) 처리
+        const bugRewards = await db.getAllBugReportRewards();
+        const monthBugRewards = bugRewards.filter((r: any) => r.month === month);
+        monthBugRewards.forEach((r: any) => {
+          rcrTimeAdj.set(r.memberId, (rcrTimeAdj.get(r.memberId) || 0) - 60); // -1시간
+        });
+
+        // 버프/너프 조정 (FA가 직접 입력한 것)
+        const adjustments = await db.getAllowanceAdjustmentsByMonth(month);
+        const adjMap = new Map<string, number>();
+        adjustments.forEach((a: any) => {
+          adjMap.set(a.memberId, (adjMap.get(a.memberId) || 0) + a.amount);
+        });
+
+        // 최종 스크린타임 계산 및 DDC 순위
+        const memberFinal = Array.from(new Set([
+          ...Array.from(memberScreenTime.keys()),
+          ...currentAllowances.map((a: any) => a.memberId)
+        ])).map(memberId => ({
+          memberId,
+          total: memberScreenTime.get(memberId) || 0,
+          adj: rcrTimeAdj.get(memberId) || 0,
+          final: (memberScreenTime.get(memberId) || 0) + (rcrTimeAdj.get(memberId) || 0),
+        }));
+        memberFinal.sort((a, b) => a.final - b.final);
+
+        // ===== 2. 매니저 평가 보상 계산 =====
+        // 기본 1만원 + 잘했음 투표 1명당 1만원 (본인 제외 4명 투표, 최대 5만원)
+        const managerAssignment = await db.getMonthlyManager(month);
+        let managerBonus = 0;
+        let managerEvalSummary = null;
+        if (managerAssignment) {
+          const evaluations = await db.getManagerEvaluationsByMonth(month);
+          const goodVotes = evaluations.filter((e: any) => e.vote === 'good').length;
+          const badVotes = evaluations.filter((e: any) => e.vote === 'bad').length;
+          managerBonus = 1 + goodVotes; // 기본 1만원 + 잘했음 투표 수
+          managerEvalSummary = { goodVotes, badVotes, managerId: managerAssignment.managerId, reward: managerBonus };
+        }
+
+        // ===== 3. 다음달 용돈 저장 =====
+        const settlements: any[] = [];
+        for (const member of memberFinal) {
+          const rank = memberFinal.findIndex(m => m.memberId === member.memberId) + 1;
+          const ddcBonus = rank === 1 ? 1 : 0; // DDC 1등 +1만원
+          const ddcPenalty = rank === memberFinal.length && memberFinal.length > 1 ? 1 : 0; // DDC 꼴찌 -1만원
+          const rcr = rcrMoney.get(member.memberId) || { bonus: 0, penalty: 0 };
+          const adj = adjMap.get(member.memberId) || 0;
+          const isManager = managerAssignment?.managerId === member.memberId;
+          const extraBonus = (isManager ? managerBonus : 0) + rcr.bonus + ddcBonus + (adj > 0 ? adj : 0);
+          const extraPenalty = rcr.penalty + ddcPenalty + (adj < 0 ? Math.abs(adj) : 0);
+
+          const currentAllowance = currentAllowances.find((a: any) => a.memberId === member.memberId);
+          const baseAllowance = currentAllowance?.baseAllowance || 0;
+
+          await db.upsertMonthlyAllowance({
+            month: nextMonth,
+            memberId: member.memberId,
+            baseAllowance,
+            bonus: extraBonus,
+            penalty: extraPenalty,
+          });
+
+          settlements.push({
+            memberId: member.memberId,
+            ddcRank: rank,
+            ddcBonus,
+            ddcPenalty,
+            rcrBonus: rcr.bonus,
+            rcrPenalty: rcr.penalty,
+            managerBonus: isManager ? managerBonus : 0,
+            adjBonus: adj > 0 ? adj : 0,
+            adjPenalty: adj < 0 ? Math.abs(adj) : 0,
+            baseAllowance,
+            finalAllowance: baseAllowance + extraBonus - extraPenalty,
+          });
+        }
+
+        // ===== 4. 다음달 비밀번호 생성 및 알림 전송 =====
+        const newPasswords = await generateAndSendPasswords(nextMonth);
         const nextManager = await db.getMonthlyManager(nextMonth);
-        const managerName = nextManager?.managerId || '미지정';
-
-        // 이번달 평가 결과 조회
-        const evaluations = await db.getManagerEvaluationsByMonth(month);
-        const goodVotes = evaluations.filter((e: any) => e.vote === 'good').length;
-        const badVotes = evaluations.filter((e: any) => e.vote === 'bad').length;
-
-        // 이번달 매니저 정보
-        const currentManager = await db.getMonthlyManager(month);
 
         const { notifyOwner } = await import('./_core/notification');
+        const settlementSummary = settlements.map(s =>
+          `${s.memberId}: 기본 ${s.baseAllowance}만원 + 보너스 ${s.ddcBonus + s.rcrBonus + s.managerBonus + s.adjBonus}만원 - 벌금 ${s.ddcPenalty + s.rcrPenalty + s.adjPenalty}만원 = ${s.finalAllowance}만원`
+        ).join('\n');
+
         await notifyOwner({
-          title: `${month} 매니저 평가 완료 → ${nextMonth} 비밀번호 발급`,
-          content: `${month} 매니저(${currentManager?.managerId || '미지정'}) 평가 완료\n👍 잘했음: ${goodVotes}표 / 👎 못했음: ${badVotes}표\n\n${nextMonth} 매니저 비밀번호: ${passwords?.managerPassword || '생성 실패'}\n${nextMonth} 감사 비밀번호: ${passwords?.auditorPassword || '생성 실패'}\n\n매니저 비밀번호를 ${nextMonth} 매니저(${managerName})에게 전달해주세요.`,
+          title: `${month} 매니저 평가 완료 + 용돈 정산 완료`,
+          content: `✅ ${month} 매니저(${managerAssignment?.managerId || '미지정'}) 평가 완료\n👍 잘했음: ${managerEvalSummary?.goodVotes || 0}표 / 👎 못했음: ${managerEvalSummary?.badVotes || 0}표\n매니저 보상: ${managerBonus}만원\n\n💰 ${nextMonth} 용돈 정산:\n${settlementSummary}\n\n🔐 ${nextMonth} 비밀번호:\n매니저: ${newPasswords?.managerPassword || '생성 실패'}\n감사: ${newPasswords?.auditorPassword || '생성 실패'}\n\n매니저 비밀번호를 ${nextMonth} 매니저(${nextManager?.managerId || '미지정'})에게 전달해주세요.`,
         });
 
         return {
           success: true,
           nextMonth,
-          managerPassword: passwords?.managerPassword,
-          auditorPassword: passwords?.auditorPassword,
+          settlements,
+          managerEvaluation: managerEvalSummary,
+          managerPassword: newPasswords?.managerPassword,
+          auditorPassword: newPasswords?.auditorPassword,
         };
+      }),
+
+    // 월말평가 취소 및 정산 롤백
+    cancelAndRollback: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .mutation(async ({ input }) => {
+        const { month } = input;
+        const nextMonth = getNextMonth(month);
+
+        // 1. 해당 월 매니저 평가 기록 삭제
+        await db.deleteManagerEvaluationsByMonth(month);
+
+        // 2. 다음달 용돈 정산 데이터 삭제 (정산으로 생성된 것)
+        await db.deleteMonthlyAllowancesByMonth(nextMonth);
+
+        const { notifyOwner } = await import('./_core/notification');
+        await notifyOwner({
+          title: `${month} 월말평가 취소됨`,
+          content: `⚠️ ${month} 월말평가가 취소되었습니다.\n${nextMonth} 용돈 정산 데이터가 삭제되었습니다.\n평가를 다시 진행해주세요.`,
+        });
+
+        return { success: true, month, nextMonth };
       }),
   }),
 
@@ -807,6 +930,74 @@ export const appRouter = router({
           }
         }
         
+        return { success: true };
+      }),
+  }),
+
+  // Allowance Adjustments Router (버프/너프)
+  allowanceAdjustment: router({
+    create: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        memberId: z.string(),
+        amount: z.number(), // 양수=버프, 음수=너프 (만원 단위)
+        message: z.string(),
+        createdBy: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createAllowanceAdjustment(input);
+        return { success: true };
+      }),
+    
+    getByMonth: publicProcedure
+      .input(z.object({ month: z.string() }))
+      .query(async ({ input }) => {
+        return await db.getAllowanceAdjustmentsByMonth(input.month);
+      }),
+    
+    getByMemberAndMonth: publicProcedure
+      .input(z.object({ memberId: z.string(), month: z.string() }))
+      .query(async ({ input }) => {
+        return await db.getAllowanceAdjustmentsByMemberAndMonth(input.memberId, input.month);
+      }),
+    
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteAllowanceAdjustment(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // App Settings Router
+  appSettings: router({
+    get: publicProcedure
+      .input(z.object({ key: z.string() }))
+      .query(async ({ input }) => {
+        const value = await db.getAppSetting(input.key);
+        return { value };
+      }),
+    
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllAppSettings();
+    }),
+    
+    set: publicProcedure
+      .input(z.object({ key: z.string(), value: z.string() }))
+      .mutation(async ({ input }) => {
+        await db.setAppSetting(input.key, input.value);
+        return { success: true };
+      }),
+    
+    // 비밀번호 직접 수정
+    updatePassword: publicProcedure
+      .input(z.object({
+        month: z.string(),
+        managerPassword: z.string(),
+        auditorPassword: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.upsertPassword(input.month, input.managerPassword, input.auditorPassword);
         return { success: true };
       }),
   }),

@@ -1,0 +1,9 @@
+{
+  "query": "\nCREATE TABLE IF NOT EXISTS `allowance_adjustments` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `month` varchar(7) NOT NULL,\n  `member_id` varchar(20) NOT NULL,\n  `amount` int NOT NULL,\n  `message` text NOT NULL,\n  `created_by` varchar(50) NOT NULL,\n  `created_at` timestamp NOT NULL DEFAULT (now()),\n  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `allowance_adjustments_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE IF NOT EXISTS `app_settings` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `key` varchar(50) NOT NULL,\n  `value` text NOT NULL,\n  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `app_settings_id` PRIMARY KEY(`id`),\n  CONSTRAINT `app_settings_key_unique` UNIQUE(`key`)\n);\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute \nCREATE TABLE IF NOT EXISTS `allowance_adjustments` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `month` varchar(7) NOT NULL,\n  `member_id` varchar(20) NOT NULL,\n  `amount` int NOT NULL,\n  `message` text NOT NULL,\n  `created_by` varchar(50) NOT NULL,\n  `created_at` timestamp NOT NULL DEFAULT (now()),\n  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `allowance_adjustments_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE IF NOT EXISTS `app_settings` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `key` varchar(50) NOT NULL,\n  `value` text NOT NULL,\n  `updated_at` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n  CONSTRAINT `app_settings_id` PRIMARY KEY(`id`),\n  CONSTRAINT `app_settings_key_unique` UNIQUE(`key`)\n);\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2631
+}

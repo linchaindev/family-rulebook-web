@@ -22,7 +22,10 @@ import {
   monthlyAllowances,
   InsertMonthlyAllowance,
   bugReportRewards,
-  InsertBugReportReward
+  InsertBugReportReward,
+  allowanceAdjustments,
+  InsertAllowanceAdjustment,
+  appSettings,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -652,4 +655,99 @@ export async function deleteBugReportReward(id: number) {
     .where(eq(bugReportRewards.id, id));
   
   return result;
+}
+
+// ==================== Allowance Adjustments (버프/너프) ====================
+
+export async function createAllowanceAdjustment(adjustment: InsertAllowanceAdjustment) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(allowanceAdjustments).values(adjustment);
+  return result;
+}
+
+export async function getAllowanceAdjustmentsByMonth(month: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(allowanceAdjustments)
+    .where(eq(allowanceAdjustments.month, month))
+    .orderBy(desc(allowanceAdjustments.createdAt));
+}
+
+export async function getAllowanceAdjustmentsByMemberAndMonth(memberId: string, month: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db
+    .select()
+    .from(allowanceAdjustments)
+    .where(and(
+      eq(allowanceAdjustments.memberId, memberId),
+      eq(allowanceAdjustments.month, month)
+    ))
+    .orderBy(desc(allowanceAdjustments.createdAt));
+}
+
+export async function deleteAllowanceAdjustment(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(allowanceAdjustments).where(eq(allowanceAdjustments.id, id));
+}
+
+// ==================== App Settings ====================
+
+export async function getAppSetting(key: string): Promise<string | null> {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db
+    .select()
+    .from(appSettings)
+    .where(eq(appSettings.key, key))
+    .limit(1);
+  
+  return result[0]?.value ?? null;
+}
+
+export async function setAppSetting(key: string, value: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(appSettings).values({ key, value }).onDuplicateKeyUpdate({
+    set: { value, updatedAt: new Date() }
+  });
+}
+
+export async function getAllAppSettings(): Promise<Record<string, string>> {
+  const db = await getDb();
+  if (!db) return {};
+  
+  const rows = await db.select().from(appSettings);
+  return Object.fromEntries(rows.map(r => [r.key, r.value]));
+}
+
+// ==================== Password CRUD ====================
+
+export async function upsertPassword(month: string, managerPassword: string, auditorPassword: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(passwords).values({ month, managerPassword, auditorPassword }).onDuplicateKeyUpdate({
+    set: { managerPassword, auditorPassword, updatedAt: new Date() }
+  });
+}
+
+// 특정 월의 용돈 데이터 전체 삭제 (월말평가 취소 시 롤백용)
+export async function deleteMonthlyAllowancesByMonth(month: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db
+    .delete(monthlyAllowances)
+    .where(eq(monthlyAllowances.month, month));
 }

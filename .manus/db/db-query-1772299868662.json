@@ -1,0 +1,9 @@
+{
+  "query": "\n-- 잘못된 0009 hash 업데이트 (a1b2c3... → 실제 hash)\nUPDATE __drizzle_migrations SET hash = '4ea771ea65bcf7d337d7efff28f4005b8252123b8b83fa0071e50cf2ccaf4ea8', created_at = 1771060882390 WHERE hash = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2';\n\n-- 0010 마이그레이션 기록 추가\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('815a92976197bc1216f61cbcb6c04f5423b33d66ce0fd2cf7ee6132b7888e18b', 1772299756857);\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute \n-- 잘못된 0009 hash 업데이트 (a1b2c3... → 실제 hash)\nUPDATE __drizzle_migrations SET hash = '4ea771ea65bcf7d337d7efff28f4005b8252123b8b83fa0071e50cf2ccaf4ea8', created_at = 1771060882390 WHERE hash = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2';\n\n-- 0010 마이그레이션 기록 추가\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('815a92976197bc1216f61cbcb6c04f5423b33d66ce0fd2cf7ee6132b7888e18b', 1772299756857);\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1721
+}

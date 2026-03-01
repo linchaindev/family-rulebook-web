@@ -22,6 +22,48 @@ export default function ReleaseNotes() {
           </p>
         </div>
 
+        {/* v1.1.0 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">v1.1.0</CardTitle>
+                <CardDescription>2026년 3월 1일</CardDescription>
+              </div>
+              <Badge variant="default" className="bg-green-600">Latest</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Sparkles className="w-5 h-5 mr-2 text-yellow-600" />
+                주요 기능 추가
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">• 월말평가 통합 정산: 평가 완료 시 DDC 순위 용돈/벌금, 매니저 보상, RCR 보상/벌금, 버프/너프 조정이 자동으로 다음달 용돈에 반영</li>
+                <li className="text-muted-foreground">• 부모 포함 5인 평가: 매니저 본인 제외 4인이 투표 (기본 1만원 + 잘했음 투표당 1만원, 최대 5만원)</li>
+                <li className="text-muted-foreground">• 버그 보상 DDC -1시간: 버그 리포트 보상이 용돈 1만원에서 DDC 총시간 -1시간으로 변경</li>
+                <li className="text-muted-foreground">• FA DDC 수정 UI 개편: FM의 월별 테이블 입력 UI와 동일하게 변경</li>
+                <li className="text-muted-foreground">• 버프/너프 메시지: FA 페이지에서 자녀 용돈에 메시지와 함께 버프/너프 추가 가능, 프로필에 표시</li>
+                <li className="text-muted-foreground">• FA 용돈 직접 수정: 자녀별 월간 용돈 직접 수정 가능</li>
+                <li className="text-muted-foreground">• 이메일/비번 직접 수정: FA 설정 탭에서 알림 이메일, FM/FA 비밀번호 직접 수정 가능</li>
+                <li className="text-muted-foreground">• 대시보드/프로필 이전달+이번달 동시 표시: 항상 지난달과 이번달 DDC 순위 및 용돈 정보 함께 표시</li>
+                <li className="text-muted-foreground">• TBD 표시: 월말 평가 전 용돈은 TBD로 표시, 평가 후 확정 금액 표시</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Bug className="w-5 h-5 mr-2 text-red-600" />
+                버그 수정
+              </h3>
+              <ul className="space-y-2 ml-7">
+                <li className="text-muted-foreground">• FA 감사 페이지에서 월말 정산 시스템 제거 (월말평가 페이지로 통합)</li>
+                <li className="text-muted-foreground">• 매니저 평가 완료 후 비밀번호 자동 생성 및 이메일 전송</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* v1.0.5 */}
         <Card className="mb-8">
           <CardHeader>
@@ -30,7 +72,6 @@ export default function ReleaseNotes() {
                 <CardTitle className="text-2xl">v1.0.5</CardTitle>
                 <CardDescription>2026년 2월 14일</CardDescription>
               </div>
-              <Badge variant="default" className="bg-green-600">Latest</Badge>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

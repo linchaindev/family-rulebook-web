@@ -130,18 +130,7 @@ export default function Home() {
               </Button>
             </Link>
 
-            {/* 5. 월말 평가 */}
-            <Link href="/manager-evaluation">
-              <Button 
-                size="default"
-                className="w-full h-12 text-sm bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
-              >
-                <Vote className="w-5 h-5 mr-2" />
-                월말 평가
-              </Button>
-            </Link>
-
-            {/* 6. 가족 소통 게시판 */}
+            {/* 5. 가족 소통 게시판 (월말 평가는 FA 전용 페이지로 이동) */}
             <Link href="/comments">
               <Button 
                 size="default"

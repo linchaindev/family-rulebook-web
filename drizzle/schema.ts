@@ -182,3 +182,29 @@ export const bugReportRewards = mysqlTable("bug_report_rewards", {
 
 export type BugReportReward = typeof bugReportRewards.$inferSelect;
 export type InsertBugReportReward = typeof bugReportRewards.$inferInsert;
+
+// Allowance Adjustments Table - 버프/너프 메시지
+export const allowanceAdjustments = mysqlTable("allowance_adjustments", {
+  id: int("id").autoincrement().primaryKey(),
+  month: varchar("month", { length: 7 }).notNull(), // YYYY-MM
+  memberId: varchar("member_id", { length: 20 }).notNull(),
+  amount: int("amount").notNull(), // 양수=버프, 음수=너프 (만원 단위)
+  message: text("message").notNull(), // "엄마 설겆이 도와줘서 +1만원"
+  createdBy: varchar("created_by", { length: 50 }).notNull(), // 입력한 FA
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AllowanceAdjustment = typeof allowanceAdjustments.$inferSelect;
+export type InsertAllowanceAdjustment = typeof allowanceAdjustments.$inferInsert;
+
+// App Settings Table - 이메일, 비번 등 앱 설정
+export const appSettings = mysqlTable("app_settings", {
+  id: int("id").autoincrement().primaryKey(),
+  key: varchar("key", { length: 50 }).notNull().unique(), // 설정 키
+  value: text("value").notNull(), // 설정 값
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AppSetting = typeof appSettings.$inferSelect;
+export type InsertAppSetting = typeof appSettings.$inferInsert;

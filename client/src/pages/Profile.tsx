@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Trophy, Calendar, Target, Award, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Trophy, Calendar, Target, Award, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
 import { FAMILY_MEMBERS } from "@/types/family";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -12,25 +12,51 @@ import { trpc } from "@/lib/trpc";
 export default function Profile() {
   const [, params] = useRoute("/profile/:id");
   const memberId = params?.id || '';
-  
+
   const member = FAMILY_MEMBERS.find(m => m.id === memberId);
-  
+
+  // 현재 날짜 기준으로 이번달과 지난달 계산
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonthNum = now.getMonth() + 1;
+  const currentMonth = `${currentYear}-${String(currentMonthNum).padStart(2, '0')}`;
+  const prevMonthNum = currentMonthNum === 1 ? 12 : currentMonthNum - 1;
+  const prevYear = currentMonthNum === 1 ? currentYear - 1 : currentYear;
+  const prevMonth = `${prevYear}-${String(prevMonthNum).padStart(2, '0')}`;
+
   // 데이터베이스에서 모든 데이터 불러오기
   const { data: ddcRecords = [] } = trpc.ddc.getAll.useQuery();
   const { data: rcrRecords = [] } = trpc.rcr.getAll.useQuery();
   const { data: activityLogs = [] } = trpc.managerActivityLog.getAll.useQuery();
   const { data: managerActivities = [] } = trpc.managerActivity.getAll.useQuery();
-  
-  // 현재 월 계산
-  const currentMonth = '2026-02';
-  const { data: currentAllowance } = trpc.allowance.getByMonth.useQuery({ month: currentMonth, memberId });
-  const { data: allowanceHistory = [] } = trpc.allowance.getHistory.useQuery({ memberId });
 
-  // 현재 월 DDC 순위 계산 (중복 제거)
-  const memberTimes = useMemo(() => {
-    const times = FAMILY_MEMBERS.map(m => {
-      // 중복 제거: 같은 날짜의 레코드 중 가장 최신 것만 사용
-      const memberRecords = ddcRecords.filter(d => d.memberId === m.id && d.date.startsWith(currentMonth));
+  // 이번달 용돈
+  const { data: currentAllowance } = trpc.allowance.getByMonth.useQuery(
+    { month: currentMonth, memberId },
+    { enabled: !!memberId }
+  );
+  // 지난달 용돈
+  const { data: prevAllowance } = trpc.allowance.getByMonth.useQuery(
+    { month: prevMonth, memberId },
+    { enabled: !!memberId }
+  );
+  // 용돈 히스토리
+  const { data: allowanceHistory = [] } = trpc.allowance.getHistory.useQuery({ memberId });
+  // 버프/너프 메시지 (이번달)
+  const { data: currentAdjustments = [] } = trpc.allowanceAdjustment.getByMemberAndMonth.useQuery(
+    { month: currentMonth, memberId },
+    { enabled: !!memberId }
+  );
+  // 버프/너프 메시지 (지난달)
+  const { data: prevAdjustments = [] } = trpc.allowanceAdjustment.getByMemberAndMonth.useQuery(
+    { month: prevMonth, memberId },
+    { enabled: !!memberId }
+  );
+
+  // 멤버별 월간 DDC 집계 (중복 제거)
+  const calcMonthlyTimes = (month: string) => {
+    return FAMILY_MEMBERS.map(m => {
+      const memberRecords = ddcRecords.filter(d => d.memberId === m.id && d.date.startsWith(month));
       const uniqueRecords = new Map<string, typeof ddcRecords[0]>();
       memberRecords.forEach(record => {
         const existing = uniqueRecords.get(record.date);
@@ -40,182 +66,168 @@ export default function Profile() {
       });
       const totalTime = Array.from(uniqueRecords.values()).reduce((sum, d) => sum + d.screenTime, 0);
       return { memberId: m.id, total: totalTime };
-    });
-    times.sort((a, b) => a.total - b.total);
-    return times;
-  }, [ddcRecords]);
-  
-  const memberRanking = memberTimes.findIndex(r => r.memberId === memberId) + 1;
-  const memberScreenTime = memberTimes.find(r => r.memberId === memberId)?.total || 0;
-  
-  // 참여 일수 계산 (실제 DDC 기록이 있는 날짜 수)
-  const participationDays = useMemo(() => {
+    }).sort((a, b) => a.total - b.total);
+  };
+
+  const currentMonthTimes = useMemo(() => calcMonthlyTimes(currentMonth), [ddcRecords, currentMonth]);
+  const prevMonthTimes = useMemo(() => calcMonthlyTimes(prevMonth), [ddcRecords, prevMonth]);
+
+  const currentRanking = currentMonthTimes.findIndex(r => r.memberId === memberId) + 1;
+  const prevRanking = prevMonthTimes.findIndex(r => r.memberId === memberId) + 1;
+  const currentScreenTime = currentMonthTimes.find(r => r.memberId === memberId)?.total || 0;
+  const prevScreenTime = prevMonthTimes.find(r => r.memberId === memberId)?.total || 0;
+
+  // 참여 일수 계산
+  const currentParticipationDays = useMemo(() => {
     const uniqueDates = new Set(
-      ddcRecords
-        .filter(d => d.memberId === memberId && d.date.startsWith(currentMonth))
-        .map(d => d.date)
+      ddcRecords.filter(d => d.memberId === memberId && d.date.startsWith(currentMonth)).map(d => d.date)
     );
     return uniqueDates.size;
-  }, [ddcRecords, memberId]);
-  
-  // 1등 횟수 계산 (월별로 1등인 횟수, 중복 제거)
+  }, [ddcRecords, memberId, currentMonth]);
+
+  const prevParticipationDays = useMemo(() => {
+    const uniqueDates = new Set(
+      ddcRecords.filter(d => d.memberId === memberId && d.date.startsWith(prevMonth)).map(d => d.date)
+    );
+    return uniqueDates.size;
+  }, [ddcRecords, memberId, prevMonth]);
+
+  // 1등 횟수 계산
   const firstPlaceCount = useMemo(() => {
     const months = new Set(ddcRecords.map(d => d.date.substring(0, 7)));
     let count = 0;
-    
     months.forEach(month => {
-      const monthlyTimes = FAMILY_MEMBERS.map(m => {
-        // 중복 제거
-        const memberRecords = ddcRecords.filter(d => d.memberId === m.id && d.date.startsWith(month));
-        const uniqueRecords = new Map<string, typeof ddcRecords[0]>();
-        memberRecords.forEach(record => {
-          const existing = uniqueRecords.get(record.date);
-          if (!existing || new Date(record.updatedAt) > new Date(existing.updatedAt)) {
-            uniqueRecords.set(record.date, record);
-          }
-        });
-        const totalTime = Array.from(uniqueRecords.values()).reduce((sum, d) => sum + d.screenTime, 0);
-        return { memberId: m.id, total: totalTime };
-      });
-      monthlyTimes.sort((a, b) => a.total - b.total);
-      if (monthlyTimes[0]?.memberId === memberId && monthlyTimes[0].total > 0) {
-        count++;
-      }
+      const monthlyTimes = calcMonthlyTimes(month);
+      if (monthlyTimes[0]?.memberId === memberId && monthlyTimes[0].total > 0) count++;
     });
-    
     return count;
   }, [ddcRecords, memberId]);
-  
-  const bronzeStars = Math.floor(firstPlaceCount / 6);
-  const silverStars = Math.floor(firstPlaceCount / 6);
-  const remainingWins = firstPlaceCount % 6;
 
-  // 누적 보상 계산 (매니저 활동 보상 합계)
+  // 누적 보상 계산
   const totalReward = useMemo(() => {
     return managerActivities
       .filter(a => a.managerId === memberId)
       .reduce((sum, a) => sum + (a.reward || 0), 0);
   }, [managerActivities, memberId]);
 
-  // 매니저 활동 기록 (최신)
+  // 최신 매니저 활동
   const latestActivity = useMemo(() => {
-    const activities = managerActivities
+    return managerActivities
       .filter(a => a.managerId === memberId)
-      .sort((a, b) => b.month.localeCompare(a.month));
-    return activities[0];
+      .sort((a, b) => b.month.localeCompare(a.month))[0];
   }, [managerActivities, memberId]);
-  
-  // 이 구성원의 RCR 기록
+
+  // RCR 기록
   const memberRcrRecords = useMemo(() => {
-    return rcrRecords
-      .filter(r => r.memberId === memberId)
-      .sort((a, b) => b.date.localeCompare(a.date));
+    return rcrRecords.filter(r => r.memberId === memberId).sort((a, b) => b.date.localeCompare(a.date));
   }, [rcrRecords, memberId]);
-  
-  // 이 구성원의 활동 일지
+
+  // 활동 일지
   const memberActivityLogs = useMemo(() => {
-    return activityLogs
-      .filter(l => l.memberId === memberId)
-      .sort((a, b) => b.date.localeCompare(a.date));
+    return activityLogs.filter(l => l.memberId === memberId).sort((a, b) => b.date.localeCompare(a.date));
   }, [activityLogs, memberId]);
-  
-  // member가 없으면 early return
+
   if (!member) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>프로필을 찾을 수 없습니다</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Link href="/">
-              <Button>홈으로 돌아가기</Button>
-            </Link>
-          </CardContent>
+          <CardHeader><CardTitle>프로필을 찾을 수 없습니다</CardTitle></CardHeader>
+          <CardContent><Link href="/"><Button>홈으로 돌아가기</Button></Link></CardContent>
         </Card>
       </div>
     );
   }
 
-  // 최근 활동 통합 (DDC, RCR, 활동 일지)
-  const recentActivities = useMemo(() => {
-    const activities: Array<{ date: string; type: string; content: string; variant: 'default' | 'destructive' | 'outline' }> = [];
-    
-    // DDC 기록
-    ddcRecords
-      .filter(d => d.memberId === memberId)
-      .slice(0, 3)
-      .forEach(d => {
-        activities.push({
-          date: d.date,
-          type: 'DDC',
-          content: `스크린타임 ${Math.floor(d.screenTime / 60)}시간 ${d.screenTime % 60}분 기록`,
-          variant: 'outline'
-        });
-      });
-    
-    // RCR 기록 - 10단계 카드 시스템
-    memberRcrRecords.slice(0, 3).forEach(r => {
-      const cardLabels: Record<string, string> = {
-        yellow: '🟨 옐로우카드',
-        red: '🟥 레드카드',
-        double_red: '🟥🟥 더블레드',
-        triple_red: '🟥🟥🟥 트리플레드',
-        quadro_red: '🟥🟥🟥🟥 쿼드로레드',
-        green: '🟩 그린카드',
-        double_green: '🟩🟩 더블그린',
-        triple_green: '🟩🟩🟩 트리플그린',
-        quadro_green: '🟩🟩🟩🟩 쿼드로그린',
-        golden: '🏆 골든카드'
-      };
-      activities.push({
-        date: r.date,
-        type: 'RCR',
-        content: `${cardLabels[r.cardType] || r.cardType} - ${r.reason}`,
-        variant: r.cardType.includes('green') || r.cardType === 'golden' ? 'default' : 'destructive'
-      });
-    });
-    
-    // 활동 일지
-    memberActivityLogs.slice(0, 3).forEach(l => {
-      const typeLabels = {
-        tardiness: '지각',
-        absence: '결석',
-        homework_incomplete: '숙제 미완료',
-        rule_violation: '규칙 위반',
-        other: '기타'
-      };
-      activities.push({
-        date: l.date,
-        type: '활동',
-        content: `${typeLabels[l.activityType as keyof typeof typeLabels]} - ${l.comment.substring(0, 30)}${l.comment.length > 30 ? '...' : ''}`,
-        variant: 'default'
-      });
-    });
-    
-    // 날짜순 정렬
-    activities.sort((a, b) => b.date.localeCompare(a.date));
-    
-    return activities.slice(0, 10);
-  }, [ddcRecords, memberRcrRecords, memberActivityLogs, memberId]);
+  const formatTime = (minutes: number) => {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return h > 0 ? `${h}시간 ${m}분` : `${m}분`;
+  };
 
-  // member가 없으면 404 페이지로 리다이렉트
-  if (!member) {
+  const rankEmoji = (rank: number) => {
+    if (rank === 1) return '🥇';
+    if (rank === 2) return '🥈';
+    if (rank === 3) return '🥉';
+    return `${rank}위`;
+  };
+
+  const renderAllowanceCard = (
+    month: string,
+    allowance: typeof currentAllowance,
+    adjustments: typeof currentAdjustments,
+    label: string
+  ) => {
+    const isSettled = !!allowance;
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">가족 구성원을 찾을 수 없습니다</h1>
-          <Link href="/">
-            <Button>홈으로 돌아가기</Button>
-          </Link>
-        </div>
-      </div>
+      <Card className="border-2">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Award className="w-6 h-6 text-amber-600" />
+              <CardTitle className="text-base">{label} 용돈</CardTitle>
+            </div>
+            <Badge variant={isSettled ? "default" : "outline"}>{isSettled ? "정산완료" : "TBD"}</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {isSettled ? (
+            <>
+              <div className="text-4xl font-bold text-amber-600 mb-2">
+                {allowance!.finalAllowance}만원
+              </div>
+              <div className="text-xs text-muted-foreground space-y-1">
+                <div>기본 {allowance!.baseAllowance}만원 + 상금 {allowance!.bonus}만원 - 벌금 {allowance!.penalty}만원</div>
+              </div>
+              {/* 버프/너프 메시지 */}
+              {adjustments.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {adjustments.map((adj: any) => (
+                    <div
+                      key={adj.id}
+                      className={`flex items-center gap-2 text-sm p-2 rounded-lg ${
+                        adj.amount > 0
+                          ? 'bg-green-50 text-green-800 dark:bg-green-950/30 dark:text-green-300'
+                          : 'bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300'
+                      }`}
+                    >
+                      {adj.amount > 0 ? <TrendingUp className="w-4 h-4 flex-shrink-0" /> : <TrendingDown className="w-4 h-4 flex-shrink-0" />}
+                      <span>{adj.message} ({adj.amount > 0 ? '+' : ''}{adj.amount}만원)</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-4">
+              <div className="text-3xl font-bold text-muted-foreground mb-1">TBD</div>
+              <p className="text-xs text-muted-foreground">월말 평가 후 확정</p>
+              {/* 버프/너프 메시지 (정산 전에도 표시) */}
+              {adjustments.length > 0 && (
+                <div className="mt-3 space-y-2 text-left">
+                  {adjustments.map((adj: any) => (
+                    <div
+                      key={adj.id}
+                      className={`flex items-center gap-2 text-sm p-2 rounded-lg ${
+                        adj.amount > 0
+                          ? 'bg-green-50 text-green-800 dark:bg-green-950/30 dark:text-green-300'
+                          : 'bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300'
+                      }`}
+                    >
+                      {adj.amount > 0 ? <TrendingUp className="w-4 h-4 flex-shrink-0" /> : <TrendingDown className="w-4 h-4 flex-shrink-0" />}
+                      <span>{adj.message} ({adj.amount > 0 ? '+' : ''}{adj.amount}만원)</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     );
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
-      {/* Header */}
       <div className="container py-8">
         <Link href="/">
           <Button variant="ghost" className="mb-4">
@@ -226,301 +238,133 @@ export default function Profile() {
 
         {/* Profile Header */}
         <div className="flex items-center gap-6 mb-8">
-          <div 
+          <div
             className="w-24 h-24 rounded-full flex items-center justify-center text-5xl relative"
             style={{ backgroundColor: `${member.color}20`, border: `3px solid ${member.color}` }}
           >
             {member.avatar}
-            {memberRanking === 1 && (
+            {currentRanking === 1 && (
               <div className="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-2 shadow-lg">
                 <Trophy className="w-6 h-6 text-yellow-900" />
-              </div>
-            )}
-            {memberRanking === 2 && (
-              <div className="absolute -top-2 -right-2 bg-gray-300 rounded-full p-2 shadow-lg">
-                <Award className="w-6 h-6 text-gray-700" />
               </div>
             )}
           </div>
           <div>
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-4xl font-bold">{member.nickname}</h1>
-              {memberRanking === 1 && <span className="text-3xl">🥇</span>}
-              {memberRanking === 2 && <span className="text-3xl">🥈</span>}
+              {currentRanking === 1 && <span className="text-3xl">🥇</span>}
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Badge variant={member.role === 'parent' ? 'default' : 'secondary'} className="text-base">
-                {member.role === 'parent' ? '감사' : '팀원'}
+                {member.role === 'parent' ? '부모' : '자녀'}
               </Badge>
-              {memberRanking === 1 && firstPlaceCount > 0 && (
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: bronzeStars }).map((_, i) => (
-                    <span key={`bronze-${i}`} className="text-xl" title="브론즈별">🥉</span>
-                  ))}
-                  {Array.from({ length: silverStars }).map((_, i) => (
-                    <span key={`silver-${i}`} className="text-xl" title="실버별">🥈</span>
-                  ))}
-                  {Array.from({ length: remainingWins }).map((_, i) => (
-                    <span key={`star-${i}`} className="text-xl" title="1등 횟수">⭐</span>
-                  ))}
-                  <span className="text-sm text-muted-foreground ml-1">({firstPlaceCount}회 1등)</span>
-                </div>
+              {firstPlaceCount > 0 && (
+                <span className="text-sm text-muted-foreground">🏆 1등 {firstPlaceCount}회</span>
               )}
             </div>
           </div>
         </div>
 
-        {/* DDC Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        {/* DDC 순위 - 이번달 + 지난달 */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* 이번달 DDC */}
           <Card className="border-2">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Trophy className="w-8 h-8 text-primary" />
-                <CardTitle>2월 DDC 순위</CardTitle>
+                <Trophy className="w-6 h-6 text-primary" />
+                <CardTitle>{currentMonth} DDC 순위</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-5xl font-bold mb-2" style={{ color: member.color }}>
-                {memberRanking > 0 ? `${memberRanking}등` : '-'}
+                {rankEmoji(currentRanking)}
               </div>
-              <p className="text-muted-foreground">
-                총 스크린타임: {Math.floor(memberScreenTime / 60)}시간 {memberScreenTime % 60}분
-              </p>
+              <p className="text-muted-foreground">총 스크린타임: {formatTime(currentScreenTime)}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">참여 {currentParticipationDays}일</span>
+              </div>
             </CardContent>
           </Card>
 
+          {/* 지난달 DDC */}
           <Card className="border-2">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Calendar className="w-8 h-8 text-primary" />
-                <CardTitle>참여 일수</CardTitle>
+                <Trophy className="w-6 h-6 text-muted-foreground" />
+                <CardTitle>{prevMonth} DDC 순위</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-5xl font-bold mb-2" style={{ color: member.color }}>
-                {participationDays}일
+              <div className="text-5xl font-bold mb-2 text-muted-foreground">
+                {rankEmoji(prevRanking)}
               </div>
-              <p className="text-muted-foreground">2월 현재까지</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-2">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Award className="w-8 h-8 text-primary" />
-                <CardTitle>누적 보상</CardTitle>
+              <p className="text-muted-foreground">총 스크린타임: {formatTime(prevScreenTime)}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">참여 {prevParticipationDays}일</span>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-5xl font-bold mb-2" style={{ color: member.color }}>
-                {totalReward > 0 ? `+${totalReward}만원` : '0원'}
-              </div>
-              <p className="text-muted-foreground">2026년 누적</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-2">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Award className="w-8 h-8 text-amber-600" />
-                <CardTitle>이번달 용돈</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-5xl font-bold mb-2 text-amber-600">
-                {currentAllowance ? `${currentAllowance.finalAllowance}만원` : '-'}
-              </div>
-              {currentAllowance && (
-                <p className="text-muted-foreground text-xs">
-                  기본 {currentAllowance.baseAllowance} + 상금 {currentAllowance.bonus} - 벌금 {currentAllowance.penalty}
-                </p>
-              )}
-              {!currentAllowance && (
-                <p className="text-muted-foreground">2월 현재까지</p>
-              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Manager Activities (학생만) */}
+        {/* 용돈 - 이번달 + 지난달 (자녀만) */}
         {member.role === 'student' && (
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {renderAllowanceCard(currentMonth, currentAllowance, currentAdjustments, currentMonth)}
+            {renderAllowanceCard(prevMonth, prevAllowance, prevAdjustments, prevMonth)}
+          </div>
+        )}
+
+        {/* 매니저 활동 기록 (자녀만) */}
+        {member.role === 'student' && latestActivity && (
           <Card className="mb-8">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Target className="w-8 h-8 text-primary" />
-                <CardTitle>매니저 활동 기록</CardTitle>
+                <CardTitle>매니저 활동 기록 ({latestActivity.month})</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              {latestActivity ? (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold">
-                      {latestActivity.month} 매니저 활동
-                    </span>
-                    <Badge className="text-lg px-4 py-2" variant="default">
-                      보상: {latestActivity.reward}만원
-                    </Badge>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold">{latestActivity.month} 매니저 활동</span>
+                  <Badge className="text-lg px-4 py-2" variant="default">
+                    보상: {latestActivity.reward}만원
+                  </Badge>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { label: '기상 관리', count: latestActivity.wakeupCount },
+                    { label: '학원 출석', count: latestActivity.academyCount },
+                    { label: '숙제 독려', count: latestActivity.homeworkCount },
+                    { label: '수면 관리', count: latestActivity.sleepCount },
+                    { label: '월말 결산', count: latestActivity.settlementCount, max: 1 },
+                    { label: '활동 평가', count: latestActivity.evaluationCount, max: 1 },
+                  ].map(({ label, count, max = 31 }) => (
+                    <div key={label}>
                       <div className="flex justify-between mb-2">
-                        <span>기상 관리</span>
-                        <span className="font-semibold">{latestActivity.wakeupCount}/31일</span>
+                        <span>{label}</span>
+                        <span className="font-semibold">{count}/{max}일</span>
                       </div>
-                      <Progress value={(latestActivity.wakeupCount / 31) * 100} />
+                      <Progress value={(count / max) * 100} />
                     </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>학원 출석</span>
-                        <span className="font-semibold">{latestActivity.academyCount}/31일</span>
-                      </div>
-                      <Progress value={(latestActivity.academyCount / 31) * 100} />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>숙제 독려</span>
-                        <span className="font-semibold">{latestActivity.homeworkCount}/31일</span>
-                      </div>
-                      <Progress value={(latestActivity.homeworkCount / 31) * 100} />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>수면 관리</span>
-                        <span className="font-semibold">{latestActivity.sleepCount}/31일</span>
-                      </div>
-                      <Progress value={(latestActivity.sleepCount / 31) * 100} />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>월말 결산</span>
-                        <span className="font-semibold">{latestActivity.settlementCount}/1회</span>
-                      </div>
-                      <Progress value={latestActivity.settlementCount * 100} />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>활동 평가</span>
-                        <span className="font-semibold">{latestActivity.evaluationCount}/1회</span>
-                      </div>
-                      <Progress value={latestActivity.evaluationCount * 100} />
-                    </div>
-                  </div>
-
-                  <div className="bg-accent/10 p-4 rounded-lg border-2 border-accent">
-                    <div className="text-center">
-                      <p className="text-sm text-muted-foreground mb-2">가족 평가</p>
-                      <p className="text-3xl font-bold">
-                        O표 {latestActivity.oVotes}개 → {latestActivity.reward}만원
-                      </p>
-                    </div>
+                  ))}
+                </div>
+                <div className="bg-accent/10 p-4 rounded-lg border-2 border-accent">
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground mb-2">가족 평가</p>
+                    <p className="text-3xl font-bold">
+                      O표 {latestActivity.oVotes}개 → {latestActivity.reward}만원
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <p className="text-muted-foreground">아직 매니저 활동 기록이 없습니다.</p>
-              )}
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* RCR Records */}
-        {memberRcrRecords.length > 0 && (
-          <Card className="mb-8">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-8 h-8 text-destructive" />
-                <CardTitle>RCR 기록</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {memberRcrRecords.slice(0, 5).map((rcr) => {
-                  const cardLabels: Record<string, string> = {
-                    yellow: '🟨 옐로우카드',
-                    red: '🟥 레드카드',
-                    double_red: '🟥🟥 더블레드',
-                    triple_red: '🟥🟥🟥 트리플레드',
-                    quadro_red: '🟥🟥🟥🟥 쿼드로레드',
-                    green: '🟩 그린카드',
-                    double_green: '🟩🟩 더블그린',
-                    triple_green: '🟩🟩🟩 트리플그린',
-                    quadro_green: '🟩🟩🟩🟩 쿼드로그린',
-                    golden: '🏆 골든카드'
-                  };
-                  const cardColors: Record<string, string> = {
-                    yellow: 'bg-yellow-100 text-yellow-800',
-                    red: 'bg-red-100 text-red-800',
-                    double_red: 'bg-red-200 text-red-900',
-                    triple_red: 'bg-red-300 text-red-950',
-                    quadro_red: 'bg-red-400 text-white',
-                    green: 'bg-green-100 text-green-800',
-                    double_green: 'bg-green-200 text-green-900',
-                    triple_green: 'bg-green-300 text-green-950',
-                    quadro_green: 'bg-green-400 text-white',
-                    golden: 'bg-yellow-400 text-yellow-950'
-                  };
-                  return (
-                    <div key={rcr.id} className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">{rcr.date}</span>
-                        <Badge className={cardColors[rcr.cardType] || 'bg-gray-100 text-gray-800'}>
-                          {cardLabels[rcr.cardType] || rcr.cardType}
-                        </Badge>
-                      </div>
-                      <p className="text-sm">{rcr.reason}</p>
-                      <p className="text-xs text-muted-foreground mt-1">적용자: {rcr.appliedBy}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Activity Logs */}
-        {memberActivityLogs.length > 0 && (
-          <Card className="mb-8">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Target className="w-8 h-8 text-primary" />
-                <CardTitle>활동 일지</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {memberActivityLogs.slice(0, 5).map((log) => {
-                  const typeLabels = {
-                    tardiness: '지각',
-                    absence: '결석',
-                    homework_incomplete: '숙제 미완료',
-                    rule_violation: '규칙 위반',
-                    other: '기타'
-                  };
-                  return (
-                    <div key={log.id} className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">{log.date}</span>
-                        <Badge variant="outline">
-                          {typeLabels[log.activityType as keyof typeof typeLabels]}
-                        </Badge>
-                      </div>
-                      <p className="text-sm">{log.comment}</p>
-                      <p className="text-xs text-muted-foreground mt-1">기록자: {log.recordedBy}</p>
-                    </div>
-                  );
-                })}
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* Allowance History */}
+        {/* 용돈 변동 내역 (자녀만) */}
         {member.role === 'student' && allowanceHistory.length > 0 && (
           <Card className="mb-8">
             <CardHeader>
@@ -535,9 +379,7 @@ export default function Profile() {
                   <div key={record.id} className="p-4 border-2 rounded-lg hover:bg-accent/5 transition-colors">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-lg font-semibold">{record.month}</span>
-                      <span className="text-2xl font-bold text-amber-600">
-                        {record.finalAllowance}만원
-                      </span>
+                      <span className="text-2xl font-bold text-amber-600">{record.finalAllowance}만원</span>
                     </div>
                     <div className="grid grid-cols-3 gap-4 text-sm">
                       <div>
@@ -560,29 +402,75 @@ export default function Profile() {
           </Card>
         )}
 
-        {/* Recent Activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle>최근 활동</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {recentActivities.length > 0 ? (
-              <div className="space-y-3">
-                {recentActivities.map((activity, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                    <div className="flex-1">
-                      <span className="text-sm text-muted-foreground mr-2">{activity.date}</span>
-                      <span className="text-sm">{activity.content}</span>
-                    </div>
-                    <Badge variant={activity.variant}>{activity.type}</Badge>
-                  </div>
-                ))}
+        {/* RCR Records */}
+        {memberRcrRecords.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="w-8 h-8 text-destructive" />
+                <CardTitle>RCR 기록</CardTitle>
               </div>
-            ) : (
-              <p className="text-muted-foreground text-center py-8">아직 활동 기록이 없습니다.</p>
-            )}
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {memberRcrRecords.slice(0, 5).map((rcr) => {
+                  const cardLabels: Record<string, string> = {
+                    yellow: '🟨 옐로우카드', red: '🟥 레드카드',
+                    double_red: '🟥🟥 더블레드', triple_red: '🟥🟥🟥 트리플레드',
+                    quadro_red: '🟥🟥🟥🟥 쿼드로레드', green: '🟩 그린카드',
+                    double_green: '🟩🟩 더블그린', triple_green: '🟩🟩🟩 트리플그린',
+                    quadro_green: '🟩🟩🟩🟩 쿼드로그린', golden: '🏆 골든카드'
+                  };
+                  const isPenalty = ['yellow', 'red', 'double_red', 'triple_red', 'quadro_red'].includes(rcr.cardType);
+                  return (
+                    <div key={rcr.id} className="p-3 border rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm text-muted-foreground">{rcr.date}</span>
+                        <Badge variant={isPenalty ? "destructive" : "default"}>
+                          {cardLabels[rcr.cardType] || rcr.cardType}
+                        </Badge>
+                      </div>
+                      <p className="text-sm">{rcr.reason}</p>
+                      <p className="text-xs text-muted-foreground mt-1">적용자: {rcr.appliedBy}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Activity Logs */}
+        {memberActivityLogs.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Target className="w-8 h-8 text-primary" />
+                <CardTitle>활동 일지</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {memberActivityLogs.slice(0, 5).map((log) => {
+                  const typeLabels: Record<string, string> = {
+                    tardiness: '지각', absence: '결석',
+                    homework_incomplete: '숙제 미완료', rule_violation: '규칙 위반', other: '기타'
+                  };
+                  return (
+                    <div key={log.id} className="p-3 border rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm text-muted-foreground">{log.date}</span>
+                        <Badge variant="outline">{typeLabels[log.activityType] || log.activityType}</Badge>
+                      </div>
+                      <p className="text-sm">{log.comment}</p>
+                      <p className="text-xs text-muted-foreground mt-1">기록자: {log.recordedBy}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

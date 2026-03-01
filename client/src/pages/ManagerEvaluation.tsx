@@ -403,8 +403,6 @@ export default function ManagerEvaluation() {
     badVotes: number;
   } | null>(null);
 
-  const voters = FAMILY_MEMBERS.filter(m => m.role === 'student');
-
   const { data: monthlyManager } = trpc.monthlyManager.get.useQuery(
     { month: selectedMonth! },
     { enabled: !!selectedMonth }
@@ -429,7 +427,10 @@ export default function ManagerEvaluation() {
   const submitVoteMutation = trpc.managerEvaluation.submitVote.useMutation({
     onSuccess: () => refetchEvaluations(),
   });
-  const completeAndNotifyMutation = trpc.managerEvaluation.completeAndNotify.useMutation();
+  const completeAndNotifyMutation = trpc.managerEvaluation.completeAndSettle.useMutation();
+
+  // 전체 가족 5인 중 매니저 본인 제외한 4인이 투표
+  const voters = FAMILY_MEMBERS.filter(m => m.id !== monthlyManager?.managerId);
 
   const currentVoter = voters[currentVoterIndex];
   const hasVoted = currentVoter && votes[currentVoter.id] !== undefined;

@@ -1,7 +1,6 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
-import { getDb } from "./db";
 
 type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
 
@@ -46,15 +45,19 @@ describe("DDC Records API", () => {
     expect(result.success).toBe(true);
   });
 
-  it("should get DDC records by month", async () => {
+  it("should get DDC records by month (getByMonth)", async () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.ddc.getByMonth({
-      year: 2026,
-      month: "02",
-    });
+    const result = await caller.ddc.getByMonth({ month: "2026-02" });
+    expect(Array.isArray(result)).toBe(true);
+  });
 
+  it("should get all DDC records", async () => {
+    const ctx = createTestContext();
+    const caller = appRouter.createCaller(ctx);
+
+    const result = await caller.ddc.getAll();
     expect(Array.isArray(result)).toBe(true);
   });
 
@@ -70,15 +73,14 @@ describe("DDC Records API", () => {
     });
 
     // Get the record
-    const records = await caller.ddc.getByMonth({ year: 2026, month: "02" });
-    const record = records.find(r => r.memberId === "dad" && r.date === "2026-02-10");
+    const records = await caller.ddc.getByMonth({ month: "2026-02" });
+    const record = records.find((r: any) => r.memberId === "dad" && r.date === "2026-02-10");
 
     if (record) {
       const result = await caller.ddc.update({
         id: record.id,
-        screenTime: 150,
+        updates: { screenTime: 150 },
       });
-
       expect(result.success).toBe(true);
     }
   });
@@ -95,8 +97,8 @@ describe("DDC Records API", () => {
     });
 
     // Get the record
-    const records = await caller.ddc.getByMonth({ year: 2026, month: "02" });
-    const record = records.find(r => r.memberId === "dad" && r.date === "2026-02-11");
+    const records = await caller.ddc.getByMonth({ month: "2026-02" });
+    const record = records.find((r: any) => r.memberId === "dad" && r.date === "2026-02-11");
 
     if (record) {
       const result = await caller.ddc.delete({ id: record.id });
@@ -113,7 +115,7 @@ describe("RCR Records API", () => {
     const result = await caller.rcr.create({
       memberId: "mom",
       date: "2026-02-09",
-      level: "minor",
+      cardType: "yellow",
       appliedBy: "auditor",
       reason: "테스트 위반",
     });
@@ -121,15 +123,11 @@ describe("RCR Records API", () => {
     expect(result.success).toBe(true);
   });
 
-  it("should get RCR records by month", async () => {
+  it("should get all RCR records", async () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.rcr.getByMonth({
-      year: 2026,
-      month: "02",
-    });
-
+    const result = await caller.rcr.getAll();
     expect(Array.isArray(result)).toBe(true);
   });
 
@@ -141,23 +139,24 @@ describe("RCR Records API", () => {
     await caller.rcr.create({
       memberId: "jin",
       date: "2026-02-10",
-      level: "minor",
+      cardType: "red",
       appliedBy: "auditor",
       reason: "테스트 위반",
     });
 
     // Get the record
-    const records = await caller.rcr.getByMonth({ year: 2026, month: "02" });
-    const record = records.find(r => r.memberId === "jin" && r.date === "2026-02-10");
+    const records = await caller.rcr.getAll();
+    const record = records.find((r: any) => r.memberId === "jin" && r.date === "2026-02-10");
 
     if (record) {
       const result = await caller.rcr.update({
         id: record.id,
-        level: "moderate",
-      appliedBy: "auditor",
-        reason: "수정된 위반",
+        updates: {
+          cardType: "double_red",
+          appliedBy: "auditor",
+          reason: "수정된 위반",
+        },
       });
-
       expect(result.success).toBe(true);
     }
   });
@@ -170,14 +169,14 @@ describe("RCR Records API", () => {
     await caller.rcr.create({
       memberId: "sean",
       date: "2026-02-11",
-      level: "minor",
+      cardType: "green",
       appliedBy: "auditor",
-      reason: "테스트 위반",
+      reason: "테스트 보상",
     });
 
     // Get the record
-    const records = await caller.rcr.getByMonth({ year: 2026, month: "02" });
-    const record = records.find(r => r.memberId === "sean" && r.date === "2026-02-11");
+    const records = await caller.rcr.getAll();
+    const record = records.find((r: any) => r.memberId === "sean" && r.date === "2026-02-11");
 
     if (record) {
       const result = await caller.rcr.delete({ id: record.id });

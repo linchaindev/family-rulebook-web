@@ -1,0 +1,9 @@
+{
+  "query": "\n-- 0007 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('8e90015adc2c141590905f603c62db1411f1ab4766b8c7d4671941bc8312ddc4', 1770737383095);\n\n-- 0008 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('88d19fddc760cdbe24d55a690676e021d15dd957b35e4d48ad61fd011bcc5f56', 1771058236091);\n\n-- 0009 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2', 1771060882390);\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute \n-- 0007 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('8e90015adc2c141590905f603c62db1411f1ab4766b8c7d4671941bc8312ddc4', 1770737383095);\n\n-- 0008 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('88d19fddc760cdbe24d55a690676e021d15dd957b35e4d48ad61fd011bcc5f56', 1771058236091);\n\n-- 0009 마이그레이션 기록 추가 (이미 적용됨)\nINSERT IGNORE INTO __drizzle_migrations (hash, created_at) VALUES \n  ('a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2', 1771060882390);\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2009
+}

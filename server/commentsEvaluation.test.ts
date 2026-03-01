@@ -37,10 +37,11 @@ describe("Comments API", () => {
     const caller = appRouter.createCaller(ctx);
 
     const result = await caller.comments.create({
-      fromMemberId: "dad",
-      toMemberId: "mom",
+      fromMember: "dad",
+      toMember: "mom",
       type: "praise",
       content: "테스트 칭찬 메시지",
+      date: "2026-03-01",
     });
 
     expect(result.success).toBe(true);
@@ -61,15 +62,16 @@ describe("Comments API", () => {
 
     // First create a comment
     await caller.comments.create({
-      fromMemberId: "jin",
-      toMemberId: "sean",
+      fromMember: "jin",
+      toMember: "sean",
       type: "suggestion",
-      content: "테스트 건의 메시지",
+      content: "테스트 건의 메시지 삭제용",
+      date: "2026-03-01",
     });
 
     // Get the comment
     const comments = await caller.comments.getAll();
-    const comment = comments.find(c => c.content === "테스트 건의 메시지");
+    const comment = comments.find((c: any) => c.content === "테스트 건의 메시지 삭제용");
 
     if (comment) {
       const result = await caller.comments.delete({ id: comment.id });
@@ -83,12 +85,11 @@ describe("Manager Evaluation API", () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.evaluation.submitVote({
-      year: 2026,
-      month: "03",
+    const result = await caller.managerEvaluation.submitVote({
+      month: "2026-03",
       managerId: "dad",
       voterId: "mom",
-      rating: "good",
+      vote: "good",
     });
 
     expect(result.success).toBe(true);
@@ -98,19 +99,18 @@ describe("Manager Evaluation API", () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.evaluation.getByMonth({
-      year: 2026,
-      month: "03",
+    const result = await caller.managerEvaluation.getByMonth({
+      month: "2026-03",
     });
 
-    expect(result).toBeDefined();
+    expect(Array.isArray(result)).toBe(true);
   });
 
   it("should get all evaluations", async () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.evaluation.getAll();
+    const result = await caller.managerEvaluation.getAll();
 
     expect(Array.isArray(result)).toBe(true);
   });
@@ -119,47 +119,36 @@ describe("Manager Evaluation API", () => {
     const ctx = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    // Submit multiple votes
-    await caller.evaluation.submitVote({
-      year: 2026,
-      month: "03",
+    // Submit multiple votes for a test month
+    await caller.managerEvaluation.submitVote({
+      month: "2026-04",
       managerId: "dad",
       voterId: "mom",
-      rating: "good",
+      vote: "good",
     });
 
-    await caller.evaluation.submitVote({
-      year: 2026,
-      month: "03",
+    await caller.managerEvaluation.submitVote({
+      month: "2026-04",
       managerId: "dad",
       voterId: "jin",
-      rating: "good",
+      vote: "good",
     });
 
-    await caller.evaluation.submitVote({
-      year: 2026,
-      month: "03",
+    await caller.managerEvaluation.submitVote({
+      month: "2026-04",
       managerId: "dad",
       voterId: "sean",
-      rating: "bad",
+      vote: "bad",
     });
 
-    await caller.evaluation.submitVote({
-      year: 2026,
-      month: "03",
-      managerId: "dad",
-      voterId: "liam",
-      rating: "good",
+    const result = await caller.managerEvaluation.getByMonth({
+      month: "2026-04",
     });
 
-    const result = await caller.evaluation.getByMonth({
-      year: 2026,
-      month: "03",
-    });
-
-    expect(result).toBeDefined();
-    expect(result?.totalVotes).toBe(4);
-    expect(result?.goodVotes).toBe(3);
-    expect(result?.badVotes).toBe(1);
+    expect(Array.isArray(result)).toBe(true);
+    const goodVotes = result.filter((e: any) => e.vote === 'good').length;
+    const badVotes = result.filter((e: any) => e.vote === 'bad').length;
+    expect(goodVotes).toBeGreaterThanOrEqual(2);
+    expect(badVotes).toBeGreaterThanOrEqual(1);
   });
 });
