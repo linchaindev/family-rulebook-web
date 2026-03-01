@@ -1,0 +1,9 @@
+{
+  "query": "\nUPDATE monthly_allowances SET breakdown_formula = '기본 12만원 + 매니저보상 +5 = 17만원' WHERE month = '2026-03' AND member_id = 'jin';\nUPDATE monthly_allowances SET breakdown_formula = '기본 5만원 + DDC 1등 +1 = 6만원' WHERE month = '2026-03' AND member_id = 'liam';\nUPDATE monthly_allowances SET breakdown_formula = '기본 12만원 - DDC 꼴찌 -1, RCR 벌금 -2 = 9만원' WHERE month = '2026-03' AND member_id = 'sean';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute \nUPDATE monthly_allowances SET breakdown_formula = '기본 12만원 + 매니저보상 +5 = 17만원' WHERE month = '2026-03' AND member_id = 'jin';\nUPDATE monthly_allowances SET breakdown_formula = '기본 5만원 + DDC 1등 +1 = 6만원' WHERE month = '2026-03' AND member_id = 'liam';\nUPDATE monthly_allowances SET breakdown_formula = '기본 12만원 - DDC 꼴찌 -1, RCR 벌금 -2 = 9만원' WHERE month = '2026-03' AND member_id = 'sean';\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2098
+}

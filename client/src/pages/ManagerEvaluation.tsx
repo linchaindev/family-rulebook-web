@@ -107,6 +107,7 @@ function CelebrationPage({
   managerId,
   goodVotes,
   badVotes,
+  managerBonus,
   ddcData,
   activityLogs,
   onClose,
@@ -115,6 +116,7 @@ function CelebrationPage({
   managerId: string;
   goodVotes: number;
   badVotes: number;
+  managerBonus: number;
   ddcData: Array<{ memberId: string; screenTime: number }>;
   activityLogs: Array<{ activityType: string; comment: string; date: string }>;
   onClose: () => void;
@@ -126,14 +128,25 @@ function CelebrationPage({
   const successRate = totalVotes > 0 ? Math.round((goodVotes / totalVotes) * 100) : 0;
   const isSuccess = goodVotes > badVotes;
 
+  // DDC 중복 날짜 제거 헬퍼 (같은 날짜 중 최신 기록만 사용)
+  const deduplicateDDC = (records: Array<{ memberId: string; screenTime: number; date?: string }>) => {
+    const map = new Map<string, typeof records[0]>();
+    records.forEach(r => {
+      const key = `${r.memberId}-${(r as any).date || ''}` ;
+      if (!map.has(key)) map.set(key, r);
+    });
+    return Array.from(map.values());
+  };
+  const dedupedDDC = deduplicateDDC(ddcData as any);
+
   // 매니저의 DDC 총 스크린타임
-  const managerDDC = ddcData.filter(r => r.memberId === managerId);
+  const managerDDC = dedupedDDC.filter(r => r.memberId === managerId);
   const managerTotalScreenTime = managerDDC.reduce((sum, r) => sum + r.screenTime, 0);
 
-  // DDC 순위 계산
+  // DDC 순위 계산 (중복 제거 후)
   const memberTotals = FAMILY_MEMBERS.filter(m => m.role === 'student').map(m => ({
     member: m,
-    total: ddcData.filter(r => r.memberId === m.id).reduce((sum, r) => sum + r.screenTime, 0),
+    total: dedupedDDC.filter(r => r.memberId === m.id).reduce((sum, r) => sum + r.screenTime, 0),
   })).sort((a, b) => a.total - b.total);
   const managerRank = memberTotals.findIndex(m => m.member.id === managerId) + 1;
 
@@ -261,7 +274,7 @@ function CelebrationPage({
                 color: 'white',
               }}
             >
-              {isSuccess ? '✅ 매니저 보상 +1만원 획득!' : '❌ 이번엔 아쉽게 탈락'}
+              {isSuccess ? `✅ 매니저 보상 +${managerBonus}만원 획득!` : '❌ 이번엔 아쉽게 탈락'}
             </Badge>
           </div>
         </div>
@@ -401,6 +414,8 @@ export default function ManagerEvaluation() {
     managerId: string;
     goodVotes: number;
     badVotes: number;
+    managerBonus: number;
+    evaluatedMonth: string;
   } | null>(null);
 
   const { data: monthlyManager } = trpc.monthlyManager.get.useQuery(
@@ -478,11 +493,16 @@ export default function ManagerEvaluation() {
 
       const goodVotes = Object.values(votes).filter(v => v === 'good').length;
       const badVotes = Object.values(votes).filter(v => v === 'bad').length;
+      // 매니저 보상: 과반수 이상이면 기본 1만원 + 잘했음 투표 수
+      const isSuccess = goodVotes > badVotes;
+      const managerBonus = isSuccess ? 1 + goodVotes : 0;
 
       setCelebrationData({
         managerId: monthlyManager.managerId,
         goodVotes,
         badVotes,
+        managerBonus,
+        evaluatedMonth: selectedMonth,
       });
       setIsComplete(true);
       setShowCelebration(true);
@@ -544,10 +564,11 @@ export default function ManagerEvaluation() {
   if (showCelebration && celebrationData) {
     return (
       <CelebrationPage
-        month={selectedMonth}
+        month={celebrationData.evaluatedMonth}
         managerId={celebrationData.managerId}
         goodVotes={celebrationData.goodVotes}
         badVotes={celebrationData.badVotes}
+        managerBonus={celebrationData.managerBonus}
         ddcData={ddcData}
         activityLogs={activityLogs}
         onClose={handleCloseCelebration}

@@ -1,0 +1,16 @@
+{
+  "query": "SHOW TABLES LIKE '%allowance%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SHOW TABLES LIKE '%allowance%';",
+  "rows": [
+    {
+      "Tables_in_7FPMMwR5T9Ji4CdJvw8T5d (%allowance%)": "allowance_adjustments"
+    },
+    {
+      "Tables_in_7FPMMwR5T9Ji4CdJvw8T5d (%allowance%)": "monthly_allowances"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_7FPMMwR5T9Ji4CdJvw8T5d (%allowance%)\nallowance_adjustments\nmonthly_allowances\n",
+  "stderr": "",
+  "execution_time_ms": 1528
+}

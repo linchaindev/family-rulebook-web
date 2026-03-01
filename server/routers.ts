@@ -412,12 +412,28 @@ export const appRouter = router({
           const currentAllowance = currentAllowances.find((a: any) => a.memberId === member.memberId);
           const baseAllowance = currentAllowance?.baseAllowance || 0;
 
+          // 세부 내역 문자열 생성
+          const bonusParts: string[] = [];
+          if (isManager && managerBonus > 0) bonusParts.push(`매니저보상 +${managerBonus}`);
+          if (ddcBonus > 0) bonusParts.push(`DDC 1등 +${ddcBonus}`);
+          if (rcr.bonus > 0) bonusParts.push(`RCR보너스 +${rcr.bonus}`);
+          if (adj > 0) bonusParts.push(`버프 +${adj}`);
+          const penaltyParts: string[] = [];
+          if (ddcPenalty > 0) penaltyParts.push(`DDC 꼴찌 -${ddcPenalty}`);
+          if (rcr.penalty > 0) penaltyParts.push(`RCR 벌금 -${rcr.penalty}`);
+          if (adj < 0) penaltyParts.push(`너프 ${adj}`);
+          const breakdownFormula = `기본 ${baseAllowance}만원` +
+            (bonusParts.length > 0 ? ` + ${bonusParts.join(', ')}` : '') +
+            (penaltyParts.length > 0 ? ` - ${penaltyParts.join(', ')}` : '') +
+            ` = ${baseAllowance + extraBonus - extraPenalty}만원`;
+
           await db.upsertMonthlyAllowance({
             month: nextMonth,
             memberId: member.memberId,
             baseAllowance,
             bonus: extraBonus,
             penalty: extraPenalty,
+            breakdownFormula,
           });
 
           settlements.push({

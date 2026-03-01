@@ -1,0 +1,90 @@
+{
+  "query": "SELECT month, member_id, base_allowance, bonus, penalty, final_allowance FROM monthly_allowances ORDER BY month DESC LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute SELECT month, member_id, base_allowance, bonus, penalty, final_allowance FROM monthly_allowances ORDER BY month DESC LIMIT 20;",
+  "rows": [
+    {
+      "month": "2026-03",
+      "member_id": "dad",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100"
+    },
+    {
+      "month": "2026-03",
+      "member_id": "mom",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100"
+    },
+    {
+      "month": "2026-03",
+      "member_id": "jin",
+      "base_allowance": "12",
+      "bonus": "5",
+      "penalty": "0",
+      "final_allowance": "17"
+    },
+    {
+      "month": "2026-03",
+      "member_id": "sean",
+      "base_allowance": "12",
+      "bonus": "0",
+      "penalty": "3",
+      "final_allowance": "9"
+    },
+    {
+      "month": "2026-03",
+      "member_id": "liam",
+      "base_allowance": "5",
+      "bonus": "1",
+      "penalty": "0",
+      "final_allowance": "6"
+    },
+    {
+      "month": "2026-02",
+      "member_id": "sean",
+      "base_allowance": "12",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "12"
+    },
+    {
+      "month": "2026-02",
+      "member_id": "liam",
+      "base_allowance": "5",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "5"
+    },
+    {
+      "month": "2026-02",
+      "member_id": "mom",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100"
+    },
+    {
+      "month": "2026-02",
+      "member_id": "jin",
+      "base_allowance": "12",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "12"
+    },
+    {
+      "month": "2026-02",
+      "member_id": "dad",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100"
+    }
+  ],
+  "messages": [],
+  "stdout": "month\tmember_id\tbase_allowance\tbonus\tpenalty\tfinal_allowance\n2026-03\tdad\t100\t0\t0\t100\n2026-03\tmom\t100\t0\t0\t100\n2026-03\tjin\t12\t5\t0\t17\n2026-03\tsean\t12\t0\t3\t9\n2026-03\tliam\t5\t1\t0\t6\n2026-02\tsean\t12\t0\t0\t12\n2026-02\tliam\t5\t0\t0\t5\n2026-02\tmom\t100\t0\t0\t100\n2026-02\tjin\t12\t0\t0\t12\n2026-02\tdad\t100\t0\t0\t100\n",
+  "stderr": "",
+  "execution_time_ms": 1511
+}
