@@ -503,10 +503,6 @@ export default function AuditorAdmin() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>대상 월</Label>
-                <Input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="mt-2" />
-              </div>
-              <div>
                 <Label>비밀번호 (6자리)</Label>
                 <Input type="password" inputMode="numeric" maxLength={6} value={password}
                   onChange={(e) => setPassword(e.target.value.replace(/\D/g, ''))}

@@ -1,0 +1,50 @@
+{
+  "query": "\n-- 2월 DDC 결과: 1위 liam(+5만), 2위 dad(+3만), 3위 mom(0), 4위 jin(-3만), 5위 sean(-5만)\n-- jin: 기본12 + 매니저보상5 - DDC4등3 = 14만원\nUPDATE monthly_allowances SET bonus=5, penalty=3, final_allowance=14, breakdown_formula='기본 12만원 + 매니저보상 +5 - DDC 4등 -3 = 14만원' WHERE month='2026-03' AND member_id='jin';\n-- liam: 기본5 + DDC1등5 = 10만원\nUPDATE monthly_allowances SET bonus=5, penalty=0, final_allowance=10, breakdown_formula='기본 5만원 + DDC 1등 +5 = 10만원' WHERE month='2026-03' AND member_id='liam';\n-- sean: 기본12 - DDC5등5 - RCR벌금3 = 4만원 (sean penalty=3이었으므로 RCR벌금 확인 필요)\nSELECT member_id, base_allowance, bonus, penalty, final_allowance, breakdown_formula FROM monthly_allowances WHERE month='2026-03';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4F6C2t2Lf5vYuZz.root --database 7FPMMwR5T9Ji4CdJvw8T5d --execute \n-- 2월 DDC 결과: 1위 liam(+5만), 2위 dad(+3만), 3위 mom(0), 4위 jin(-3만), 5위 sean(-5만)\n-- jin: 기본12 + 매니저보상5 - DDC4등3 = 14만원\nUPDATE monthly_allowances SET bonus=5, penalty=3, final_allowance=14, breakdown_formula='기본 12만원 + 매니저보상 +5 - DDC 4등 -3 = 14만원' WHERE month='2026-03' AND member_id='jin';\n-- liam: 기본5 + DDC1등5 = 10만원\nUPDATE monthly_allowances SET bonus=5, penalty=0, final_allowance=10, breakdown_formula='기본 5만원 + DDC 1등 +5 = 10만원' WHERE month='2026-03' AND member_id='liam';\n-- sean: 기본12 - DDC5등5 - RCR벌금3 = 4만원 (sean penalty=3이었으므로 RCR벌금 확인 필요)\nSELECT member_id, base_allowance, bonus, penalty, final_allowance, breakdown_formula FROM monthly_allowances WHERE month='2026-03';\n",
+  "rows": [
+    {
+      "member_id": "liam",
+      "base_allowance": "5",
+      "bonus": "5",
+      "penalty": "0",
+      "final_allowance": "10",
+      "breakdown_formula": "기본 5만원 + DDC 1등 +5 = 10만원"
+    },
+    {
+      "member_id": "dad",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100",
+      "breakdown_formula": "기본 100만원 = 100만원"
+    },
+    {
+      "member_id": "mom",
+      "base_allowance": "100",
+      "bonus": "0",
+      "penalty": "0",
+      "final_allowance": "100",
+      "breakdown_formula": "기본 100만원 = 100만원"
+    },
+    {
+      "member_id": "jin",
+      "base_allowance": "12",
+      "bonus": "5",
+      "penalty": "3",
+      "final_allowance": "14",
+      "breakdown_formula": "기본 12만원 + 매니저보상 +5 - DDC 4등 -3 = 14만원"
+    },
+    {
+      "member_id": "sean",
+      "base_allowance": "12",
+      "bonus": "0",
+      "penalty": "3",
+      "final_allowance": "9",
+      "breakdown_formula": "기본 12만원 - DDC 꼴찌 -1, RCR 벌금 -2 = 9만원"
+    }
+  ],
+  "messages": [],
+  "stdout": "member_id\tbase_allowance\tbonus\tpenalty\tfinal_allowance\tbreakdown_formula\nliam\t5\t5\t0\t10\t기본 5만원 + DDC 1등 +5 = 10만원\ndad\t100\t0\t0\t100\t기본 100만원 = 100만원\nmom\t100\t0\t0\t100\t기본 100만원 = 100만원\njin\t12\t5\t3\t14\t기본 12만원 + 매니저보상 +5 - DDC 4등 -3 = 14만원\nsean\t12\t0\t3\t9\t기본 12만원 - DDC 꼴찌 -1, RCR 벌금 -2 = 9만원\n",
+  "stderr": "",
+  "execution_time_ms": 2039
+}

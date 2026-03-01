@@ -416,6 +416,8 @@ export default function ManagerEvaluation() {
     badVotes: number;
     managerBonus: number;
     evaluatedMonth: string;
+    ddcSnapshot: Array<{ memberId: string; screenTime: number; date: string }>;
+    activitySnapshot: Array<{ activityType: string; comment: string; date: string }>;
   } | null>(null);
 
   const { data: monthlyManager } = trpc.monthlyManager.get.useQuery(
@@ -503,6 +505,8 @@ export default function ManagerEvaluation() {
         badVotes,
         managerBonus,
         evaluatedMonth: selectedMonth,
+        ddcSnapshot: (ddcData as any[]).map(r => ({ memberId: r.memberId, screenTime: r.screenTime, date: r.date || '' })),
+        activitySnapshot: activityLogs.map(l => ({ activityType: l.activityType, comment: l.comment, date: l.date })),
       });
       setIsComplete(true);
       setShowCelebration(true);
@@ -569,8 +573,8 @@ export default function ManagerEvaluation() {
         goodVotes={celebrationData.goodVotes}
         badVotes={celebrationData.badVotes}
         managerBonus={celebrationData.managerBonus}
-        ddcData={ddcData}
-        activityLogs={activityLogs}
+        ddcData={celebrationData.ddcSnapshot}
+        activityLogs={celebrationData.activitySnapshot}
         onClose={handleCloseCelebration}
       />
     );

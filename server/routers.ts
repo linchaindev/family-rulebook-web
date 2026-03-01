@@ -401,8 +401,21 @@ export const appRouter = router({
         const settlements: any[] = [];
         for (const member of memberFinal) {
           const rank = memberFinal.findIndex(m => m.memberId === member.memberId) + 1;
-          const ddcBonus = rank === 1 ? 1 : 0; // DDC 1등 +1만원
-          const ddcPenalty = rank === memberFinal.length && memberFinal.length > 1 ? 1 : 0; // DDC 꼴찌 -1만원
+          const totalStudents = memberFinal.length;
+          // DDC 상금/벌금 규칙: 1등+5만, 2등+3만, 3등0, 4등-3만, 5등-5만
+          const DDC_REWARDS: Record<number, number> = { 1: 5, 2: 3, 3: 0, 4: -3, 5: -5 };
+          // 인원이 3명이면 1등+5, 2등+3, 3등(꼴찌)-3으로 조정
+          const getDDCReward = (r: number, total: number): number => {
+            if (total <= 3) {
+              if (r === 1) return 5;
+              if (r === 2) return 3;
+              return -3; // 꼴찌
+            }
+            return DDC_REWARDS[r] ?? 0;
+          };
+          const ddcReward = getDDCReward(rank, totalStudents);
+          const ddcBonus = ddcReward > 0 ? ddcReward : 0;
+          const ddcPenalty = ddcReward < 0 ? Math.abs(ddcReward) : 0;
           const rcr = rcrMoney.get(member.memberId) || { bonus: 0, penalty: 0 };
           const adj = adjMap.get(member.memberId) || 0;
           const isManager = managerAssignment?.managerId === member.memberId;
