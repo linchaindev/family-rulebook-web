@@ -404,12 +404,12 @@ export const appRouter = router({
           const totalStudents = memberFinal.length;
           // DDC 상금/벌금 규칙: 1등+5만, 2등+3만, 3등0, 4등-3만, 5등-5만
           const DDC_REWARDS: Record<number, number> = { 1: 5, 2: 3, 3: 0, 4: -3, 5: -5 };
-          // 인원이 3명이면 1등+5, 2등+3, 3등(꼴찌)-3으로 조정
+          // 인원이 3명이면 1등+5, 2등+3, 3등(최하위)-3으로 조정
           const getDDCReward = (r: number, total: number): number => {
             if (total <= 3) {
               if (r === 1) return 5;
               if (r === 2) return 3;
-              return -3; // 꼴찌
+              return -3; // 최하위
             }
             return DDC_REWARDS[r] ?? 0;
           };
@@ -428,11 +428,11 @@ export const appRouter = router({
           // 세부 내역 문자열 생성
           const bonusParts: string[] = [];
           if (isManager && managerBonus > 0) bonusParts.push(`매니저보상 +${managerBonus}`);
-          if (ddcBonus > 0) bonusParts.push(`DDC 1등 +${ddcBonus}`);
+          if (ddcBonus > 0) bonusParts.push(`DDC ${rank}위 +${ddcBonus}`);
           if (rcr.bonus > 0) bonusParts.push(`RCR보너스 +${rcr.bonus}`);
           if (adj > 0) bonusParts.push(`버프 +${adj}`);
           const penaltyParts: string[] = [];
-          if (ddcPenalty > 0) penaltyParts.push(`DDC 꼴찌 -${ddcPenalty}`);
+          if (ddcPenalty > 0) penaltyParts.push(`DDC ${rank}위 -${ddcPenalty}`);
           if (rcr.penalty > 0) penaltyParts.push(`RCR 벌금 -${rcr.penalty}`);
           if (adj < 0) penaltyParts.push(`너프 ${adj}`);
           const breakdownFormula = `기본 ${baseAllowance}만원` +
