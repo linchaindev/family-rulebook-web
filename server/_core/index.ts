@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import { getAuditorPassword, updateAuditorPassword } from "../db";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -55,6 +56,17 @@ async function startServer() {
 
   if (port !== preferredPort) {
     console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+  }
+
+  // Initialize auditor password if not set
+  try {
+    const existing = await getAuditorPassword();
+    if (!existing) {
+      await updateAuditorPassword('000000');
+      console.log('[Init] Auditor password initialized to 000000');
+    }
+  } catch (e) {
+    console.warn('[Init] Could not initialize auditor password:', e);
   }
 
   server.listen(port, () => {
