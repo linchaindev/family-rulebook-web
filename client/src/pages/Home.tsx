@@ -151,6 +151,16 @@ export default function Home() {
                 가족 소통 게시판
               </Button>
             </Link>
+
+            {/* 6. 테스트 웹앱 */}
+            <a href="https://hackvocaquiz-mgxtmqmu.manus.space" target="_blank" rel="noopener noreferrer">
+              <Button 
+                size="default"
+                className="w-full h-12 text-sm bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
+              >
+                🧪 테스트 웹앱
+              </Button>
+            </a>
           </div>
 
           {/* 부가 버튼 */}
