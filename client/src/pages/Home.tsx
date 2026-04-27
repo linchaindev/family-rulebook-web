@@ -178,6 +178,21 @@ export default function Home() {
             <Button variant="ghost" size="sm" onClick={() => scrollToSection('glossary')}>
               📖 용어집
             </Button>
+            <a href="https://kangsquad.netlify.app/" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="border-2">
+                🏠 KangSquad
+              </Button>
+            </a>
+            <a href="https://linchaindev.github.io/kanghyuk-realestate/" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="border-2">
+                🏢 부동산
+              </Button>
+            </a>
+            <a href="https://apt-vercel.vercel.app" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="border-2">
+                🏗️ APT
+              </Button>
+            </a>
           </div>
         </div>
       </section>
