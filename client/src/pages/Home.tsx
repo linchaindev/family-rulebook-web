@@ -180,17 +180,17 @@ export default function Home() {
             </Button>
             <a href="https://kangsquad.netlify.app/" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="border-2">
-                🏠 KangSquad
+                🏠 국토부APT비교예측
               </Button>
             </a>
             <a href="https://linchaindev.github.io/kanghyuk-realestate/" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="border-2">
-                🏢 부동산
+                🏢 이사프로젝트1
               </Button>
             </a>
             <a href="https://apt-vercel.vercel.app" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="border-2">
-                🏗️ APT
+                🏗️ 이사프로젝트2
               </Button>
             </a>
           </div>
