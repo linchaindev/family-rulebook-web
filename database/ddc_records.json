@@ -1,0 +1,2874 @@
+[
+  {
+    "id": 300026,
+    "date": "2026-02-09",
+    "member_id": "mom",
+    "screen_time": 183,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300027,
+    "date": "2026-02-09",
+    "member_id": "sean",
+    "screen_time": 495,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300028,
+    "date": "2026-02-09",
+    "member_id": "jin",
+    "screen_time": 35,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300029,
+    "date": "2026-02-09",
+    "member_id": "liam",
+    "screen_time": 55,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300030,
+    "date": "2026-02-09",
+    "member_id": "dad",
+    "screen_time": 120,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-03-01T08:17:02.000Z"
+  },
+  {
+    "id": 300031,
+    "date": "2026-02-10",
+    "member_id": "dad",
+    "screen_time": 150,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-03-01T08:30:16.000Z"
+  },
+  {
+    "id": 300032,
+    "date": "2026-02-10",
+    "member_id": "liam",
+    "screen_time": 63,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300033,
+    "date": "2026-02-10",
+    "member_id": "mom",
+    "screen_time": 118,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300034,
+    "date": "2026-02-10",
+    "member_id": "sean",
+    "screen_time": 660,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300035,
+    "date": "2026-02-10",
+    "member_id": "jin",
+    "screen_time": 123,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300036,
+    "date": "2026-02-11",
+    "member_id": "sean",
+    "screen_time": 55,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300037,
+    "date": "2026-02-11",
+    "member_id": "liam",
+    "screen_time": 133,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300038,
+    "date": "2026-02-11",
+    "member_id": "mom",
+    "screen_time": 194,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300040,
+    "date": "2026-02-11",
+    "member_id": "jin",
+    "screen_time": 280,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300041,
+    "date": "2026-02-12",
+    "member_id": "mom",
+    "screen_time": 198,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300042,
+    "date": "2026-02-12",
+    "member_id": "jin",
+    "screen_time": 151,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300043,
+    "date": "2026-02-12",
+    "member_id": "sean",
+    "screen_time": 382,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300044,
+    "date": "2026-02-12",
+    "member_id": "liam",
+    "screen_time": 89,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300045,
+    "date": "2026-02-12",
+    "member_id": "dad",
+    "screen_time": 121,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300046,
+    "date": "2026-02-13",
+    "member_id": "mom",
+    "screen_time": 228,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300047,
+    "date": "2026-02-13",
+    "member_id": "liam",
+    "screen_time": 292,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300048,
+    "date": "2026-02-13",
+    "member_id": "dad",
+    "screen_time": 64,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300049,
+    "date": "2026-02-13",
+    "member_id": "sean",
+    "screen_time": 466,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 300050,
+    "date": "2026-02-13",
+    "member_id": "jin",
+    "screen_time": 279,
+    "created_at": "2026-02-14T06:49:48.000Z",
+    "updated_at": "2026-02-14T06:49:48.000Z"
+  },
+  {
+    "id": 390010,
+    "date": "2026-02-01",
+    "member_id": "dad",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:33:16.000Z",
+    "updated_at": "2026-02-28T16:43:24.000Z"
+  },
+  {
+    "id": 390011,
+    "date": "2026-02-02",
+    "member_id": "dad",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:33:23.000Z",
+    "updated_at": "2026-02-28T16:46:14.000Z"
+  },
+  {
+    "id": 390012,
+    "date": "2026-02-02",
+    "member_id": "mom",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:33:23.000Z",
+    "updated_at": "2026-02-28T16:46:14.000Z"
+  },
+  {
+    "id": 390013,
+    "date": "2026-02-02",
+    "member_id": "jin",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:33:24.000Z",
+    "updated_at": "2026-02-28T16:46:14.000Z"
+  },
+  {
+    "id": 390014,
+    "date": "2026-02-14",
+    "member_id": "dad",
+    "screen_time": 120,
+    "created_at": "2026-02-28T16:33:56.000Z",
+    "updated_at": "2026-02-28T16:33:56.000Z"
+  },
+  {
+    "id": 390015,
+    "date": "2026-02-14",
+    "member_id": "mom",
+    "screen_time": 90,
+    "created_at": "2026-02-28T16:33:56.000Z",
+    "updated_at": "2026-02-28T16:33:56.000Z"
+  },
+  {
+    "id": 390016,
+    "date": "2026-02-14",
+    "member_id": "sean",
+    "screen_time": 180,
+    "created_at": "2026-02-28T16:33:57.000Z",
+    "updated_at": "2026-02-28T16:33:57.000Z"
+  },
+  {
+    "id": 390017,
+    "date": "2026-02-14",
+    "member_id": "jin",
+    "screen_time": 60,
+    "created_at": "2026-02-28T16:33:57.000Z",
+    "updated_at": "2026-02-28T16:33:57.000Z"
+  },
+  {
+    "id": 390018,
+    "date": "2026-02-14",
+    "member_id": "liam",
+    "screen_time": 150,
+    "created_at": "2026-02-28T16:33:57.000Z",
+    "updated_at": "2026-02-28T16:33:57.000Z"
+  },
+  {
+    "id": 390019,
+    "date": "2026-02-15",
+    "member_id": "dad",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:35:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390023,
+    "date": "2026-02-01",
+    "member_id": "mom",
+    "screen_time": 0,
+    "created_at": "2026-02-28T16:37:25.000Z",
+    "updated_at": "2026-02-28T16:46:14.000Z"
+  },
+  {
+    "id": 390159,
+    "date": "2026-02-19",
+    "member_id": "dad",
+    "screen_time": 75,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390160,
+    "date": "2026-02-19",
+    "member_id": "mom",
+    "screen_time": 274,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390161,
+    "date": "2026-02-19",
+    "member_id": "sean",
+    "screen_time": 515,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390162,
+    "date": "2026-02-19",
+    "member_id": "jin",
+    "screen_time": 633,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390163,
+    "date": "2026-02-19",
+    "member_id": "liam",
+    "screen_time": 31,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390164,
+    "date": "2026-02-20",
+    "member_id": "dad",
+    "screen_time": 42,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390165,
+    "date": "2026-02-20",
+    "member_id": "mom",
+    "screen_time": 241,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390166,
+    "date": "2026-02-20",
+    "member_id": "sean",
+    "screen_time": 416,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390167,
+    "date": "2026-02-20",
+    "member_id": "jin",
+    "screen_time": 466,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390168,
+    "date": "2026-02-20",
+    "member_id": "liam",
+    "screen_time": 44,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390169,
+    "date": "2026-02-23",
+    "member_id": "dad",
+    "screen_time": 208,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390170,
+    "date": "2026-02-23",
+    "member_id": "mom",
+    "screen_time": 161,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390171,
+    "date": "2026-02-23",
+    "member_id": "sean",
+    "screen_time": 639,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390172,
+    "date": "2026-02-23",
+    "member_id": "jin",
+    "screen_time": 426,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390173,
+    "date": "2026-02-23",
+    "member_id": "liam",
+    "screen_time": 36,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390174,
+    "date": "2026-02-24",
+    "member_id": "dad",
+    "screen_time": 94,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390175,
+    "date": "2026-02-24",
+    "member_id": "mom",
+    "screen_time": 317,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390176,
+    "date": "2026-02-24",
+    "member_id": "sean",
+    "screen_time": 433,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390177,
+    "date": "2026-02-24",
+    "member_id": "jin",
+    "screen_time": 231,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390178,
+    "date": "2026-02-24",
+    "member_id": "liam",
+    "screen_time": 35,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390179,
+    "date": "2026-02-25",
+    "member_id": "dad",
+    "screen_time": 56,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390180,
+    "date": "2026-02-25",
+    "member_id": "mom",
+    "screen_time": 162,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390181,
+    "date": "2026-02-25",
+    "member_id": "sean",
+    "screen_time": 448,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390182,
+    "date": "2026-02-25",
+    "member_id": "jin",
+    "screen_time": 315,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390183,
+    "date": "2026-02-25",
+    "member_id": "liam",
+    "screen_time": 18,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390184,
+    "date": "2026-02-27",
+    "member_id": "dad",
+    "screen_time": 168,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390185,
+    "date": "2026-02-27",
+    "member_id": "mom",
+    "screen_time": 266,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390186,
+    "date": "2026-02-27",
+    "member_id": "sean",
+    "screen_time": 489,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390187,
+    "date": "2026-02-27",
+    "member_id": "jin",
+    "screen_time": 518,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390188,
+    "date": "2026-02-27",
+    "member_id": "liam",
+    "screen_time": 114,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390189,
+    "date": "2026-02-26",
+    "member_id": "mom",
+    "screen_time": 295,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390190,
+    "date": "2026-02-26",
+    "member_id": "sean",
+    "screen_time": 682,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390191,
+    "date": "2026-02-26",
+    "member_id": "jin",
+    "screen_time": 320,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390192,
+    "date": "2026-02-26",
+    "member_id": "liam",
+    "screen_time": 122,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 390193,
+    "date": "2026-02-26",
+    "member_id": "dad",
+    "screen_time": 152,
+    "created_at": "2026-02-28T16:55:22.000Z",
+    "updated_at": "2026-02-28T16:55:22.000Z"
+  },
+  {
+    "id": 450001,
+    "date": "2026-03-04",
+    "member_id": "dad",
+    "screen_time": 168,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450002,
+    "date": "2026-03-04",
+    "member_id": "mom",
+    "screen_time": 202,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450003,
+    "date": "2026-03-04",
+    "member_id": "jin",
+    "screen_time": 316,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450004,
+    "date": "2026-03-04",
+    "member_id": "liam",
+    "screen_time": 62,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450005,
+    "date": "2026-03-04",
+    "member_id": "sean",
+    "screen_time": 438,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450006,
+    "date": "2026-03-05",
+    "member_id": "dad",
+    "screen_time": 234,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450007,
+    "date": "2026-03-05",
+    "member_id": "mom",
+    "screen_time": 197,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450008,
+    "date": "2026-03-05",
+    "member_id": "jin",
+    "screen_time": 253,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450009,
+    "date": "2026-03-05",
+    "member_id": "liam",
+    "screen_time": 24,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450010,
+    "date": "2026-03-05",
+    "member_id": "sean",
+    "screen_time": 506,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450011,
+    "date": "2026-03-03",
+    "member_id": "dad",
+    "screen_time": 378,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450012,
+    "date": "2026-03-03",
+    "member_id": "mom",
+    "screen_time": 183,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450013,
+    "date": "2026-03-03",
+    "member_id": "sean",
+    "screen_time": 306,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450014,
+    "date": "2026-03-03",
+    "member_id": "jin",
+    "screen_time": 358,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450015,
+    "date": "2026-03-03",
+    "member_id": "liam",
+    "screen_time": 53,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450016,
+    "date": "2026-03-06",
+    "member_id": "jin",
+    "screen_time": 430,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450017,
+    "date": "2026-03-06",
+    "member_id": "mom",
+    "screen_time": 248,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450018,
+    "date": "2026-03-06",
+    "member_id": "dad",
+    "screen_time": 201,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450019,
+    "date": "2026-03-06",
+    "member_id": "liam",
+    "screen_time": 40,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 450020,
+    "date": "2026-03-06",
+    "member_id": "sean",
+    "screen_time": 403,
+    "created_at": "2026-03-08T14:16:50.000Z",
+    "updated_at": "2026-03-08T14:16:50.000Z"
+  },
+  {
+    "id": 480021,
+    "date": "2026-03-09",
+    "member_id": "dad",
+    "screen_time": 320,
+    "created_at": "2026-03-21T10:24:09.000Z",
+    "updated_at": "2026-03-21T10:24:09.000Z"
+  },
+  {
+    "id": 480043,
+    "date": "2026-03-09",
+    "member_id": "mom",
+    "screen_time": 237,
+    "created_at": "2026-03-21T10:25:01.000Z",
+    "updated_at": "2026-03-21T10:25:01.000Z"
+  },
+  {
+    "id": 480044,
+    "date": "2026-03-09",
+    "member_id": "jin",
+    "screen_time": 192,
+    "created_at": "2026-03-21T10:25:01.000Z",
+    "updated_at": "2026-03-21T10:25:43.000Z"
+  },
+  {
+    "id": 480091,
+    "date": "2026-03-10",
+    "member_id": "mom",
+    "screen_time": 262,
+    "created_at": "2026-03-21T10:26:23.000Z",
+    "updated_at": "2026-03-21T10:26:23.000Z"
+  },
+  {
+    "id": 480116,
+    "date": "2026-03-10",
+    "member_id": "jin",
+    "screen_time": 140,
+    "created_at": "2026-03-21T10:26:35.000Z",
+    "updated_at": "2026-03-21T10:26:35.000Z"
+  },
+  {
+    "id": 480142,
+    "date": "2026-03-10",
+    "member_id": "liam",
+    "screen_time": 22,
+    "created_at": "2026-03-21T10:27:03.000Z",
+    "updated_at": "2026-03-21T10:27:03.000Z"
+  },
+  {
+    "id": 480169,
+    "date": "2026-03-11",
+    "member_id": "jin",
+    "screen_time": 195,
+    "created_at": "2026-03-21T10:27:47.000Z",
+    "updated_at": "2026-03-21T10:27:47.000Z"
+  },
+  {
+    "id": 480170,
+    "date": "2026-03-11",
+    "member_id": "liam",
+    "screen_time": 41,
+    "created_at": "2026-03-21T10:27:47.000Z",
+    "updated_at": "2026-03-21T10:27:47.000Z"
+  },
+  {
+    "id": 480199,
+    "date": "2026-03-11",
+    "member_id": "mom",
+    "screen_time": 212,
+    "created_at": "2026-03-21T10:28:06.000Z",
+    "updated_at": "2026-03-21T10:28:06.000Z"
+  },
+  {
+    "id": 480226,
+    "date": "2026-03-10",
+    "member_id": "dad",
+    "screen_time": 364,
+    "created_at": "2026-03-21T10:28:40.000Z",
+    "updated_at": "2026-03-21T10:28:40.000Z"
+  },
+  {
+    "id": 480230,
+    "date": "2026-03-11",
+    "member_id": "dad",
+    "screen_time": 32,
+    "created_at": "2026-03-21T10:28:40.000Z",
+    "updated_at": "2026-03-21T10:28:40.000Z"
+  },
+  {
+    "id": 510032,
+    "date": "2026-03-12",
+    "member_id": "jin",
+    "screen_time": 309,
+    "created_at": "2026-03-22T15:10:19.000Z",
+    "updated_at": "2026-03-22T15:10:19.000Z"
+  },
+  {
+    "id": 510033,
+    "date": "2026-03-13",
+    "member_id": "jin",
+    "screen_time": 349,
+    "created_at": "2026-03-22T15:10:19.000Z",
+    "updated_at": "2026-03-22T15:10:19.000Z"
+  },
+  {
+    "id": 510067,
+    "date": "2026-03-13",
+    "member_id": "dad",
+    "screen_time": 183,
+    "created_at": "2026-03-22T15:12:09.000Z",
+    "updated_at": "2026-03-22T15:12:09.000Z"
+  },
+  {
+    "id": 510100,
+    "date": "2026-03-12",
+    "member_id": "liam",
+    "screen_time": 28,
+    "created_at": "2026-03-22T15:12:47.000Z",
+    "updated_at": "2026-03-22T15:12:47.000Z"
+  },
+  {
+    "id": 510101,
+    "date": "2026-03-12",
+    "member_id": "dad",
+    "screen_time": 310,
+    "created_at": "2026-03-22T15:12:47.000Z",
+    "updated_at": "2026-03-22T15:12:47.000Z"
+  },
+  {
+    "id": 510140,
+    "date": "2026-03-13",
+    "member_id": "liam",
+    "screen_time": 102,
+    "created_at": "2026-03-22T15:12:54.000Z",
+    "updated_at": "2026-03-22T15:12:54.000Z"
+  },
+  {
+    "id": 510178,
+    "date": "2026-03-16",
+    "member_id": "dad",
+    "screen_time": 92,
+    "created_at": "2026-03-22T15:13:31.000Z",
+    "updated_at": "2026-03-22T15:13:31.000Z"
+  },
+  {
+    "id": 510179,
+    "date": "2026-03-16",
+    "member_id": "liam",
+    "screen_time": 77,
+    "created_at": "2026-03-22T15:13:31.000Z",
+    "updated_at": "2026-03-22T15:13:31.000Z"
+  },
+  {
+    "id": 510203,
+    "date": "2026-03-09",
+    "member_id": "liam",
+    "screen_time": 11,
+    "created_at": "2026-03-22T15:13:50.000Z",
+    "updated_at": "2026-03-22T15:13:50.000Z"
+  },
+  {
+    "id": 510260,
+    "date": "2026-03-16",
+    "member_id": "mom",
+    "screen_time": 208,
+    "created_at": "2026-03-22T15:14:41.000Z",
+    "updated_at": "2026-03-22T15:14:41.000Z"
+  },
+  {
+    "id": 510302,
+    "date": "2026-03-17",
+    "member_id": "mom",
+    "screen_time": 290,
+    "created_at": "2026-03-22T15:15:05.000Z",
+    "updated_at": "2026-03-22T15:15:05.000Z"
+  },
+  {
+    "id": 510344,
+    "date": "2026-03-16",
+    "member_id": "jin",
+    "screen_time": 257,
+    "created_at": "2026-03-22T15:15:59.000Z",
+    "updated_at": "2026-03-22T15:15:59.000Z"
+  },
+  {
+    "id": 510389,
+    "date": "2026-03-17",
+    "member_id": "dad",
+    "screen_time": 141,
+    "created_at": "2026-03-22T15:17:58.000Z",
+    "updated_at": "2026-03-22T15:17:58.000Z"
+  },
+  {
+    "id": 510434,
+    "date": "2026-03-18",
+    "member_id": "dad",
+    "screen_time": 90,
+    "created_at": "2026-03-22T15:18:13.000Z",
+    "updated_at": "2026-03-22T15:18:13.000Z"
+  },
+  {
+    "id": 510480,
+    "date": "2026-03-18",
+    "member_id": "mom",
+    "screen_time": 213,
+    "created_at": "2026-03-22T15:18:54.000Z",
+    "updated_at": "2026-03-22T15:18:54.000Z"
+  },
+  {
+    "id": 510525,
+    "date": "2026-03-17",
+    "member_id": "jin",
+    "screen_time": 143,
+    "created_at": "2026-03-22T15:20:18.000Z",
+    "updated_at": "2026-03-22T15:20:18.000Z"
+  },
+  {
+    "id": 510573,
+    "date": "2026-03-17",
+    "member_id": "liam",
+    "screen_time": 103,
+    "created_at": "2026-03-22T15:20:52.000Z",
+    "updated_at": "2026-03-22T15:20:52.000Z"
+  },
+  {
+    "id": 510624,
+    "date": "2026-03-18",
+    "member_id": "jin",
+    "screen_time": 363,
+    "created_at": "2026-03-22T15:21:36.000Z",
+    "updated_at": "2026-03-22T15:21:36.000Z"
+  },
+  {
+    "id": 510674,
+    "date": "2026-03-20",
+    "member_id": "liam",
+    "screen_time": 77,
+    "created_at": "2026-03-22T15:22:11.000Z",
+    "updated_at": "2026-03-22T15:22:20.000Z"
+  },
+  {
+    "id": 510774,
+    "date": "2026-03-18",
+    "member_id": "liam",
+    "screen_time": 35,
+    "created_at": "2026-03-22T15:22:27.000Z",
+    "updated_at": "2026-03-22T15:22:27.000Z"
+  },
+  {
+    "id": 510776,
+    "date": "2026-03-19",
+    "member_id": "liam",
+    "screen_time": 22,
+    "created_at": "2026-03-22T15:22:27.000Z",
+    "updated_at": "2026-03-22T15:22:27.000Z"
+  },
+  {
+    "id": 510828,
+    "date": "2026-03-19",
+    "member_id": "dad",
+    "screen_time": 213,
+    "created_at": "2026-03-22T15:23:09.000Z",
+    "updated_at": "2026-03-22T15:23:09.000Z"
+  },
+  {
+    "id": 510883,
+    "date": "2026-03-20",
+    "member_id": "dad",
+    "screen_time": 131,
+    "created_at": "2026-03-22T15:23:38.000Z",
+    "updated_at": "2026-03-22T15:23:38.000Z"
+  },
+  {
+    "id": 510936,
+    "date": "2026-03-19",
+    "member_id": "jin",
+    "screen_time": 382,
+    "created_at": "2026-03-22T15:24:35.000Z",
+    "updated_at": "2026-03-22T15:24:35.000Z"
+  },
+  {
+    "id": 510939,
+    "date": "2026-03-20",
+    "member_id": "jin",
+    "screen_time": 613,
+    "created_at": "2026-03-22T15:24:35.000Z",
+    "updated_at": "2026-03-22T15:24:35.000Z"
+  },
+  {
+    "id": 510975,
+    "date": "2026-03-12",
+    "member_id": "mom",
+    "screen_time": 314,
+    "created_at": "2026-03-22T15:24:48.000Z",
+    "updated_at": "2026-03-22T15:24:48.000Z"
+  },
+  {
+    "id": 511036,
+    "date": "2026-03-13",
+    "member_id": "mom",
+    "screen_time": 252,
+    "created_at": "2026-03-22T15:25:02.000Z",
+    "updated_at": "2026-03-22T15:25:02.000Z"
+  },
+  {
+    "id": 511110,
+    "date": "2026-03-19",
+    "member_id": "mom",
+    "screen_time": 274,
+    "created_at": "2026-03-22T15:25:39.000Z",
+    "updated_at": "2026-03-22T15:25:39.000Z"
+  },
+  {
+    "id": 511114,
+    "date": "2026-03-20",
+    "member_id": "mom",
+    "screen_time": 561,
+    "created_at": "2026-03-22T15:25:39.000Z",
+    "updated_at": "2026-03-22T15:25:39.000Z"
+  },
+  {
+    "id": 511159,
+    "date": "2026-03-16",
+    "member_id": "sean",
+    "screen_time": 526,
+    "created_at": "2026-03-22T15:26:48.000Z",
+    "updated_at": "2026-03-22T15:26:48.000Z"
+  },
+  {
+    "id": 511164,
+    "date": "2026-03-17",
+    "member_id": "sean",
+    "screen_time": 543,
+    "created_at": "2026-03-22T15:26:48.000Z",
+    "updated_at": "2026-03-22T15:26:48.000Z"
+  },
+  {
+    "id": 511169,
+    "date": "2026-03-18",
+    "member_id": "sean",
+    "screen_time": 541,
+    "created_at": "2026-03-22T15:26:48.000Z",
+    "updated_at": "2026-03-22T15:26:48.000Z"
+  },
+  {
+    "id": 511174,
+    "date": "2026-03-19",
+    "member_id": "sean",
+    "screen_time": 566,
+    "created_at": "2026-03-22T15:26:48.000Z",
+    "updated_at": "2026-03-22T15:26:48.000Z"
+  },
+  {
+    "id": 511243,
+    "date": "2026-03-20",
+    "member_id": "sean",
+    "screen_time": 489,
+    "created_at": "2026-03-22T15:27:45.000Z",
+    "updated_at": "2026-03-22T15:27:45.000Z"
+  },
+  {
+    "id": 511268,
+    "date": "2026-03-09",
+    "member_id": "sean",
+    "screen_time": 523,
+    "created_at": "2026-03-22T15:30:04.000Z",
+    "updated_at": "2026-03-22T15:30:04.000Z"
+  },
+  {
+    "id": 511273,
+    "date": "2026-03-10",
+    "member_id": "sean",
+    "screen_time": 585,
+    "created_at": "2026-03-22T15:30:05.000Z",
+    "updated_at": "2026-03-22T15:30:05.000Z"
+  },
+  {
+    "id": 511278,
+    "date": "2026-03-11",
+    "member_id": "sean",
+    "screen_time": 354,
+    "created_at": "2026-03-22T15:30:05.000Z",
+    "updated_at": "2026-03-22T15:30:05.000Z"
+  },
+  {
+    "id": 511283,
+    "date": "2026-03-12",
+    "member_id": "sean",
+    "screen_time": 503,
+    "created_at": "2026-03-22T15:30:05.000Z",
+    "updated_at": "2026-03-22T15:30:05.000Z"
+  },
+  {
+    "id": 511288,
+    "date": "2026-03-13",
+    "member_id": "sean",
+    "screen_time": 509,
+    "created_at": "2026-03-22T15:30:05.000Z",
+    "updated_at": "2026-03-22T15:30:05.000Z"
+  },
+  {
+    "id": 540071,
+    "date": "2026-03-23",
+    "member_id": "dad",
+    "screen_time": 96,
+    "created_at": "2026-03-29T14:45:05.000Z",
+    "updated_at": "2026-03-29T14:45:05.000Z"
+  },
+  {
+    "id": 540143,
+    "date": "2026-03-24",
+    "member_id": "dad",
+    "screen_time": 328,
+    "created_at": "2026-03-29T14:45:31.000Z",
+    "updated_at": "2026-03-29T14:45:31.000Z"
+  },
+  {
+    "id": 540144,
+    "date": "2026-03-25",
+    "member_id": "dad",
+    "screen_time": 159,
+    "created_at": "2026-03-29T14:45:31.000Z",
+    "updated_at": "2026-03-29T14:45:31.000Z"
+  },
+  {
+    "id": 540218,
+    "date": "2026-03-26",
+    "member_id": "dad",
+    "screen_time": 189,
+    "created_at": "2026-03-29T14:45:50.000Z",
+    "updated_at": "2026-03-29T14:45:50.000Z"
+  },
+  {
+    "id": 540219,
+    "date": "2026-03-27",
+    "member_id": "dad",
+    "screen_time": 208,
+    "created_at": "2026-03-29T14:45:50.000Z",
+    "updated_at": "2026-03-29T14:45:50.000Z"
+  },
+  {
+    "id": 540291,
+    "date": "2026-03-23",
+    "member_id": "mom",
+    "screen_time": 129,
+    "created_at": "2026-03-29T14:46:58.000Z",
+    "updated_at": "2026-03-29T14:46:58.000Z"
+  },
+  {
+    "id": 540369,
+    "date": "2026-03-24",
+    "member_id": "mom",
+    "screen_time": 289,
+    "created_at": "2026-03-29T14:47:22.000Z",
+    "updated_at": "2026-03-29T14:47:22.000Z"
+  },
+  {
+    "id": 540448,
+    "date": "2026-03-25",
+    "member_id": "mom",
+    "screen_time": 371,
+    "created_at": "2026-03-29T14:47:32.000Z",
+    "updated_at": "2026-03-29T14:47:32.000Z"
+  },
+  {
+    "id": 540523,
+    "date": "2026-03-23",
+    "member_id": "sean",
+    "screen_time": 447,
+    "created_at": "2026-03-29T14:48:18.000Z",
+    "updated_at": "2026-03-29T14:48:18.000Z"
+  },
+  {
+    "id": 540526,
+    "date": "2026-03-24",
+    "member_id": "sean",
+    "screen_time": 382,
+    "created_at": "2026-03-29T14:48:18.000Z",
+    "updated_at": "2026-03-29T14:48:18.000Z"
+  },
+  {
+    "id": 540609,
+    "date": "2026-03-25",
+    "member_id": "sean",
+    "screen_time": 547,
+    "created_at": "2026-03-29T14:48:38.000Z",
+    "updated_at": "2026-03-29T14:48:38.000Z"
+  },
+  {
+    "id": 540611,
+    "date": "2026-03-26",
+    "member_id": "sean",
+    "screen_time": 562,
+    "created_at": "2026-03-29T14:48:38.000Z",
+    "updated_at": "2026-03-29T14:48:38.000Z"
+  },
+  {
+    "id": 540695,
+    "date": "2026-03-27",
+    "member_id": "sean",
+    "screen_time": 225,
+    "created_at": "2026-03-29T14:48:49.000Z",
+    "updated_at": "2026-03-29T14:48:49.000Z"
+  },
+  {
+    "id": 540769,
+    "date": "2026-03-23",
+    "member_id": "jin",
+    "screen_time": 264,
+    "created_at": "2026-03-29T14:49:20.000Z",
+    "updated_at": "2026-03-29T14:49:20.000Z"
+  },
+  {
+    "id": 540857,
+    "date": "2026-03-24",
+    "member_id": "jin",
+    "screen_time": 224,
+    "created_at": "2026-03-29T14:49:45.000Z",
+    "updated_at": "2026-03-29T14:49:45.000Z"
+  },
+  {
+    "id": 540948,
+    "date": "2026-03-26",
+    "member_id": "jin",
+    "screen_time": 301,
+    "created_at": "2026-03-29T14:50:34.000Z",
+    "updated_at": "2026-03-29T14:50:34.000Z"
+  },
+  {
+    "id": 540951,
+    "date": "2026-03-27",
+    "member_id": "jin",
+    "screen_time": 577,
+    "created_at": "2026-03-29T14:50:34.000Z",
+    "updated_at": "2026-03-29T14:50:34.000Z"
+  },
+  {
+    "id": 541033,
+    "date": "2026-03-25",
+    "member_id": "jin",
+    "screen_time": 231,
+    "created_at": "2026-03-29T14:50:46.000Z",
+    "updated_at": "2026-03-29T14:50:46.000Z"
+  },
+  {
+    "id": 541114,
+    "date": "2026-03-23",
+    "member_id": "liam",
+    "screen_time": 74,
+    "created_at": "2026-03-29T14:51:05.000Z",
+    "updated_at": "2026-03-29T14:51:05.000Z"
+  },
+  {
+    "id": 541208,
+    "date": "2026-03-24",
+    "member_id": "liam",
+    "screen_time": 79,
+    "created_at": "2026-03-29T14:51:15.000Z",
+    "updated_at": "2026-03-29T14:51:15.000Z"
+  },
+  {
+    "id": 541213,
+    "date": "2026-03-25",
+    "member_id": "liam",
+    "screen_time": 40,
+    "created_at": "2026-03-29T14:51:15.000Z",
+    "updated_at": "2026-03-29T14:51:15.000Z"
+  },
+  {
+    "id": 541308,
+    "date": "2026-03-26",
+    "member_id": "liam",
+    "screen_time": 17,
+    "created_at": "2026-03-29T14:51:22.000Z",
+    "updated_at": "2026-03-29T14:51:22.000Z"
+  },
+  {
+    "id": 541312,
+    "date": "2026-03-27",
+    "member_id": "liam",
+    "screen_time": 77,
+    "created_at": "2026-03-29T14:51:22.000Z",
+    "updated_at": "2026-03-29T14:51:22.000Z"
+  },
+  {
+    "id": 541406,
+    "date": "2026-03-27",
+    "member_id": "mom",
+    "screen_time": 401,
+    "created_at": "2026-03-29T14:52:28.000Z",
+    "updated_at": "2026-03-29T14:52:28.000Z"
+  },
+  {
+    "id": 541496,
+    "date": "2026-03-26",
+    "member_id": "mom",
+    "screen_time": 297,
+    "created_at": "2026-03-29T14:52:47.000Z",
+    "updated_at": "2026-03-29T14:52:47.000Z"
+  },
+  {
+    "id": 570096,
+    "date": "2026-03-31",
+    "member_id": "sean",
+    "screen_time": 560,
+    "created_at": "2026-03-31T13:32:39.000Z",
+    "updated_at": "2026-03-31T13:32:39.000Z"
+  },
+  {
+    "id": 570193,
+    "date": "2026-03-30",
+    "member_id": "sean",
+    "screen_time": 456,
+    "created_at": "2026-03-31T13:32:56.000Z",
+    "updated_at": "2026-03-31T13:32:56.000Z"
+  },
+  {
+    "id": 570290,
+    "date": "2026-03-30",
+    "member_id": "dad",
+    "screen_time": 157,
+    "created_at": "2026-03-31T13:33:13.000Z",
+    "updated_at": "2026-03-31T13:33:13.000Z"
+  },
+  {
+    "id": 570390,
+    "date": "2026-03-31",
+    "member_id": "dad",
+    "screen_time": 223,
+    "created_at": "2026-03-31T13:33:28.000Z",
+    "updated_at": "2026-03-31T13:33:28.000Z"
+  },
+  {
+    "id": 570490,
+    "date": "2026-03-31",
+    "member_id": "mom",
+    "screen_time": 228,
+    "created_at": "2026-03-31T13:33:58.000Z",
+    "updated_at": "2026-03-31T13:33:58.000Z"
+  },
+  {
+    "id": 570588,
+    "date": "2026-03-30",
+    "member_id": "mom",
+    "screen_time": 258,
+    "created_at": "2026-03-31T13:34:17.000Z",
+    "updated_at": "2026-03-31T13:34:17.000Z"
+  },
+  {
+    "id": 570693,
+    "date": "2026-03-31",
+    "member_id": "jin",
+    "screen_time": 507,
+    "created_at": "2026-03-31T13:34:34.000Z",
+    "updated_at": "2026-03-31T13:34:34.000Z"
+  },
+  {
+    "id": 570792,
+    "date": "2026-03-30",
+    "member_id": "jin",
+    "screen_time": 338,
+    "created_at": "2026-03-31T13:34:45.000Z",
+    "updated_at": "2026-03-31T13:34:45.000Z"
+  },
+  {
+    "id": 570896,
+    "date": "2026-03-30",
+    "member_id": "liam",
+    "screen_time": 70,
+    "created_at": "2026-03-31T13:37:45.000Z",
+    "updated_at": "2026-03-31T13:37:45.000Z"
+  },
+  {
+    "id": 570901,
+    "date": "2026-03-31",
+    "member_id": "liam",
+    "screen_time": 20,
+    "created_at": "2026-03-31T13:37:45.000Z",
+    "updated_at": "2026-03-31T13:37:45.000Z"
+  },
+  {
+    "id": 600001,
+    "date": "2026-04-01",
+    "member_id": "mom",
+    "screen_time": 108,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600002,
+    "date": "2026-04-01",
+    "member_id": "jin",
+    "screen_time": 120,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600003,
+    "date": "2026-04-01",
+    "member_id": "dad",
+    "screen_time": 55,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600004,
+    "date": "2026-04-01",
+    "member_id": "sean",
+    "screen_time": 138,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600005,
+    "date": "2026-04-01",
+    "member_id": "liam",
+    "screen_time": 115,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600006,
+    "date": "2026-04-02",
+    "member_id": "mom",
+    "screen_time": 105,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600007,
+    "date": "2026-04-02",
+    "member_id": "jin",
+    "screen_time": 418,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600008,
+    "date": "2026-04-02",
+    "member_id": "dad",
+    "screen_time": 72,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600009,
+    "date": "2026-04-02",
+    "member_id": "sean",
+    "screen_time": 560,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600010,
+    "date": "2026-04-02",
+    "member_id": "liam",
+    "screen_time": 104,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600011,
+    "date": "2026-04-03",
+    "member_id": "mom",
+    "screen_time": 90,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600012,
+    "date": "2026-04-03",
+    "member_id": "dad",
+    "screen_time": 100,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600013,
+    "date": "2026-04-03",
+    "member_id": "sean",
+    "screen_time": 376,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600014,
+    "date": "2026-04-03",
+    "member_id": "liam",
+    "screen_time": 113,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 600015,
+    "date": "2026-04-03",
+    "member_id": "jin",
+    "screen_time": 66,
+    "created_at": "2026-04-05T15:24:39.000Z",
+    "updated_at": "2026-04-05T15:24:39.000Z"
+  },
+  {
+    "id": 630016,
+    "date": "2026-04-06",
+    "member_id": "liam",
+    "screen_time": 119,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630017,
+    "date": "2026-04-07",
+    "member_id": "liam",
+    "screen_time": 69,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630018,
+    "date": "2026-04-08",
+    "member_id": "liam",
+    "screen_time": 83,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630019,
+    "date": "2026-04-09",
+    "member_id": "liam",
+    "screen_time": 105,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630020,
+    "date": "2026-04-10",
+    "member_id": "liam",
+    "screen_time": 119,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630021,
+    "date": "2026-04-13",
+    "member_id": "liam",
+    "screen_time": 91,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630022,
+    "date": "2026-04-14",
+    "member_id": "liam",
+    "screen_time": 105,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630023,
+    "date": "2026-04-15",
+    "member_id": "liam",
+    "screen_time": 72,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630024,
+    "date": "2026-04-16",
+    "member_id": "liam",
+    "screen_time": 63,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630025,
+    "date": "2026-04-17",
+    "member_id": "liam",
+    "screen_time": 74,
+    "created_at": "2026-04-19T16:47:26.000Z",
+    "updated_at": "2026-04-19T16:47:26.000Z"
+  },
+  {
+    "id": 630042,
+    "date": "2026-04-06",
+    "member_id": "jin",
+    "screen_time": 67,
+    "created_at": "2026-04-19T16:49:53.000Z",
+    "updated_at": "2026-04-19T16:51:02.000Z"
+  },
+  {
+    "id": 630043,
+    "date": "2026-04-06",
+    "member_id": "mom",
+    "screen_time": 120,
+    "created_at": "2026-04-19T16:49:53.000Z",
+    "updated_at": "2026-04-19T16:49:53.000Z"
+  },
+  {
+    "id": 630072,
+    "date": "2026-04-07",
+    "member_id": "jin",
+    "screen_time": 140,
+    "created_at": "2026-04-19T16:50:19.000Z",
+    "updated_at": "2026-04-20T14:43:41.000Z"
+  },
+  {
+    "id": 630101,
+    "date": "2026-04-07",
+    "member_id": "mom",
+    "screen_time": 143,
+    "created_at": "2026-04-19T16:50:35.000Z",
+    "updated_at": "2026-04-19T16:50:35.000Z"
+  },
+  {
+    "id": 660030,
+    "date": "2026-04-20",
+    "member_id": "liam",
+    "screen_time": 76,
+    "created_at": "2026-04-20T14:33:31.000Z",
+    "updated_at": "2026-04-30T14:50:22.000Z"
+  },
+  {
+    "id": 660053,
+    "date": "2026-04-08",
+    "member_id": "jin",
+    "screen_time": 153,
+    "created_at": "2026-04-20T14:34:42.000Z",
+    "updated_at": "2026-04-20T14:34:42.000Z"
+  },
+  {
+    "id": 660085,
+    "date": "2026-04-08",
+    "member_id": "dad",
+    "screen_time": 94,
+    "created_at": "2026-04-20T14:35:27.000Z",
+    "updated_at": "2026-04-20T14:35:34.000Z"
+  },
+  {
+    "id": 660086,
+    "date": "2026-04-08",
+    "member_id": "mom",
+    "screen_time": 159,
+    "created_at": "2026-04-20T14:35:27.000Z",
+    "updated_at": "2026-04-20T14:35:27.000Z"
+  },
+  {
+    "id": 660154,
+    "date": "2026-04-09",
+    "member_id": "dad",
+    "screen_time": 68,
+    "created_at": "2026-04-20T14:35:58.000Z",
+    "updated_at": "2026-04-20T14:35:58.000Z"
+  },
+  {
+    "id": 660183,
+    "date": "2026-04-07",
+    "member_id": "dad",
+    "screen_time": 66,
+    "created_at": "2026-04-20T14:36:16.000Z",
+    "updated_at": "2026-04-20T14:36:16.000Z"
+  },
+  {
+    "id": 660215,
+    "date": "2026-04-06",
+    "member_id": "dad",
+    "screen_time": 37,
+    "created_at": "2026-04-20T14:37:25.000Z",
+    "updated_at": "2026-04-20T14:37:41.000Z"
+  },
+  {
+    "id": 660288,
+    "date": "2026-04-06",
+    "member_id": "sean",
+    "screen_time": 366,
+    "created_at": "2026-04-20T14:40:26.000Z",
+    "updated_at": "2026-04-20T14:42:07.000Z"
+  },
+  {
+    "id": 660367,
+    "date": "2026-04-07",
+    "member_id": "sean",
+    "screen_time": 386,
+    "created_at": "2026-04-20T14:43:07.000Z",
+    "updated_at": "2026-04-20T14:43:07.000Z"
+  },
+  {
+    "id": 660495,
+    "date": "2026-04-20",
+    "member_id": "jin",
+    "screen_time": 126,
+    "created_at": "2026-04-20T14:45:32.000Z",
+    "updated_at": "2026-04-20T14:45:32.000Z"
+  },
+  {
+    "id": 660532,
+    "date": "2026-04-16",
+    "member_id": "jin",
+    "screen_time": 99,
+    "created_at": "2026-04-20T14:47:35.000Z",
+    "updated_at": "2026-04-20T14:47:35.000Z"
+  },
+  {
+    "id": 660534,
+    "date": "2026-04-17",
+    "member_id": "jin",
+    "screen_time": 156,
+    "created_at": "2026-04-20T14:47:35.000Z",
+    "updated_at": "2026-04-20T14:47:35.000Z"
+  },
+  {
+    "id": 660569,
+    "date": "2026-04-10",
+    "member_id": "jin",
+    "screen_time": 146,
+    "created_at": "2026-04-20T14:48:11.000Z",
+    "updated_at": "2026-04-20T14:48:11.000Z"
+  },
+  {
+    "id": 660573,
+    "date": "2026-04-15",
+    "member_id": "jin",
+    "screen_time": 75,
+    "created_at": "2026-04-20T14:48:11.000Z",
+    "updated_at": "2026-04-20T14:48:11.000Z"
+  },
+  {
+    "id": 660611,
+    "date": "2026-04-09",
+    "member_id": "jin",
+    "screen_time": 12,
+    "created_at": "2026-04-20T14:51:12.000Z",
+    "updated_at": "2026-04-20T14:51:12.000Z"
+  },
+  {
+    "id": 660659,
+    "date": "2026-04-13",
+    "member_id": "jin",
+    "screen_time": 232,
+    "created_at": "2026-04-20T14:51:32.000Z",
+    "updated_at": "2026-04-20T14:51:32.000Z"
+  },
+  {
+    "id": 660661,
+    "date": "2026-04-14",
+    "member_id": "jin",
+    "screen_time": 27,
+    "created_at": "2026-04-20T14:51:32.000Z",
+    "updated_at": "2026-04-20T14:51:32.000Z"
+  },
+  {
+    "id": 660702,
+    "date": "2026-04-09",
+    "member_id": "mom",
+    "screen_time": 267,
+    "created_at": "2026-04-20T15:01:50.000Z",
+    "updated_at": "2026-04-20T15:01:50.000Z"
+  },
+  {
+    "id": 660752,
+    "date": "2026-04-10",
+    "member_id": "mom",
+    "screen_time": 223,
+    "created_at": "2026-04-20T15:02:06.000Z",
+    "updated_at": "2026-04-20T15:02:06.000Z"
+  },
+  {
+    "id": 660803,
+    "date": "2026-04-13",
+    "member_id": "mom",
+    "screen_time": 101,
+    "created_at": "2026-04-20T15:02:51.000Z",
+    "updated_at": "2026-04-20T15:02:51.000Z"
+  },
+  {
+    "id": 660806,
+    "date": "2026-04-14",
+    "member_id": "mom",
+    "screen_time": 150,
+    "created_at": "2026-04-20T15:02:51.000Z",
+    "updated_at": "2026-04-20T15:02:51.000Z"
+  },
+  {
+    "id": 660809,
+    "date": "2026-04-15",
+    "member_id": "mom",
+    "screen_time": 88,
+    "created_at": "2026-04-20T15:02:51.000Z",
+    "updated_at": "2026-04-20T15:02:51.000Z"
+  },
+  {
+    "id": 660863,
+    "date": "2026-04-16",
+    "member_id": "mom",
+    "screen_time": 251,
+    "created_at": "2026-04-20T15:04:37.000Z",
+    "updated_at": "2026-04-20T15:04:46.000Z"
+  },
+  {
+    "id": 660866,
+    "date": "2026-04-17",
+    "member_id": "mom",
+    "screen_time": 232,
+    "created_at": "2026-04-20T15:04:37.000Z",
+    "updated_at": "2026-04-20T15:04:46.000Z"
+  },
+  {
+    "id": 660869,
+    "date": "2026-04-20",
+    "member_id": "mom",
+    "screen_time": 142,
+    "created_at": "2026-04-20T15:04:37.000Z",
+    "updated_at": "2026-04-20T15:04:37.000Z"
+  },
+  {
+    "id": 660960,
+    "date": "2026-04-10",
+    "member_id": "dad",
+    "screen_time": 89,
+    "created_at": "2026-04-20T15:05:20.000Z",
+    "updated_at": "2026-04-20T15:07:18.000Z"
+  },
+  {
+    "id": 661019,
+    "date": "2026-04-13",
+    "member_id": "dad",
+    "screen_time": 59,
+    "created_at": "2026-04-20T15:05:44.000Z",
+    "updated_at": "2026-04-20T15:11:33.000Z"
+  },
+  {
+    "id": 661197,
+    "date": "2026-04-16",
+    "member_id": "dad",
+    "screen_time": 81,
+    "created_at": "2026-04-20T15:08:27.000Z",
+    "updated_at": "2026-04-20T15:08:27.000Z"
+  },
+  {
+    "id": 661258,
+    "date": "2026-04-17",
+    "member_id": "dad",
+    "screen_time": 82,
+    "created_at": "2026-04-20T15:08:50.000Z",
+    "updated_at": "2026-04-20T15:08:50.000Z"
+  },
+  {
+    "id": 661320,
+    "date": "2026-04-20",
+    "member_id": "dad",
+    "screen_time": 61,
+    "created_at": "2026-04-20T15:09:06.000Z",
+    "updated_at": "2026-04-20T15:09:06.000Z"
+  },
+  {
+    "id": 661365,
+    "date": "2026-04-14",
+    "member_id": "dad",
+    "screen_time": 90,
+    "created_at": "2026-04-20T15:09:50.000Z",
+    "updated_at": "2026-04-20T15:11:33.000Z"
+  },
+  {
+    "id": 690061,
+    "date": "2026-04-21",
+    "member_id": "liam",
+    "screen_time": 46,
+    "created_at": "2026-04-30T14:50:22.000Z",
+    "updated_at": "2026-04-30T14:50:22.000Z"
+  },
+  {
+    "id": 690123,
+    "date": "2026-04-30",
+    "member_id": "liam",
+    "screen_time": 49,
+    "created_at": "2026-04-30T14:51:21.000Z",
+    "updated_at": "2026-04-30T14:51:21.000Z"
+  },
+  {
+    "id": 690124,
+    "date": "2026-04-29",
+    "member_id": "liam",
+    "screen_time": 59,
+    "created_at": "2026-04-30T14:51:21.000Z",
+    "updated_at": "2026-04-30T14:51:21.000Z"
+  },
+  {
+    "id": 690125,
+    "date": "2026-04-28",
+    "member_id": "liam",
+    "screen_time": 37,
+    "created_at": "2026-04-30T14:51:21.000Z",
+    "updated_at": "2026-04-30T14:51:21.000Z"
+  },
+  {
+    "id": 690190,
+    "date": "2026-04-27",
+    "member_id": "liam",
+    "screen_time": 69,
+    "created_at": "2026-04-30T14:51:40.000Z",
+    "updated_at": "2026-04-30T14:51:40.000Z"
+  },
+  {
+    "id": 690191,
+    "date": "2026-04-24",
+    "member_id": "liam",
+    "screen_time": 112,
+    "created_at": "2026-04-30T14:51:40.000Z",
+    "updated_at": "2026-04-30T14:51:40.000Z"
+  },
+  {
+    "id": 690192,
+    "date": "2026-04-23",
+    "member_id": "liam",
+    "screen_time": 68,
+    "created_at": "2026-04-30T14:51:40.000Z",
+    "updated_at": "2026-04-30T14:51:40.000Z"
+  },
+  {
+    "id": 690193,
+    "date": "2026-04-22",
+    "member_id": "liam",
+    "screen_time": 83,
+    "created_at": "2026-04-30T14:51:40.000Z",
+    "updated_at": "2026-04-30T14:51:40.000Z"
+  },
+  {
+    "id": 690255,
+    "date": "2026-04-21",
+    "member_id": "jin",
+    "screen_time": 191,
+    "created_at": "2026-04-30T14:53:05.000Z",
+    "updated_at": "2026-04-30T14:57:44.000Z"
+  },
+  {
+    "id": 690326,
+    "date": "2026-04-22",
+    "member_id": "jin",
+    "screen_time": 119,
+    "created_at": "2026-04-30T14:53:33.000Z",
+    "updated_at": "2026-04-30T14:58:51.000Z"
+  },
+  {
+    "id": 690328,
+    "date": "2026-04-23",
+    "member_id": "jin",
+    "screen_time": 78,
+    "created_at": "2026-04-30T14:53:33.000Z",
+    "updated_at": "2026-04-30T14:58:51.000Z"
+  },
+  {
+    "id": 690402,
+    "date": "2026-04-27",
+    "member_id": "jin",
+    "screen_time": 120,
+    "created_at": "2026-04-30T14:54:09.000Z",
+    "updated_at": "2026-04-30T14:58:05.000Z"
+  },
+  {
+    "id": 690404,
+    "date": "2026-04-28",
+    "member_id": "jin",
+    "screen_time": 122,
+    "created_at": "2026-04-30T14:54:09.000Z",
+    "updated_at": "2026-04-30T14:58:05.000Z"
+  },
+  {
+    "id": 690552,
+    "date": "2026-04-29",
+    "member_id": "jin",
+    "screen_time": 193,
+    "created_at": "2026-04-30T14:54:45.000Z",
+    "updated_at": "2026-04-30T14:58:45.000Z"
+  },
+  {
+    "id": 690554,
+    "date": "2026-04-30",
+    "member_id": "jin",
+    "screen_time": 62,
+    "created_at": "2026-04-30T14:54:45.000Z",
+    "updated_at": "2026-04-30T14:58:45.000Z"
+  },
+  {
+    "id": 690617,
+    "date": "2026-04-21",
+    "member_id": "mom",
+    "screen_time": 122,
+    "created_at": "2026-04-30T14:55:24.000Z",
+    "updated_at": "2026-04-30T14:55:24.000Z"
+  },
+  {
+    "id": 690620,
+    "date": "2026-04-22",
+    "member_id": "mom",
+    "screen_time": 185,
+    "created_at": "2026-04-30T14:55:24.000Z",
+    "updated_at": "2026-04-30T14:55:24.000Z"
+  },
+  {
+    "id": 690623,
+    "date": "2026-04-23",
+    "member_id": "mom",
+    "screen_time": 120,
+    "created_at": "2026-04-30T14:55:24.000Z",
+    "updated_at": "2026-04-30T14:55:24.000Z"
+  },
+  {
+    "id": 690705,
+    "date": "2026-04-27",
+    "member_id": "mom",
+    "screen_time": 199,
+    "created_at": "2026-04-30T14:56:09.000Z",
+    "updated_at": "2026-04-30T14:56:09.000Z"
+  },
+  {
+    "id": 690708,
+    "date": "2026-04-28",
+    "member_id": "mom",
+    "screen_time": 136,
+    "created_at": "2026-04-30T14:56:09.000Z",
+    "updated_at": "2026-04-30T14:56:09.000Z"
+  },
+  {
+    "id": 690711,
+    "date": "2026-04-29",
+    "member_id": "mom",
+    "screen_time": 195,
+    "created_at": "2026-04-30T14:56:09.000Z",
+    "updated_at": "2026-04-30T14:56:09.000Z"
+  },
+  {
+    "id": 690714,
+    "date": "2026-04-30",
+    "member_id": "mom",
+    "screen_time": 107,
+    "created_at": "2026-04-30T14:56:09.000Z",
+    "updated_at": "2026-04-30T14:56:09.000Z"
+  },
+  {
+    "id": 690867,
+    "date": "2026-04-24",
+    "member_id": "mom",
+    "screen_time": 119,
+    "created_at": "2026-04-30T14:57:44.000Z",
+    "updated_at": "2026-04-30T14:57:44.000Z"
+  },
+  {
+    "id": 690868,
+    "date": "2026-04-24",
+    "member_id": "jin",
+    "screen_time": 102,
+    "created_at": "2026-04-30T14:57:44.000Z",
+    "updated_at": "2026-04-30T14:57:44.000Z"
+  },
+  {
+    "id": 691280,
+    "date": "2026-04-21",
+    "member_id": "dad",
+    "screen_time": 113,
+    "created_at": "2026-04-30T14:59:37.000Z",
+    "updated_at": "2026-04-30T14:59:37.000Z"
+  },
+  {
+    "id": 691369,
+    "date": "2026-04-22",
+    "member_id": "dad",
+    "screen_time": 83,
+    "created_at": "2026-04-30T15:00:01.000Z",
+    "updated_at": "2026-04-30T15:00:01.000Z"
+  },
+  {
+    "id": 691373,
+    "date": "2026-04-23",
+    "member_id": "dad",
+    "screen_time": 25,
+    "created_at": "2026-04-30T15:00:01.000Z",
+    "updated_at": "2026-04-30T15:00:01.000Z"
+  },
+  {
+    "id": 691464,
+    "date": "2026-04-24",
+    "member_id": "dad",
+    "screen_time": 69,
+    "created_at": "2026-04-30T15:00:49.000Z",
+    "updated_at": "2026-04-30T15:00:49.000Z"
+  },
+  {
+    "id": 691556,
+    "date": "2026-04-27",
+    "member_id": "dad",
+    "screen_time": 52,
+    "created_at": "2026-04-30T15:04:13.000Z",
+    "updated_at": "2026-04-30T15:04:13.000Z"
+  },
+  {
+    "id": 691560,
+    "date": "2026-04-28",
+    "member_id": "dad",
+    "screen_time": 167,
+    "created_at": "2026-04-30T15:04:13.000Z",
+    "updated_at": "2026-04-30T15:04:13.000Z"
+  },
+  {
+    "id": 691657,
+    "date": "2026-04-30",
+    "member_id": "dad",
+    "screen_time": 139,
+    "created_at": "2026-04-30T15:04:27.000Z",
+    "updated_at": "2026-04-30T15:04:27.000Z"
+  },
+  {
+    "id": 691706,
+    "date": "2026-04-15",
+    "member_id": "dad",
+    "screen_time": 90,
+    "created_at": "2026-04-30T15:05:39.000Z",
+    "updated_at": "2026-04-30T15:05:39.000Z"
+  },
+  {
+    "id": 691838,
+    "date": "2026-04-29",
+    "member_id": "dad",
+    "screen_time": 66,
+    "created_at": "2026-04-30T15:06:24.000Z",
+    "updated_at": "2026-04-30T15:06:24.000Z"
+  },
+  {
+    "id": 720001,
+    "date": "2026-05-04",
+    "member_id": "dad",
+    "screen_time": 151,
+    "created_at": "2026-05-14T14:56:17.000Z",
+    "updated_at": "2026-05-14T14:56:17.000Z"
+  },
+  {
+    "id": 720002,
+    "date": "2026-05-06",
+    "member_id": "dad",
+    "screen_time": 161,
+    "created_at": "2026-05-14T14:56:17.000Z",
+    "updated_at": "2026-05-14T14:56:17.000Z"
+  },
+  {
+    "id": 720003,
+    "date": "2026-05-07",
+    "member_id": "dad",
+    "screen_time": 129,
+    "created_at": "2026-05-14T14:56:17.000Z",
+    "updated_at": "2026-05-14T14:56:17.000Z"
+  },
+  {
+    "id": 720004,
+    "date": "2026-05-08",
+    "member_id": "dad",
+    "screen_time": 172,
+    "created_at": "2026-05-14T14:56:17.000Z",
+    "updated_at": "2026-05-14T14:56:17.000Z"
+  },
+  {
+    "id": 720005,
+    "date": "2026-05-11",
+    "member_id": "dad",
+    "screen_time": 147,
+    "created_at": "2026-05-14T14:56:17.000Z",
+    "updated_at": "2026-05-14T14:56:17.000Z"
+  },
+  {
+    "id": 720011,
+    "date": "2026-05-12",
+    "member_id": "dad",
+    "screen_time": 167,
+    "created_at": "2026-05-14T14:56:30.000Z",
+    "updated_at": "2026-05-14T14:56:30.000Z"
+  },
+  {
+    "id": 720012,
+    "date": "2026-05-13",
+    "member_id": "dad",
+    "screen_time": 112,
+    "created_at": "2026-05-14T14:56:30.000Z",
+    "updated_at": "2026-05-14T14:56:30.000Z"
+  },
+  {
+    "id": 720013,
+    "date": "2026-05-14",
+    "member_id": "dad",
+    "screen_time": 114,
+    "created_at": "2026-05-14T14:56:30.000Z",
+    "updated_at": "2026-05-14T14:56:30.000Z"
+  },
+  {
+    "id": 720014,
+    "date": "2026-05-15",
+    "member_id": "dad",
+    "screen_time": 119,
+    "created_at": "2026-05-14T14:56:30.000Z",
+    "updated_at": "2026-05-14T14:56:30.000Z"
+  },
+  {
+    "id": 720016,
+    "date": "2026-05-04",
+    "member_id": "sean",
+    "screen_time": 307,
+    "created_at": "2026-05-14T14:57:17.000Z",
+    "updated_at": "2026-05-31T13:59:03.000Z"
+  },
+  {
+    "id": 720018,
+    "date": "2026-05-06",
+    "member_id": "sean",
+    "screen_time": 605,
+    "created_at": "2026-05-14T14:57:17.000Z",
+    "updated_at": "2026-05-31T13:59:03.000Z"
+  },
+  {
+    "id": 720020,
+    "date": "2026-05-07",
+    "member_id": "sean",
+    "screen_time": 561,
+    "created_at": "2026-05-14T14:57:17.000Z",
+    "updated_at": "2026-05-31T13:59:03.000Z"
+  },
+  {
+    "id": 720022,
+    "date": "2026-05-08",
+    "member_id": "sean",
+    "screen_time": 818,
+    "created_at": "2026-05-14T14:57:17.000Z",
+    "updated_at": "2026-05-31T13:59:04.000Z"
+  },
+  {
+    "id": 720040,
+    "date": "2026-05-14",
+    "member_id": "sean",
+    "screen_time": 820,
+    "created_at": "2026-05-14T14:58:00.000Z",
+    "updated_at": "2026-05-31T13:59:04.000Z"
+  },
+  {
+    "id": 720053,
+    "date": "2026-05-13",
+    "member_id": "sean",
+    "screen_time": 731,
+    "created_at": "2026-05-14T14:59:20.000Z",
+    "updated_at": "2026-05-31T13:59:04.000Z"
+  },
+  {
+    "id": 720066,
+    "date": "2026-05-11",
+    "member_id": "sean",
+    "screen_time": 698,
+    "created_at": "2026-05-14T14:59:45.000Z",
+    "updated_at": "2026-05-31T13:59:04.000Z"
+  },
+  {
+    "id": 720068,
+    "date": "2026-05-12",
+    "member_id": "sean",
+    "screen_time": 661,
+    "created_at": "2026-05-14T14:59:45.000Z",
+    "updated_at": "2026-05-31T13:59:04.000Z"
+  },
+  {
+    "id": 750018,
+    "date": "2026-05-18",
+    "member_id": "dad",
+    "screen_time": 86,
+    "created_at": "2026-05-31T13:46:52.000Z",
+    "updated_at": "2026-05-31T13:46:52.000Z"
+  },
+  {
+    "id": 750019,
+    "date": "2026-05-19",
+    "member_id": "dad",
+    "screen_time": 113,
+    "created_at": "2026-05-31T13:46:52.000Z",
+    "updated_at": "2026-05-31T13:46:52.000Z"
+  },
+  {
+    "id": 750020,
+    "date": "2026-05-20",
+    "member_id": "dad",
+    "screen_time": 122,
+    "created_at": "2026-05-31T13:46:52.000Z",
+    "updated_at": "2026-05-31T13:46:52.000Z"
+  },
+  {
+    "id": 750021,
+    "date": "2026-05-21",
+    "member_id": "dad",
+    "screen_time": 115,
+    "created_at": "2026-05-31T13:46:52.000Z",
+    "updated_at": "2026-05-31T13:46:52.000Z"
+  },
+  {
+    "id": 750022,
+    "date": "2026-05-22",
+    "member_id": "dad",
+    "screen_time": 102,
+    "created_at": "2026-05-31T13:46:52.000Z",
+    "updated_at": "2026-05-31T13:46:52.000Z"
+  },
+  {
+    "id": 750045,
+    "date": "2026-05-25",
+    "member_id": "dad",
+    "screen_time": 0,
+    "created_at": "2026-05-31T13:47:23.000Z",
+    "updated_at": "2026-05-31T13:56:03.000Z"
+  },
+  {
+    "id": 750046,
+    "date": "2026-05-26",
+    "member_id": "dad",
+    "screen_time": 184,
+    "created_at": "2026-05-31T13:47:23.000Z",
+    "updated_at": "2026-05-31T13:47:23.000Z"
+  },
+  {
+    "id": 750047,
+    "date": "2026-05-27",
+    "member_id": "dad",
+    "screen_time": 150,
+    "created_at": "2026-05-31T13:47:23.000Z",
+    "updated_at": "2026-05-31T13:47:23.000Z"
+  },
+  {
+    "id": 750048,
+    "date": "2026-05-28",
+    "member_id": "dad",
+    "screen_time": 154,
+    "created_at": "2026-05-31T13:47:23.000Z",
+    "updated_at": "2026-05-31T13:47:23.000Z"
+  },
+  {
+    "id": 750049,
+    "date": "2026-05-29",
+    "member_id": "dad",
+    "screen_time": 144,
+    "created_at": "2026-05-31T13:47:23.000Z",
+    "updated_at": "2026-05-31T13:47:23.000Z"
+  },
+  {
+    "id": 750052,
+    "date": "2026-05-04",
+    "member_id": "mom",
+    "screen_time": 383,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750055,
+    "date": "2026-05-06",
+    "member_id": "mom",
+    "screen_time": 244,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750058,
+    "date": "2026-05-07",
+    "member_id": "mom",
+    "screen_time": 195,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750061,
+    "date": "2026-05-08",
+    "member_id": "mom",
+    "screen_time": 152,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750064,
+    "date": "2026-05-11",
+    "member_id": "mom",
+    "screen_time": 181,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750067,
+    "date": "2026-05-12",
+    "member_id": "mom",
+    "screen_time": 200,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750070,
+    "date": "2026-05-13",
+    "member_id": "mom",
+    "screen_time": 255,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750073,
+    "date": "2026-05-14",
+    "member_id": "mom",
+    "screen_time": 290,
+    "created_at": "2026-05-31T13:48:25.000Z",
+    "updated_at": "2026-05-31T13:48:25.000Z"
+  },
+  {
+    "id": 750110,
+    "date": "2026-05-15",
+    "member_id": "mom",
+    "screen_time": 213,
+    "created_at": "2026-05-31T13:49:10.000Z",
+    "updated_at": "2026-05-31T13:49:10.000Z"
+  },
+  {
+    "id": 750148,
+    "date": "2026-05-18",
+    "member_id": "mom",
+    "screen_time": 169,
+    "created_at": "2026-05-31T13:49:50.000Z",
+    "updated_at": "2026-05-31T13:49:50.000Z"
+  },
+  {
+    "id": 750150,
+    "date": "2026-05-19",
+    "member_id": "mom",
+    "screen_time": 135,
+    "created_at": "2026-05-31T13:49:50.000Z",
+    "updated_at": "2026-05-31T13:49:50.000Z"
+  },
+  {
+    "id": 750194,
+    "date": "2026-05-26",
+    "member_id": "mom",
+    "screen_time": 144,
+    "created_at": "2026-05-31T13:50:53.000Z",
+    "updated_at": "2026-05-31T13:50:53.000Z"
+  },
+  {
+    "id": 750196,
+    "date": "2026-05-27",
+    "member_id": "mom",
+    "screen_time": 131,
+    "created_at": "2026-05-31T13:50:53.000Z",
+    "updated_at": "2026-05-31T13:50:53.000Z"
+  },
+  {
+    "id": 750225,
+    "date": "2026-05-15",
+    "member_id": "sean",
+    "screen_time": 489,
+    "created_at": "2026-05-31T13:52:41.000Z",
+    "updated_at": "2026-05-31T13:59:20.000Z"
+  },
+  {
+    "id": 750267,
+    "date": "2026-05-15",
+    "member_id": "jin",
+    "screen_time": 289,
+    "created_at": "2026-05-31T13:52:52.000Z",
+    "updated_at": "2026-05-31T13:52:52.000Z"
+  },
+  {
+    "id": 750285,
+    "date": "2026-05-04",
+    "member_id": "jin",
+    "screen_time": 143,
+    "created_at": "2026-05-31T13:53:52.000Z",
+    "updated_at": "2026-05-31T13:53:52.000Z"
+  },
+  {
+    "id": 750289,
+    "date": "2026-05-06",
+    "member_id": "jin",
+    "screen_time": 73,
+    "created_at": "2026-05-31T13:53:52.000Z",
+    "updated_at": "2026-05-31T13:53:52.000Z"
+  },
+  {
+    "id": 750293,
+    "date": "2026-05-07",
+    "member_id": "jin",
+    "screen_time": 99,
+    "created_at": "2026-05-31T13:53:52.000Z",
+    "updated_at": "2026-05-31T13:53:52.000Z"
+  },
+  {
+    "id": 750297,
+    "date": "2026-05-08",
+    "member_id": "jin",
+    "screen_time": 173,
+    "created_at": "2026-05-31T13:53:52.000Z",
+    "updated_at": "2026-05-31T13:53:52.000Z"
+  },
+  {
+    "id": 750347,
+    "date": "2026-05-11",
+    "member_id": "jin",
+    "screen_time": 134,
+    "created_at": "2026-05-31T13:54:31.000Z",
+    "updated_at": "2026-05-31T13:54:31.000Z"
+  },
+  {
+    "id": 750351,
+    "date": "2026-05-12",
+    "member_id": "jin",
+    "screen_time": 80,
+    "created_at": "2026-05-31T13:54:31.000Z",
+    "updated_at": "2026-05-31T13:54:31.000Z"
+  },
+  {
+    "id": 750355,
+    "date": "2026-05-13",
+    "member_id": "jin",
+    "screen_time": 170,
+    "created_at": "2026-05-31T13:54:32.000Z",
+    "updated_at": "2026-05-31T13:54:32.000Z"
+  },
+  {
+    "id": 750359,
+    "date": "2026-05-14",
+    "member_id": "jin",
+    "screen_time": 204,
+    "created_at": "2026-05-31T13:54:32.000Z",
+    "updated_at": "2026-05-31T13:54:32.000Z"
+  },
+  {
+    "id": 750416,
+    "date": "2026-05-18",
+    "member_id": "jin",
+    "screen_time": 105,
+    "created_at": "2026-05-31T13:55:28.000Z",
+    "updated_at": "2026-05-31T13:55:28.000Z"
+  },
+  {
+    "id": 750419,
+    "date": "2026-05-19",
+    "member_id": "jin",
+    "screen_time": 51,
+    "created_at": "2026-05-31T13:55:28.000Z",
+    "updated_at": "2026-05-31T13:55:28.000Z"
+  },
+  {
+    "id": 750421,
+    "date": "2026-05-20",
+    "member_id": "jin",
+    "screen_time": 91,
+    "created_at": "2026-05-31T13:55:28.000Z",
+    "updated_at": "2026-05-31T13:55:28.000Z"
+  },
+  {
+    "id": 750423,
+    "date": "2026-05-21",
+    "member_id": "jin",
+    "screen_time": 145,
+    "created_at": "2026-05-31T13:55:28.000Z",
+    "updated_at": "2026-05-31T13:55:28.000Z"
+  },
+  {
+    "id": 750425,
+    "date": "2026-05-22",
+    "member_id": "jin",
+    "screen_time": 112,
+    "created_at": "2026-05-31T13:55:28.000Z",
+    "updated_at": "2026-05-31T13:55:28.000Z"
+  },
+  {
+    "id": 750484,
+    "date": "2026-05-26",
+    "member_id": "jin",
+    "screen_time": 138,
+    "created_at": "2026-05-31T13:56:03.000Z",
+    "updated_at": "2026-05-31T13:56:03.000Z"
+  },
+  {
+    "id": 750487,
+    "date": "2026-05-27",
+    "member_id": "jin",
+    "screen_time": 126,
+    "created_at": "2026-05-31T13:56:03.000Z",
+    "updated_at": "2026-05-31T13:56:03.000Z"
+  },
+  {
+    "id": 750489,
+    "date": "2026-05-28",
+    "member_id": "jin",
+    "screen_time": 147,
+    "created_at": "2026-05-31T13:56:03.000Z",
+    "updated_at": "2026-05-31T13:56:03.000Z"
+  },
+  {
+    "id": 750491,
+    "date": "2026-05-29",
+    "member_id": "jin",
+    "screen_time": 201,
+    "created_at": "2026-05-31T13:56:03.000Z",
+    "updated_at": "2026-05-31T13:56:03.000Z"
+  },
+  {
+    "id": 750673,
+    "date": "2026-05-04",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:15.000Z",
+    "updated_at": "2026-05-31T14:00:15.000Z"
+  },
+  {
+    "id": 750678,
+    "date": "2026-05-06",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:15.000Z",
+    "updated_at": "2026-05-31T14:00:15.000Z"
+  },
+  {
+    "id": 750683,
+    "date": "2026-05-07",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:15.000Z",
+    "updated_at": "2026-05-31T14:00:15.000Z"
+  },
+  {
+    "id": 750688,
+    "date": "2026-05-08",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:15.000Z",
+    "updated_at": "2026-05-31T14:00:15.000Z"
+  },
+  {
+    "id": 750693,
+    "date": "2026-05-11",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:15.000Z",
+    "updated_at": "2026-05-31T14:00:15.000Z"
+  },
+  {
+    "id": 750698,
+    "date": "2026-05-12",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750703,
+    "date": "2026-05-13",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750708,
+    "date": "2026-05-14",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750713,
+    "date": "2026-05-15",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750717,
+    "date": "2026-05-18",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750721,
+    "date": "2026-05-19",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750724,
+    "date": "2026-05-20",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750727,
+    "date": "2026-05-21",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750730,
+    "date": "2026-05-22",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750735,
+    "date": "2026-05-26",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750739,
+    "date": "2026-05-27",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750742,
+    "date": "2026-05-28",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750745,
+    "date": "2026-05-29",
+    "member_id": "liam",
+    "screen_time": 1000,
+    "created_at": "2026-05-31T14:00:16.000Z",
+    "updated_at": "2026-05-31T14:00:16.000Z"
+  },
+  {
+    "id": 750872,
+    "date": "2026-05-18",
+    "member_id": "sean",
+    "screen_time": 530,
+    "created_at": "2026-05-31T14:01:33.000Z",
+    "updated_at": "2026-05-31T14:01:33.000Z"
+  },
+  {
+    "id": 750877,
+    "date": "2026-05-19",
+    "member_id": "sean",
+    "screen_time": 846,
+    "created_at": "2026-05-31T14:01:33.000Z",
+    "updated_at": "2026-05-31T14:01:33.000Z"
+  },
+  {
+    "id": 750960,
+    "date": "2026-05-20",
+    "member_id": "sean",
+    "screen_time": 644,
+    "created_at": "2026-05-31T14:01:52.000Z",
+    "updated_at": "2026-05-31T14:01:52.000Z"
+  },
+  {
+    "id": 750964,
+    "date": "2026-05-21",
+    "member_id": "sean",
+    "screen_time": 761,
+    "created_at": "2026-05-31T14:01:52.000Z",
+    "updated_at": "2026-05-31T14:01:52.000Z"
+  },
+  {
+    "id": 751049,
+    "date": "2026-05-22",
+    "member_id": "sean",
+    "screen_time": 224,
+    "created_at": "2026-05-31T14:02:03.000Z",
+    "updated_at": "2026-05-31T14:02:03.000Z"
+  },
+  {
+    "id": 751137,
+    "date": "2026-05-26",
+    "member_id": "sean",
+    "screen_time": 373,
+    "created_at": "2026-05-31T14:02:30.000Z",
+    "updated_at": "2026-05-31T14:02:30.000Z"
+  },
+  {
+    "id": 751142,
+    "date": "2026-05-27",
+    "member_id": "sean",
+    "screen_time": 255,
+    "created_at": "2026-05-31T14:02:30.000Z",
+    "updated_at": "2026-05-31T14:02:30.000Z"
+  },
+  {
+    "id": 751230,
+    "date": "2026-05-28",
+    "member_id": "sean",
+    "screen_time": 293,
+    "created_at": "2026-05-31T14:02:52.000Z",
+    "updated_at": "2026-05-31T14:02:52.000Z"
+  },
+  {
+    "id": 751234,
+    "date": "2026-05-29",
+    "member_id": "sean",
+    "screen_time": 215,
+    "created_at": "2026-05-31T14:02:52.000Z",
+    "updated_at": "2026-05-31T14:02:52.000Z"
+  },
+  {
+    "id": 751294,
+    "date": "2026-05-20",
+    "member_id": "mom",
+    "screen_time": 187,
+    "created_at": "2026-05-31T14:03:50.000Z",
+    "updated_at": "2026-05-31T14:03:50.000Z"
+  },
+  {
+    "id": 751299,
+    "date": "2026-05-21",
+    "member_id": "mom",
+    "screen_time": 171,
+    "created_at": "2026-05-31T14:03:50.000Z",
+    "updated_at": "2026-05-31T14:03:50.000Z"
+  },
+  {
+    "id": 751304,
+    "date": "2026-05-22",
+    "member_id": "mom",
+    "screen_time": 263,
+    "created_at": "2026-05-31T14:03:50.000Z",
+    "updated_at": "2026-05-31T14:03:50.000Z"
+  },
+  {
+    "id": 751409,
+    "date": "2026-05-28",
+    "member_id": "mom",
+    "screen_time": 228,
+    "created_at": "2026-05-31T14:04:15.000Z",
+    "updated_at": "2026-05-31T14:04:15.000Z"
+  },
+  {
+    "id": 751414,
+    "date": "2026-05-29",
+    "member_id": "mom",
+    "screen_time": 294,
+    "created_at": "2026-05-31T14:04:16.000Z",
+    "updated_at": "2026-05-31T14:04:16.000Z"
+  }
+]

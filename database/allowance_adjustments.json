@@ -1,0 +1,42 @@
+[
+  {
+    "id": 2,
+    "month": "2026-03",
+    "member_id": "liam",
+    "amount": 1,
+    "message": "룰북 홈페이지 버그를 많이 찾아줘서!",
+    "created_by": "아빠",
+    "created_at": "2026-03-01T08:41:02.000Z",
+    "updated_at": "2026-03-01T08:41:02.000Z"
+  },
+  {
+    "id": 30001,
+    "month": "2026-05",
+    "member_id": "sean",
+    "amount": 4,
+    "message": "엄마 벌금",
+    "created_by": "감사",
+    "created_at": "2026-04-30T15:17:03.000Z",
+    "updated_at": "2026-04-30T15:17:03.000Z"
+  },
+  {
+    "id": 30002,
+    "month": "2026-05",
+    "member_id": "jin",
+    "amount": 4,
+    "message": "엄마 벌금",
+    "created_by": "감사",
+    "created_at": "2026-04-30T15:17:24.000Z",
+    "updated_at": "2026-04-30T15:17:24.000Z"
+  },
+  {
+    "id": 30003,
+    "month": "2026-05",
+    "member_id": "liam",
+    "amount": 4,
+    "message": "엄마 벌금",
+    "created_by": "감사",
+    "created_at": "2026-04-30T15:17:33.000Z",
+    "updated_at": "2026-04-30T15:17:33.000Z"
+  }
+]

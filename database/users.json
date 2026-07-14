@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "openId": "dWfNGjfebqnVFtTF8UJo4A",
+    "name": "JH 하",
+    "email": "haai.tools@gmail.com",
+    "loginMethod": "google",
+    "role": "admin",
+    "createdAt": "2026-02-09T01:22:52.000Z",
+    "updatedAt": "2026-07-14T13:00:17.000Z",
+    "lastSignedIn": "2026-07-14T13:00:17.000Z"
+  }
+]

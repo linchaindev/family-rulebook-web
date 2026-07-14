@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KH 패밀리룰북 — 개발 백서 v1.0</title>
+  <style>
+    :root {
+      --bg: #f9f9f7;
+      --surface: #ffffff;
+      --border: #e5e5e0;
+      --text: #1a1a18;
+      --muted: #6b6b66;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --code-bg: #f3f4f6;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: 100vh; }
+    nav {
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 20px;
+    }
+    nav .logo { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+    nav .subtitle { font-size: 11px; color: var(--muted); margin-bottom: 28px; }
+    nav ul { list-style: none; }
+    nav ul li { margin-bottom: 2px; }
+    nav ul li a {
+      display: block;
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav ul li a:hover { background: var(--accent-light); color: var(--accent); }
+    nav ul li.section-head > a { font-weight: 600; color: var(--text); margin-top: 16px; }
+    nav ul li.sub > a { padding-left: 20px; font-size: 12px; }
+
+    main { flex: 1; max-width: 860px; padding: 60px 48px; }
+
+    /* ── Typography ── */
+    h1 { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin: 56px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+    h3 { font-size: 1.1rem; font-weight: 700; margin: 32px 0 10px; }
+    h4 { font-size: 0.95rem; font-weight: 600; margin: 20px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    p { margin-bottom: 14px; }
+    ul, ol { margin: 0 0 14px 20px; }
+    li { margin-bottom: 5px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { font-weight: 600; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #7c3aed 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      margin-bottom: 48px;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .hero h1 { color: white; font-size: 2.4rem; }
+    .hero .desc { color: rgba(255,255,255,0.85); font-size: 1rem; margin-top: 10px; }
+    .hero .meta { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+    .hero .meta-item { font-size: 13px; color: rgba(255,255,255,0.75); }
+    .hero .meta-item strong { color: white; display: block; font-size: 15px; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .card-sm {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+    .card-sm h4 { margin: 0 0 6px; font-size: 13px; color: var(--muted); text-transform: none; letter-spacing: 0; }
+    .card-sm p { margin: 0; font-size: 14px; font-weight: 500; }
+
+    /* ── Code ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    code {
+      font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+      font-size: 0.875em;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+    }
+    pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+    th { background: var(--code-bg); text-align: left; padding: 10px 14px; border: 1px solid var(--border); font-weight: 600; font-size: 13px; }
+    td { padding: 9px 14px; border: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: #fafaf9; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-light);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .callout.warn { border-color: var(--orange); background: #fff7ed; }
+    .callout.success { border-color: var(--green); background: #f0fdf4; }
+    .callout strong { display: block; margin-bottom: 4px; }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 2px;
+    }
+    .tag.green { background: #f0fdf4; color: var(--green); }
+    .tag.orange { background: #fff7ed; color: var(--orange); }
+    .tag.gray { background: var(--code-bg); color: var(--muted); }
+
+    /* ── Step ── */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+    .step-num {
+      counter-increment: step;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-body h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; color: var(--text); text-transform: none; letter-spacing: 0; }
+    .step-body p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { padding: 32px 20px; }
+      h1 { font-size: 1.8rem; }
+      .hero { padding: 32px 24px; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      nav { display: none; }
+      main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar Navigation -->
+  <nav>
+    <div class="logo">📖 패밀리룰북</div>
+    <div class="subtitle">개발 백서 v1.0</div>
+    <ul>
+      <li class="section-head"><a href="#overview">1. 프로젝트 개요</a></li>
+      <li class="sub"><a href="#motivation">제작 배경</a></li>
+      <li class="sub"><a href="#goals">핵심 목표</a></li>
+
+      <li class="section-head"><a href="#tech-stack">2. 기술 스택</a></li>
+      <li class="sub"><a href="#frontend">프론트엔드</a></li>
+      <li class="sub"><a href="#backend">백엔드</a></li>
+      <li class="sub"><a href="#infra">인프라</a></li>
+
+      <li class="section-head"><a href="#architecture">3. 시스템 아키텍처</a></li>
+      <li class="sub"><a href="#data-flow">데이터 흐름</a></li>
+      <li class="sub"><a href="#auth">인증 구조</a></li>
+
+      <li class="section-head"><a href="#database">4. 데이터베이스</a></li>
+      <li class="sub"><a href="#schema">스키마 설계</a></li>
+      <li class="sub"><a href="#tables">테이블 목록</a></li>
+
+      <li class="section-head"><a href="#features">5. 핵심 기능</a></li>
+      <li class="sub"><a href="#ddc">DDC 스크린타임</a></li>
+      <li class="sub"><a href="#rcr">RCR 카드 시스템</a></li>
+      <li class="sub"><a href="#allowance">용돈 정산</a></li>
+      <li class="sub"><a href="#evaluation">월말평가</a></li>
+      <li class="sub"><a href="#fa">패밀리 감사(FA)</a></li>
+
+      <li class="section-head"><a href="#fork-guide">6. Fork 가이드</a></li>
+      <li class="sub"><a href="#fork-setup">환경 설정</a></li>
+      <li class="sub"><a href="#fork-customize">커스터마이징</a></li>
+      <li class="sub"><a href="#fork-deploy">배포</a></li>
+
+      <li class="section-head"><a href="#file-map">7. 파일 맵</a></li>
+      <li class="section-head"><a href="#api-reference">8. API 레퍼런스</a></li>
+      <li class="section-head"><a href="#changelog">9. 변경 이력</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="badge">WHITE PAPER v1.0 · 2026</div>
+      <h1>KH 패밀리룰북<br>개발 백서</h1>
+      <p class="desc">가족 규칙 관리 웹앱의 설계 원칙, 기술 구조, 그리고 이 프로젝트를 기반으로 새로운 패밀리룰북을 만드는 방법을 담은 문서입니다.</p>
+      <div class="meta">
+        <div class="meta-item"><strong>v1.0.6</strong>현재 버전</div>
+        <div class="meta-item"><strong>React 19 + tRPC 11</strong>프레임워크</div>
+        <div class="meta-item"><strong>MySQL (TiDB)</strong>데이터베이스</div>
+        <div class="meta-item"><strong>Manus Platform</strong>호스팅</div>
+      </div>
+    </div>
+
+    <!-- 1. 프로젝트 개요 -->
+    <section id="overview">
+      <h2>1. 프로젝트 개요</h2>
+
+      <h3 id="motivation">제작 배경</h3>
+      <p>KH 패밀리룰북은 가족 구성원 5인(부모 2인, 자녀 3인)이 함께 합의한 생활 규칙을 디지털로 관리하기 위해 2026년 2월에 제작되었습니다. 종이 규칙집이나 메모 앱으로는 추적이 어려웠던 스크린타임 기록, 용돈 정산, 매니저 평가 등을 하나의 웹앱으로 통합했습니다.</p>
+      <p>단순한 규칙 열람을 넘어, 실제 데이터를 기록하고 월말에 자동으로 정산하는 <strong>운영 가능한 가족 거버넌스 시스템</strong>을 목표로 설계했습니다.</p>
+
+      <h3 id="goals">핵심 목표</h3>
+      <div class="card-grid">
+        <div class="card-sm">
+          <h4>투명성</h4>
+          <p>모든 기록(스크린타임, 카드, 용돈)이 DB에 저장되어 누구나 조회 가능</p>
+        </div>
+        <div class="card-sm">
+          <h4>자동화</h4>
+          <p>월말평가 완료 시 DDC 순위 → 상금/벌금 → 용돈 정산까지 자동 계산</p>
+        </div>
+        <div class="card-sm">
+          <h4>접근 제어</h4>
+          <p>FA(패밀리 감사) 6자리, FM(패밀리 매니저) 4자리 비밀번호로 권한 분리</p>
+        </div>
+        <div class="card-sm">
+          <h4>확장성</h4>
+          <p>가족 구성원 수, 규칙 내용, 상금 체계를 설정 파일 수정만으로 변경 가능</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 기술 스택 -->
+    <section id="tech-stack">
+      <h2>2. 기술 스택</h2>
+
+      <h3 id="frontend">프론트엔드</h3>
+      <table>
+        <tr><th>라이브러리</th><th>버전</th><th>용도</th></tr>
+        <tr><td><strong>React</strong></td><td>19</td><td>UI 렌더링</td></tr>
+        <tr><td><strong>TypeScript</strong></td><td>5.9</td><td>타입 안전성</td></tr>
+        <tr><td><strong>Tailwind CSS</strong></td><td>4</td><td>스타일링</td></tr>
+        <tr><td><strong>shadcn/ui</strong></td><td>latest</td><td>UI 컴포넌트 (Button, Card, Dialog 등)</td></tr>
+        <tr><td><strong>Wouter</strong></td><td>3</td><td>클라이언트 라우팅</td></tr>
+        <tr><td><strong>Lucide React</strong></td><td>latest</td><td>아이콘</td></tr>
+        <tr><td><strong>TanStack Query</strong></td><td>5</td><td>서버 상태 관리 (tRPC 내장)</td></tr>
+      </table>
+
+      <h3 id="backend">백엔드</h3>
+      <table>
+        <tr><th>라이브러리</th><th>버전</th><th>용도</th></tr>
+        <tr><td><strong>Express</strong></td><td>4</td><td>HTTP 서버</td></tr>
+        <tr><td><strong>tRPC</strong></td><td>11</td><td>타입 안전 API (REST 대체)</td></tr>
+        <tr><td><strong>Drizzle ORM</strong></td><td>0.44</td><td>DB 쿼리 빌더 + 마이그레이션</td></tr>
+        <tr><td><strong>MySQL2</strong></td><td>3</td><td>MySQL 드라이버</td></tr>
+        <tr><td><strong>Zod</strong></td><td>3</td><td>입력값 유효성 검사</td></tr>
+        <tr><td><strong>Jose</strong></td><td>6</td><td>JWT 세션 쿠키 서명</td></tr>
+        <tr><td><strong>Superjson</strong></td><td>1</td><td>Date 등 직렬화 지원</td></tr>
+      </table>
+
+      <h3 id="infra">인프라</h3>
+      <div class="card-grid">
+        <div class="card-sm">
+          <h4>호스팅</h4>
+          <p>Manus Platform (Autoscale)</p>
+        </div>
+        <div class="card-sm">
+          <h4>데이터베이스</h4>
+          <p>TiDB (MySQL 호환 분산 DB)</p>
+        </div>
+        <div class="card-sm">
+          <h4>인증</h4>
+          <p>Manus OAuth 2.0</p>
+        </div>
+        <div class="card-sm">
+          <h4>CI/CD</h4>
+          <p>GitHub → Manus 자동 배포</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 시스템 아키텍처 -->
+    <section id="architecture">
+      <h2>3. 시스템 아키텍처</h2>
+
+      <h3 id="data-flow">데이터 흐름</h3>
+      <pre>Browser (React)
+  │  fetch /api/trpc/* (httpBatchLink + superjson)
+  ▼
+Express Server
+  │  server/_core/context.ts → ctx.user 주입
+  ├─ publicProcedure  (로그인 불필요)
+  └─ protectedProcedure (JWT 세션 쿠키 검증)
+       │
+       ▼
+  server/routers.ts (tRPC 라우터)
+       │  Drizzle ORM
+       ▼
+  TiDB / MySQL</pre>
+
+      <p>모든 API 통신은 <code>/api/trpc</code> 단일 엔드포인트를 통해 이루어집니다. tRPC의 배치 링크 덕분에 여러 쿼리가 하나의 HTTP 요청으로 묶입니다.</p>
+
+      <h3 id="auth">인증 구조</h3>
+      <div class="callout">
+        <strong>Manus OAuth 흐름</strong>
+        로그인 → <code>/api/oauth/callback</code> → JWT 세션 쿠키 발급 → 이후 모든 요청에 쿠키 자동 첨부
+      </div>
+      <p>이 프로젝트는 Manus 플랫폼의 OAuth를 사용하므로, fork 후 다른 OAuth 제공자(Google, Kakao 등)로 교체하려면 <code>server/_core/oauth.ts</code>와 <code>server/_core/context.ts</code>를 수정해야 합니다.</p>
+
+      <p>앱 내부에는 추가로 두 가지 비밀번호 레이어가 있습니다:</p>
+      <table>
+        <tr><th>역할</th><th>자릿수</th><th>저장 위치</th><th>용도</th></tr>
+        <tr><td>FM (패밀리 매니저)</td><td>4자리</td><td><code>passwords</code> 테이블 (월별)</td><td>매니저 입력 페이지 접근</td></tr>
+        <tr><td>FA (패밀리 감사)</td><td>6자리</td><td><code>auditor_config</code> 테이블</td><td>감사 관리 페이지 접근</td></tr>
+      </table>
+    </section>
+
+    <!-- 4. 데이터베이스 -->
+    <section id="database">
+      <h2>4. 데이터베이스</h2>
+
+      <h3 id="schema">스키마 설계 원칙</h3>
+      <ul>
+        <li>날짜는 <code>VARCHAR(10)</code>의 <code>YYYY-MM-DD</code> 형식으로 저장 (타임존 혼란 방지)</li>
+        <li>월(month)은 <code>VARCHAR(7)</code>의 <code>YYYY-MM</code> 형식</li>
+        <li>금액은 <strong>만원 단위 정수</strong>로 저장 (소수점 불필요)</li>
+        <li>모든 테이블에 <code>createdAt</code>, <code>updatedAt</code> 타임스탬프 포함</li>
+        <li>중복 방지가 필요한 경우 <code>unique()</code> 제약 조건 사용</li>
+      </ul>
+
+      <h3 id="tables">테이블 목록</h3>
+      <table>
+        <tr><th>테이블명</th><th>설명</th><th>주요 컬럼</th></tr>
+        <tr><td><code>users</code></td><td>Manus OAuth 사용자</td><td>openId, name, role</td></tr>
+        <tr><td><code>ddc_records</code></td><td>일별 스크린타임 기록</td><td>date, member_id, screen_time(분)</td></tr>
+        <tr><td><code>rcr_records</code></td><td>규칙 위반/준수 카드</td><td>date, member_id, card_type, reason</td></tr>
+        <tr><td><code>manager_activities</code></td><td>월별 매니저 활동 집계</td><td>month, manager_id, wakeup_count 등</td></tr>
+        <tr><td><code>manager_activity_logs</code></td><td>일별 매니저 활동 일지</td><td>date, member_id, activity_type, comment</td></tr>
+        <tr><td><code>family_comments</code></td><td>가족 소통 게시판</td><td>type(praise/suggestion), from_member, to_member</td></tr>
+        <tr><td><code>passwords</code></td><td>FM 월별 비밀번호</td><td>month, manager_password(4자리)</td></tr>
+        <tr><td><code>auditor_config</code></td><td>FA 전역 비밀번호</td><td>password(6자리)</td></tr>
+        <tr><td><code>monthly_managers</code></td><td>월별 매니저 지정</td><td>month, manager_id</td></tr>
+        <tr><td><code>manager_evaluations</code></td><td>월말평가 투표 기록</td><td>month, manager_id, voter_id, vote</td></tr>
+        <tr><td><code>monthly_allowances</code></td><td>월별 용돈 정산 결과</td><td>month, member_id, base/bonus/penalty/final, breakdown_formula</td></tr>
+        <tr><td><code>allowance_adjustments</code></td><td>FA 버프/너프 내역</td><td>month, member_id, amount, message</td></tr>
+        <tr><td><code>bug_report_rewards</code></td><td>버그 리포트 보상</td><td>comment_id, member_id, reward_amount</td></tr>
+        <tr><td><code>app_settings</code></td><td>앱 설정 키-값</td><td>key, value</td></tr>
+      </table>
+    </section>
+
+    <!-- 5. 핵심 기능 -->
+    <section id="features">
+      <h2>5. 핵심 기능</h2>
+
+      <h3 id="ddc">DDC — 디지털 디톡스 챌린지</h3>
+      <p>가족 구성원별 일일 스크린타임을 기록하고, 월간 총합을 기준으로 순위를 매겨 상금/벌금을 산정합니다.</p>
+      <table>
+        <tr><th>순위</th><th>상금/벌금</th></tr>
+        <tr><td>1등</td><td>+5만원</td></tr>
+        <tr><td>2등</td><td>+3만원</td></tr>
+        <tr><td>3등</td><td>0원</td></tr>
+        <tr><td>4등</td><td>-3만원</td></tr>
+        <tr><td>5등</td><td>-5만원</td></tr>
+      </table>
+      <div class="callout success">
+        <strong>구현 포인트</strong>
+        <code>ddc_records</code>에 <code>unique(date, member_id)</code> 제약이 있어 같은 날 같은 멤버의 데이터는 <code>INSERT ... ON DUPLICATE KEY UPDATE</code>로 자동 업데이트됩니다.
+      </div>
+
+      <h3 id="rcr">RCR — 규칙 준수 카드 시스템</h3>
+      <p>10가지 카드 타입으로 규칙 위반/준수를 기록합니다. 카드 효과는 스크린타임 조정 또는 용돈 조정으로 나뉩니다.</p>
+      <div style="margin-bottom: 14px;">
+        <span class="tag orange">yellow: 스크린타임 +5h</span>
+        <span class="tag orange">red: 용돈 -1만</span>
+        <span class="tag orange">double_red: -2만</span>
+        <span class="tag orange">triple_red: -3만</span>
+        <span class="tag orange">quadro_red: -4만</span>
+        <span class="tag green">green: 스크린타임 -1h</span>
+        <span class="tag green">double_green: -5h</span>
+        <span class="tag green">triple_green: 용돈 +2만</span>
+        <span class="tag green">quadro_green: +4만</span>
+        <span class="tag" style="background:#fef9c3;color:#854d0e;">golden: 매니저 1개월 면제</span>
+      </div>
+
+      <h3 id="allowance">용돈 정산 시스템</h3>
+      <p>월말평가 완료 시 아래 공식으로 최종 용돈이 자동 계산됩니다:</p>
+      <pre>최종 용돈 = 기본 용돈
+         + DDC 상금/벌금
+         + RCR 카드 효과 합산
+         + FA 버프/너프 (allowance_adjustments)
+         + 매니저 보상 (해당 월 매니저인 경우)</pre>
+      <p>계산 결과는 <code>monthly_allowances.breakdown_formula</code>에 문자열로 저장되어 프로필 페이지에서 항목별로 표시됩니다.</p>
+
+      <h3 id="evaluation">월말평가 흐름</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>투표</h4>
+            <p>가족 5인이 당월 매니저에 대해 good/bad 투표 (자기 자신 제외 4표)</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>집계</h4>
+            <p>good 비율에 따라 매니저 보상 결정 (80% 이상 → 최대 보상)</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>정산</h4>
+            <p>DDC 순위 스냅샷 저장 → 5인 전체 용돈 자동 계산 → monthly_allowances 저장</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>다음 달 준비</h4>
+            <p>새 FM 비밀번호 자동 생성 → 오너에게 알림 전송</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="fa">패밀리 감사(FA) 관리 페이지</h3>
+      <p><code>/auditor-admin</code> 페이지는 6자리 FA 비밀번호 인증 후 접근 가능합니다. 4개 탭으로 구성됩니다:</p>
+      <ul>
+        <li><strong>DDC 탭</strong> — 스크린타임 데이터 입력/수정</li>
+        <li><strong>RCR 탭</strong> — 카드 발급/취소</li>
+        <li><strong>용돈/버프 탭</strong> — 버프·너프 추가, 기본 용돈 설정</li>
+        <li><strong>평가 관리 탭</strong> — 월말평가 진행/취소(롤백)</li>
+      </ul>
+    </section>
+
+    <!-- 6. Fork 가이드 -->
+    <section id="fork-guide">
+      <h2>6. Fork 가이드</h2>
+      <p>이 프로젝트를 기반으로 새로운 패밀리룰북을 만들려면 아래 단계를 따르세요.</p>
+
+      <h3 id="fork-setup">환경 설정</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>저장소 Fork</h4>
+            <p>GitHub에서 이 저장소를 Fork한 뒤 로컬에 클론합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>의존성 설치</h4>
+            <p><code>pnpm install</code> 실행. Node.js 22+, pnpm 9+ 필요.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>환경 변수 설정</h4>
+            <p>아래 환경 변수를 <code>.env</code> 파일 또는 호스팅 플랫폼에 등록합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>DB 마이그레이션</h4>
+            <p><code>pnpm db:push</code>로 스키마를 DB에 적용합니다.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>개발 서버 실행</h4>
+            <p><code>pnpm dev</code>로 <code>localhost:3000</code>에서 확인합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <h4>필수 환경 변수</h4>
+      <pre>DATABASE_URL=mysql://user:password@host:4000/dbname?ssl={"rejectUnauthorized":true}
+JWT_SECRET=your-random-32-char-secret
+VITE_APP_ID=your-manus-app-id
+OAUTH_SERVER_URL=https://api.manus.im
+VITE_OAUTH_PORTAL_URL=https://manus.im
+OWNER_OPEN_ID=your-manus-open-id
+OWNER_NAME=your-name
+BUILT_IN_FORGE_API_URL=https://api.manus.im
+BUILT_IN_FORGE_API_KEY=your-api-key</pre>
+
+      <div class="callout warn">
+        <strong>주의</strong>
+        Manus OAuth를 사용하지 않는 경우 <code>server/_core/oauth.ts</code>, <code>server/_core/context.ts</code>, <code>client/src/const.ts</code>의 인증 로직을 교체해야 합니다.
+      </div>
+
+      <h3 id="fork-customize">커스터마이징 포인트</h3>
+
+      <h4>가족 구성원 변경</h4>
+      <p><code>shared/types.ts</code> 또는 <code>server/routers.ts</code> 상단의 <code>FAMILY_MEMBERS</code> 배열을 수정합니다:</p>
+      <pre>// server/routers.ts 또는 shared/const.ts
+const FAMILY_MEMBERS = [
+  { id: "dad",  name: "아빠", emoji: "👨" },
+  { id: "mom",  name: "엄마", emoji: "👩" },
+  { id: "jin",  name: "진",   emoji: "🧒" },
+  { id: "liam", name: "리암", emoji: "🧒" },
+  { id: "sean", name: "션",   emoji: "🧒" },
+];
+// 구성원 추가/제거 시 이 배열만 수정하면 됩니다.</pre>
+
+      <h4>DDC 상금/벌금 규칙 변경</h4>
+      <p><code>server/routers.ts</code>의 <code>DDC_PRIZES</code> 객체를 수정합니다:</p>
+      <pre>const DDC_PRIZES: Record&lt;number, number&gt; = {
+  1: 5,   // 1등: +5만원
+  2: 3,   // 2등: +3만원
+  3: 0,   // 3등: 0원
+  4: -3,  // 4등: -3만원
+  5: -5,  // 5등: -5만원
+};</pre>
+
+      <h4>기본 용돈 변경</h4>
+      <p>FA 관리 페이지 → 용돈/버프 탭에서 멤버별 기본 용돈을 직접 설정할 수 있습니다. 코드 수정 없이 UI에서 변경 가능합니다.</p>
+
+      <h4>RCR 카드 타입 추가</h4>
+      <p><code>drizzle/schema.ts</code>의 <code>card_type</code> enum에 새 타입을 추가하고 <code>pnpm db:push</code>를 실행합니다. 이후 <code>server/routers.ts</code>의 카드 효과 계산 로직에 새 타입의 효과를 추가합니다.</p>
+
+      <h4>앱 이름/로고 변경</h4>
+      <pre># Manus 플랫폼 환경 변수
+VITE_APP_TITLE=우리 가족 룰북
+VITE_APP_LOGO=https://your-logo-url.png</pre>
+
+      <h3 id="fork-deploy">배포</h3>
+      <p>Manus 플랫폼을 사용하는 경우 GitHub 저장소를 연결하면 <code>main</code> 브랜치 푸시 시 자동 배포됩니다. 다른 플랫폼을 사용하는 경우:</p>
+      <pre># 빌드
+pnpm build
+
+# 빌드 결과물
+dist/          ← 프론트엔드 정적 파일
+dist/index.js  ← Express 서버 번들
+
+# 실행
+node dist/index.js</pre>
+      <div class="callout">
+        <strong>포트 설정</strong>
+        서버는 <code>process.env.PORT</code>를 읽습니다. 하드코딩하지 마세요. Railway, Render, Fly.io 등 대부분의 플랫폼과 호환됩니다.
+      </div>
+    </section>
+
+    <!-- 7. 파일 맵 -->
+    <section id="file-map">
+      <h2>7. 파일 맵</h2>
+      <pre>family-rulebook-web/
+├── client/
+│   ├── public/
+│   │   └── whitepaper.html        ← 이 문서
+│   └── src/
+│       ├── App.tsx                ← 라우트 정의
+│       ├── index.css              ← 전역 스타일 + CSS 변수
+│       ├── const.ts               ← getLoginUrl() 등 상수
+│       ├── pages/
+│       │   ├── Home.tsx           ← 랜딩 페이지 (버튼 6개 + 부가 버튼)
+│       │   ├── Dashboard.tsx      ← DDC 순위 대시보드
+│       │   ├── Profile.tsx        ← 멤버별 프로필 + 용돈 내역
+│       │   ├── AuditorAdmin.tsx   ← FA 감사 관리 (4탭)
+│       │   ├── ManagerInput.tsx   ← FM 매니저 입력
+│       │   ├── ManagerEvaluation.tsx ← 월말평가 + 정산
+│       │   ├── Comments.tsx       ← 가족 소통 게시판
+│       │   ├── FamilyGames.tsx    ← 룰렛/사다리 게임
+│       │   ├── NewbieGuide.tsx    ← 초보자 튜토리얼
+│       │   ├── MonthEndSettlement.tsx ← 용돈 정산 내역
+│       │   └── ReleaseNotes.tsx   ← 릴리즈 노트
+│       └── components/
+│           ├── RouletteGame.tsx   ← 룰렛 게임 컴포넌트
+│           ├── LadderGame.tsx     ← 사다리타기 컴포넌트
+│           └── ui/                ← shadcn/ui 컴포넌트
+├── server/
+│   ├── routers.ts                 ← 모든 tRPC 프로시저 (핵심 파일)
+│   ├── db.ts                      ← DB 헬퍼 함수
+│   ├── storage.ts                 ← S3 파일 스토리지
+│   └── _core/
+│       ├── index.ts               ← 서버 진입점 + auditor_config 초기화
+│       ├── context.ts             ← tRPC 컨텍스트 (ctx.user)
+│       ├── oauth.ts               ← Manus OAuth 처리
+│       ├── trpc.ts                ← publicProcedure / protectedProcedure
+│       └── env.ts                 ← 환경 변수 타입 정의
+├── drizzle/
+│   └── schema.ts                  ← DB 스키마 (14개 테이블)
+├── shared/
+│   ├── types.ts                   ← 공유 타입
+│   └── const.ts                   ← 공유 상수
+└── database/                      ← DB 백업 파일 (JSON)</pre>
+    </section>
+
+    <!-- 8. API 레퍼런스 -->
+    <section id="api-reference">
+      <h2>8. API 레퍼런스</h2>
+      <p>모든 API는 tRPC 프로시저로 구현되어 있습니다. 클라이언트에서 <code>trpc.&lt;namespace&gt;.&lt;procedure&gt;.useQuery()</code> 또는 <code>.useMutation()</code>으로 호출합니다.</p>
+
+      <h3>DDC 관련</h3>
+      <table>
+        <tr><th>프로시저</th><th>타입</th><th>설명</th></tr>
+        <tr><td><code>ddc.getRecords</code></td><td>Query</td><td>월별 스크린타임 기록 조회</td></tr>
+        <tr><td><code>ddc.upsertRecords</code></td><td>Mutation</td><td>스크린타임 일괄 저장/수정</td></tr>
+        <tr><td><code>ddc.getMonthlyRanking</code></td><td>Query</td><td>월별 DDC 순위 계산</td></tr>
+        <tr><td><code>ddc.getMonthlyStats</code></td><td>Query</td><td>월별 통계 (총합, 평균)</td></tr>
+      </table>
+
+      <h3>RCR 관련</h3>
+      <table>
+        <tr><th>프로시저</th><th>타입</th><th>설명</th></tr>
+        <tr><td><code>rcr.getRecords</code></td><td>Query</td><td>카드 기록 조회</td></tr>
+        <tr><td><code>rcr.createRecord</code></td><td>Mutation</td><td>카드 발급</td></tr>
+        <tr><td><code>rcr.deleteRecord</code></td><td>Mutation</td><td>카드 취소</td></tr>
+      </table>
+
+      <h3>월말평가 관련</h3>
+      <table>
+        <tr><th>프로시저</th><th>타입</th><th>설명</th></tr>
+        <tr><td><code>managerEvaluation.vote</code></td><td>Mutation</td><td>투표 제출</td></tr>
+        <tr><td><code>managerEvaluation.getVotes</code></td><td>Query</td><td>투표 현황 조회</td></tr>
+        <tr><td><code>managerEvaluation.completeEvaluation</code></td><td>Mutation</td><td>평가 완료 + 용돈 정산</td></tr>
+        <tr><td><code>managerEvaluation.cancelAndRollback</code></td><td>Mutation</td><td>평가 취소 + 데이터 롤백</td></tr>
+      </table>
+
+      <h3>용돈 관련</h3>
+      <table>
+        <tr><th>프로시저</th><th>타입</th><th>설명</th></tr>
+        <tr><td><code>allowance.getMonthlyAllowances</code></td><td>Query</td><td>월별 용돈 정산 결과 조회</td></tr>
+        <tr><td><code>allowance.getAdjustments</code></td><td>Query</td><td>버프/너프 내역 조회</td></tr>
+        <tr><td><code>allowance.addAdjustment</code></td><td>Mutation</td><td>버프/너프 추가</td></tr>
+        <tr><td><code>allowance.deleteAdjustment</code></td><td>Mutation</td><td>버프/너프 삭제</td></tr>
+      </table>
+    </section>
+
+    <!-- 9. 변경 이력 -->
+    <section id="changelog">
+      <h2>9. 변경 이력</h2>
+      <table>
+        <tr><th>버전</th><th>날짜</th><th>주요 변경사항</th></tr>
+        <tr>
+          <td><strong>v1.0.6</strong></td>
+          <td>2026-03-02</td>
+          <td>DDC 상금/벌금 규칙 개정, 월말평가 FA 전용 이동, 매니저 배지 동적 표시, 테스트 웹앱 버튼 추가, 이사 프로젝트 링크 3개 추가</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.5</strong></td>
+          <td>2026-02-28</td>
+          <td>CelebrationPage DDC 스냅샷 기반 순위 표시, 용돈 breakdown_formula 저장, auditor_config 자동 초기화</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.4</strong></td>
+          <td>2026-02-25</td>
+          <td>월말평가 취소(롤백) 기능, FA 감사 페이지 평가 관리 탭 추가</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.3</strong></td>
+          <td>2026-02-20</td>
+          <td>월말평가 페이지 전면 개편, Canvas 폭죽 축하 페이지, 다음달 비밀번호 자동 생성</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.2</strong></td>
+          <td>2026-02-15</td>
+          <td>DDC 데이터 0 저장 버그 수정, INSERT ON DUPLICATE KEY UPDATE 적용</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.1</strong></td>
+          <td>2026-02-14</td>
+          <td>룰렛/사다리 게임 추가, 야바위 이스터에그, Web Audio API 효과음</td>
+        </tr>
+        <tr>
+          <td><strong>v1.0.0</strong></td>
+          <td>2026-02-09</td>
+          <td>최초 출시. DDC, RCR, 용돈 정산, 가족 소통 게시판, 프로필 페이지</td>
+        </tr>
+      </table>
+
+      <hr>
+      <div style="text-align:center; color: var(--muted); font-size: 13px; padding: 20px 0;">
+        <p>KH 패밀리룰북 개발 백서 · 2026년 제작</p>
+        <p style="margin-top:6px;">이 문서는 프로젝트와 함께 <a href="https://github.com">GitHub</a>에서 관리됩니다.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

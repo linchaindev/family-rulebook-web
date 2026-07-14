@@ -851,6 +851,9 @@ export default function Home() {
             <Link href="/release-notes">
               <p className="mt-4 font-semibold hover:text-primary cursor-pointer transition-colors">Version 1.0.1 · 2026년 2월 14일 업데이트</p>
             </Link>
+            <a href="/whitepaper.html" target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-xs text-muted-foreground hover:text-primary transition-colors border border-border rounded px-3 py-1">
+              📄 개발 백서 (White Paper)
+            </a>
           </div>
         </div>
       </footer>
